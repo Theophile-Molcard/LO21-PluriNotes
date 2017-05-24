@@ -1,7 +1,14 @@
-#include <iostream>
+#include "Notes.h"
+#include "mainwindow.h"
 
-using namespace std;
+#include <QApplication>
 
-int main(){
-	cout <<"Hello git !" <<endl;
+
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
+
+    return a.exec();
 }

@@ -13,32 +13,7 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralWidget">
-   <widget class="QRadioButton" name="radioButton">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>90</y>
-      <width>82</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Copain</string>
-    </property>
-   </widget>
-   <widget class="QWidget" name="verticalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>60</y>
-      <width>160</width>
-      <height>80</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout"/>
-   </widget>
-  </widget>
+  <widget class="QWidget" name="centralWidget"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
@@ -48,26 +23,6 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuSUPER">
-    <property name="title">
-     <string>SUPER</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="menuCopa">
-    <property name="title">
-     <string>Copa</string>
-    </property>
-    <widget class="QMenu" name="menuStreet">
-     <property name="title">
-      <string>Street</string>
-     </property>
-     <addaction name="actionZER"/>
-    </widget>
-    <addaction name="actionDela"/>
-    <addaction name="menuStreet"/>
-   </widget>
-   <addaction name="menuSUPER"/>
-   <addaction name="menuCopa"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -78,16 +33,6 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionDela">
-   <property name="text">
-    <string>Dela</string>
-   </property>
-  </action>
-  <action name="actionZER">
-   <property name="text">
-    <string>ZER</string>
-   </property>
-  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

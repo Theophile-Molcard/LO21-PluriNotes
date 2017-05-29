@@ -31,3 +31,7 @@
 # Fichiers projets
 
 *.user*
+
+#sauvegardes auto
+
+*.autosave

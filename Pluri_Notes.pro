@@ -26,11 +26,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         mainwindow.cpp \
     Notes.cpp \
-    Memento.cpp
+    Memento.cpp \
+    noteWindow.cpp
 
 HEADERS  += mainwindow.h \
     tache.h \
     Notes.h \
-    Memento.h
+    Memento.h \
+    noteWindow.h
 
 FORMS    += mainwindow.ui

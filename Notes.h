@@ -17,8 +17,8 @@ class Note{
 public:
 
 private:
-    string identificateur;
-    string titre;
+    QString identificateur;
+    QString titre;
     QDateTime date_creation;
     QDateTime date_modif;
 
@@ -32,19 +32,19 @@ private:
 };
 
 class Article : public Note {
-    string texte;
+    QString texte;
 };
 
 class Tache : public Note {
-    string action;
+    QString action;
     unsigned int priorite; // optionnel
     QDateTime date_echeance; //optionnel
     TypeStatut statut;
 };
 
 class Mutimedia : public Note {
-    string desctiption;
-    string fichier; // adresse du fichier
+    QString desctiption;
+    QString fichier; // adresse du fichier
     TypeMultimedia type; //type du fichier
 };
 

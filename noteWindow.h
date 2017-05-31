@@ -9,6 +9,7 @@
 #include <QLabel>
 
 #include <QLineEdit>
+#include <QTextEdit>
 #include <QComboBox>
 #include <QPushButton>
 
@@ -19,6 +20,9 @@ class NoteWindow : public QWidget{
 
 public:
     NoteWindow(QWidget *parent = 0);
+    void editeur_article();
+    void editeur_multimedia(){}
+    void editeur_tache(){}
 
 private:
 
@@ -35,10 +39,50 @@ private:
 
     QHBoxLayout *type_hbox;
     QLabel *type_label;
-    QComboBox *type; // on voudrait plutot un edit
+    QComboBox *type;
 
 
-    QPushButton *create;
+    QPushButton *create_button;
+
+public slots:
+    void create() {
+        if(type->currentText() == "Article")            editeur_article();
+        else if(type->currentText() == "Multimedia")    editeur_multimedia();
+        else if(type->currentText() == "Tache")         editeur_tache();
+    }
+
+};
+
+
+
+class ArticleWindow : public QWidget{
+
+    Q_OBJECT
+
+public:
+    ArticleWindow(QString _id, QString _title, QWidget *parent = 0);
+
+private:
+
+    QVBoxLayout *fenetre_vbox;
+
+    // ID
+    QHBoxLayout *id_hbox;
+    QLabel *id_label;
+    QLabel *id;
+
+    QHBoxLayout *title_hbox;
+    QLabel *title_label;
+    QLineEdit *title;
+
+    QHBoxLayout *text_hbox;
+    QLabel *text_label;
+    QTextEdit *text;
+
+    QPushButton *save_button;
+
+public slots:
+    void save(){}
 
 };
 

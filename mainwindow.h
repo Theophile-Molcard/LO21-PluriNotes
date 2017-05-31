@@ -18,6 +18,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 
+
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -26,7 +27,7 @@ private:
     Ui::MainWindow *ui;
 
 public slots:
-    void ouvrir_fenetre() { setCentralWidget(new NoteWindow()); }
+    void ouvrir_fenetre() { setCentralWidget(new NoteWindow(this)); }
 };
 
 

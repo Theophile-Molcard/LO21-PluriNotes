@@ -25,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     menuRef = menuBar()->addMenu(tr("Référence"));
     menuRef->addAction("autre");
 
+
 }
 
 MainWindow::~MainWindow()

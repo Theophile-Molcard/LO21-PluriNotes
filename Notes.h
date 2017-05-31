@@ -26,9 +26,9 @@ private:
 
     // fonctions appellées par NM
 
-    save(); // enregistre avec tous les paramètres
-    createMemento(); // enregistre un memento
-    restoreMemento(); // restaure un memento
+    void save(); // enregistre avec tous les paramètres
+    void createMemento(); // enregistre un memento
+    void restoreMemento(); // restaure un memento
 };
 
 class Article : public Note {
@@ -101,8 +101,8 @@ public:
         return Iterator(tab, nb_max);
     }
 
-    createNote(const string& id, const string& titre); // crée une note vide avec id / titre / date
-    saveNote(const string& id); // enregistre une note avec tout ce qu'il faut / ça fait un memento
+    void createNote(const string& id, const string& titre); // crée une note vide avec id / titre / date
+    void saveNote(const string& id); // enregistre une note avec tout ce qu'il faut / ça fait un memento
 
 
 private:

@@ -2,9 +2,15 @@
 #define NOTEWINDOW_H
 
 #include <QWidget>
-#include <QPushButton>
+
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+
+#include <QLabel>
+
+#include <QLineEdit>
+#include <QComboBox>
+#include <QPushButton>
 
 
 class NoteWindow : public QWidget{
@@ -12,11 +18,27 @@ class NoteWindow : public QWidget{
     Q_OBJECT
 
 public:
-    NoteWindow();
+    NoteWindow(QWidget *parent = 0);
 
 private:
 
-    QPushButton *bouton;
+    QVBoxLayout *fenetre_vbox;
+
+    // ID
+    QHBoxLayout *id_hbox;
+    QLabel *id_label;
+    QLineEdit *id;
+
+    QHBoxLayout *title_hbox;
+    QLabel *title_label;
+    QLineEdit *title;
+
+    QHBoxLayout *type_hbox;
+    QLabel *type_label;
+    QComboBox *type; // on voudrait plutot un edit
+
+
+    QPushButton *create;
 
 };
 

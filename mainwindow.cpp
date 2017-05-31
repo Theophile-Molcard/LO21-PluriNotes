@@ -13,21 +13,18 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QMenu *menuNotes, *menuTypeNotes, *menuRef;
+    /// Les menus
+    QMenu *menuNotes, *menuRef;
+    QAction *nouvelle_note;
 
-    menuNotes = menuBar()->addMenu(tr("Note"));
-    menuTypeNotes = menuNotes->addMenu("Nouvelle...");
-    menuTypeNotes->addAction("tache");
+    menuNotes = menuBar()->addMenu("Note");
+    nouvelle_note = menuNotes->addAction("Nouvelle");
+
+    QObject::connect(nouvelle_note, SIGNAL(triggered(bool)), this, SLOT(ouvrir_fenetre()) );
 
     menuRef = menuBar()->addMenu(tr("Référence"));
     menuRef->addAction("autre");
 
-
-
-
-    NoteWindow* fenetre_note;
-    fenetre_note = new NoteWindow();
-    setCentralWidget(fenetre_note);
 }
 
 MainWindow::~MainWindow()

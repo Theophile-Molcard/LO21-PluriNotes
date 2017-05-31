@@ -24,6 +24,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+public slots:
+    void ouvrir_fenetre() { setCentralWidget(new NoteWindow()); }
 };
 
 

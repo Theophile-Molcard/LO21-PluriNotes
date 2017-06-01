@@ -14,15 +14,17 @@
 #include <QPushButton>
 
 
+
 class NoteWindow : public QWidget{
 
     Q_OBJECT
 
 public:
     NoteWindow(QWidget *parent = 0);
-    void editeur_article();
-    void editeur_multimedia(){}
-    void editeur_tache(){}
+    QPushButton* getPushButton(){ return create_button; }
+    QString getId(){ return id->text(); }
+    QString getTitle(){ return title->text(); }
+    QString getType(){ return type->currentText(); }
 
 private:
 
@@ -41,15 +43,7 @@ private:
     QLabel *type_label;
     QComboBox *type;
 
-
     QPushButton *create_button;
-
-public slots:
-    void create() {
-        if(type->currentText() == "Article")            editeur_article();
-        else if(type->currentText() == "Multimedia")    editeur_multimedia();
-        else if(type->currentText() == "Tache")         editeur_tache();
-    }
 
 };
 
@@ -78,6 +72,87 @@ private:
     QHBoxLayout *text_hbox;
     QLabel *text_label;
     QTextEdit *text;
+
+    QPushButton *save_button;
+
+public slots:
+    void save(){}
+
+};
+
+
+class MultimediaWindow : public QWidget{
+
+    Q_OBJECT
+
+public:
+    MultimediaWindow(QString _id, QString _title, QWidget *parent = 0);
+
+private:
+
+    QVBoxLayout *fenetre_vbox;
+
+    // ID
+    QHBoxLayout *id_hbox;
+    QLabel *id_label;
+    QLabel *id;
+
+    QHBoxLayout *title_hbox;
+    QLabel *title_label;
+    QLineEdit *title;
+
+    QHBoxLayout *description_hbox;
+    QLabel *description_label;
+    QTextEdit *description;
+
+    QHBoxLayout *fichier_hbox;
+    QComboBox *fichier_type;
+    QPushButton *fichier;
+
+    QPushButton *save_button;
+
+public slots:
+    void save(){}
+
+};
+
+
+
+class TacheWindow : public QWidget{
+
+    Q_OBJECT
+
+public:
+    TacheWindow(QString _id, QString _title, QWidget *parent = 0);
+
+private:
+
+    QVBoxLayout *fenetre_vbox;
+
+    // ID
+    QHBoxLayout *id_hbox;
+    QLabel *id_label;
+    QLabel *id;
+
+    QHBoxLayout *title_hbox;
+    QLabel *title_label;
+    QLineEdit *title;
+
+    QHBoxLayout *action_hbox;
+    QLabel *action_label;
+    QTextEdit *action;
+
+    QHBoxLayout *priorite_hbox;
+    QLabel *priorite_label;
+    QLineEdit *priorite;
+
+    QHBoxLayout *echeance_hbox;
+    QLabel *echeance_label;
+    QLineEdit *echeance;
+
+    QHBoxLayout *statut_hbox;
+    QLabel *statut_label;
+    QComboBox *statut;
 
     QPushButton *save_button;
 

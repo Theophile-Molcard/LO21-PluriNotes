@@ -18,16 +18,28 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 
-
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    // Create()
+    void editeur_article();
+    void editeur_multimedia();
+    void editeur_tache();
+
+
 private:
     Ui::MainWindow *ui;
 
+    NoteWindow * note_window;
+    ArticleWindow * article_window;
+    MultimediaWindow * multimedia_window;
+    TacheWindow * tache_window;
+
+
 public slots:
-    void ouvrir_fenetre() { setCentralWidget(new NoteWindow(this)); }
+    void ouvrir_fenetre();
+    void create();
 };
 
 

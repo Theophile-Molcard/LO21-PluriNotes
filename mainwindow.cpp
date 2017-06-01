@@ -5,6 +5,8 @@
 #include <QWidget>
 #include <QMenuBar>
 
+#include<QErrorMessage>
+
 #include <QPushButton>
 
 
@@ -48,11 +50,19 @@ MainWindow::~MainWindow()
 
 void MainWindow::create() {
 
-    if(note_window->getType() == "Article")            editeur_article();
-    else if(note_window->getType() == "Multimedia")    editeur_multimedia();
-    else if(note_window->getType() == "Tache")         editeur_tache();
+    if(note_window->getId() != "" && note_window->getTitle() != "")
+    {
+        if(note_window->getType() == "Article")            editeur_article();
+        else if(note_window->getType() == "Multimedia")    editeur_multimedia();
+        else if(note_window->getType() == "Tache")         editeur_tache();
 
-    note_window->close();
+        note_window->close();
+    }
+    else
+    {
+        QErrorMessage* em = new QErrorMessage;
+        em->showMessage("Entrez le Titre et l'ID");
+    }
 }
 
 void MainWindow::ouvrir_fenetre() {
@@ -69,6 +79,8 @@ void MainWindow::ouvrir_fenetre() {
 
 
 /// Editeurs de notes
+
+// ID + TITLE
 
 void MainWindow::editeur_article(){
 

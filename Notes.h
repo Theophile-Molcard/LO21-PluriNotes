@@ -1,6 +1,7 @@
 #ifndef NOTES_H
 #define NOTES_H
 
+#include <QXmlStreamWriter>
 #include <QDateTime>
 
 using namespace std;
@@ -9,13 +10,29 @@ enum TypeMultimedia{video, audio, image};
 enum TypeStatut{attente, cours, termine};
 
 
+/// ------ Note Exception ------ ///
+
+
+class NotesException{
+public:
+    NotesException(const QString& message):info(message){}
+    QString getInfo() const { return info; }
+private:
+    QString info;
+};
+
+
+
 
 /// ----- Notes ----- ///
 
 
 class Note{
 public:
-
+    QString getId() const {return identificateur;}
+    QString getTitre() const {return titre;}
+    QDateTime getDateCrea() const {return date_creation;}
+    QDateTime getDateModif() const {return date_modif;}
 private:
     QString identificateur;
     QString titre;
@@ -26,13 +43,22 @@ private:
 
     // fonctions appellées par NM
 
-    void save(); // enregistre avec tous les paramètres
+    virtual void save(QXmlStreamWriter* stream); // enregistre avec tous les paramètres
+    //Pour l'instant en virtuel, pour pouvoir enregistrer les paramètres des fils selon le type de note
+    // passage par parametre de QXmlStreamWriter pour test si on peut ecrire sur un fichier avec plusieurs fonctions
+
     void createMemento(); // enregistre un memento
     void restoreMemento(); // restaure un memento
 };
 
 class Article : public Note {
+public:
+    QString getTexte() const {return texte;}
+private:
     QString texte;
+
+    void save(QXmlStreamWriter* stream);
+
 };
 
 class Tache : public Note {
@@ -40,12 +66,20 @@ class Tache : public Note {
     unsigned int priorite; // optionnel
     QDateTime date_echeance; //optionnel
     TypeStatut statut;
+
+    void save(QXmlStreamWriter* stream);
 };
 
-class Mutimedia : public Note {
-    QString desctiption;
+class Multimedia : public Note {
+public:
+    QString getDescription() const {return description;}
+
+private:
+    QString description;
     QString fichier; // adresse du fichier
     TypeMultimedia type; //type du fichier
+
+    void save(QXmlStreamWriter* stream);
 };
 
 
@@ -98,17 +132,19 @@ public:
     };
 
     Iterator getIterator() {
-        return Iterator(tab, nb_max);
+        return Iterator(tabNotes, nbMaxNotes);
     }
 
     void createNote(const string& id, const string& titre); // crée une note vide avec id / titre / date
     void saveNote(const string& id); // enregistre une note avec tout ce qu'il faut / ça fait un memento
 
+    void SaveEverything(); // Ecris Tout dans un fichier xml
+    //void LoadFile();
 
 private:
-    Note** tab;
-    unsigned int nb;
-    unsigned int nb_max;
+    Note** tabNotes;
+    unsigned int nbNotes;
+    unsigned int nbMaxNotes;
 
     static NotesManager* instance;
     NotesManager();

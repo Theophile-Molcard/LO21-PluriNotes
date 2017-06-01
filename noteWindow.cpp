@@ -42,7 +42,9 @@ NoteWindow::NoteWindow(QWidget *parent) : QWidget(parent)
 void NoteWindow::editeur_article(){
 
     ArticleWindow* a_w = new ArticleWindow(id->text(), title->text(), this);
-    MainWindow *fenetre_principale;
+    MainWindow *fenetre_principale = new MainWindow();
+    fenetre_principale->setWindowTitle("Editeur d'articles");
+    fenetre_principale->show();
     fenetre_principale->setCentralWidget(a_w);
 
 }
@@ -50,6 +52,8 @@ void NoteWindow::editeur_article(){
 
 ArticleWindow::ArticleWindow(QString _id, QString _title, QWidget *parent) : QWidget(parent)
 {
+
+    setFixedSize(400, 400);
 
 
     fenetre_vbox = new QVBoxLayout;

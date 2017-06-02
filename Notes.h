@@ -170,9 +170,9 @@ private:
 
     static NotesManager* instance;
     NotesManager();
-    NotesManager(const NotesManager&);
-    virtual ~NotesManager();
-    void operator =(const NotesManager&);
+   // NotesManager(const NotesManager&);
+    ~NotesManager();
+   // void operator =(const NotesManager&);
 
 };
 

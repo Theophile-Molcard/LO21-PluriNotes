@@ -33,6 +33,11 @@ public:
     QString getTitre() const {return titre;}
     QDateTime getDateCrea() const {return date_creation;}
     QDateTime getDateModif() const {return date_modif;}
+    virtual ~Note(){}
+    Note(QString id, QString _titre) : identificateur(id), titre(_titre){
+        date_creation = QDateTime::currentDateTime();
+        date_modif = QDateTime::currentDateTime();
+    }
 private:
     QString identificateur;
     QString titre;
@@ -54,6 +59,8 @@ private:
 class Article : public Note {
 public:
     QString getTexte() const {return texte;}
+    Article(QString id, QString _titre, QString _texte): Note(id,_titre), texte(_texte){}
+    ~Article(){}
 private:
     QString texte;
 
@@ -62,6 +69,16 @@ private:
 };
 
 class Tache : public Note {
+public:
+    Tache(QString id, QString _titre, QString _action, QDateTime date, unsigned int _priorite, TypeStatut _statut) : Note(id,_titre), action(_action), date_echeance(date), priorite(_priorite), statut(_statut){}
+    //A modifier: le constructeur dans le cas des attributs optionnels
+    ~Tache(){}
+
+    QString getAction(){return action;}
+    unsigned int getPriorite(){return priorite;}
+    QDateTime getDateEcheance(){return date_echeance;}
+    TypeStatut getStatut(){return statut;}
+private:
     QString action;
     unsigned int priorite; // optionnel
     QDateTime date_echeance; //optionnel
@@ -73,7 +90,12 @@ class Tache : public Note {
 class Multimedia : public Note {
 public:
     QString getDescription() const {return description;}
+    Multimedia(QString id, QString _titre, QString desc, QString _fichier, TypeMultimedia _type): Note(id,_titre), description(desc), fichier(_fichier), type(_type){}
+    ~Multimedia(){}
 
+    QString getDescription(){return description;}
+    QString getFicher(){return fichier;}
+    TypeMultimedia getType(){return type;}
 private:
     QString description;
     QString fichier; // adresse du fichier

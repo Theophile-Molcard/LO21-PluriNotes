@@ -165,8 +165,7 @@ MultimediaWindow::MultimediaWindow(QString _id, QString _title, QWidget *parent)
 }
 
 void MultimediaWindow::trouveFichier(){
-    QFileDialog* qfd = new QFileDialog;
-    path = qfd->getOpenFileName();
+    path = QFileDialog::getOpenFileName();
     printed_path->setText("C:/  ...  "+path.right(20));
 }
 

@@ -2,13 +2,13 @@
 #include <QFile>
 #include "Notes.h"
 
-//NotesManager::NotesManager(): tabNotes(nullptr), nbNotes(0), nbMaxNotes(0){}
+NotesManager::NotesManager(): tabNotes(nullptr), nbNotes(0), nbMaxNotes(0){}
 
-/*NotesManager::~NotesManager(){
+NotesManager::~NotesManager(){
     //à rajouter la sauvegarde des notes (automatique ?)
     for(unsigned int i=0; i<nbNotes; i++) delete tabNotes[i];
         delete[] tabNotes;
-}*/
+}
 
 void NotesManager::SaveEverything(){
     QFile fichier("test_notes.xml");

@@ -2,6 +2,8 @@
 #include <QFile>
 #include "Notes.h"
 
+NotesManager* NotesManager::instance = nullptr;
+
 NotesManager::NotesManager(): tabNotes(nullptr), nbNotes(0), nbMaxNotes(0){}
 
 NotesManager::~NotesManager(){
@@ -25,6 +27,12 @@ void NotesManager::addNote(Note* n){
     tabNotes[nbNotes++]= n;
 }
 
+Note& NotesManager::getNote(const QString& id){
+    for(unsigned int i=0; i<nbNotes; i++){
+        if (tabNotes[i]->getId()==id) return *tabNotes[i];
+    }
+    throw NotesException(QString("Erreur, la note n'existe pas."));
+}
 
 void NotesManager::SaveEverything(){
     QFile fichier("test_notes.xml");

@@ -33,6 +33,7 @@ public:
     QString getTitre() const {return titre;}
     QDateTime getDateCrea() const {return date_creation;}
     QDateTime getDateModif() const {return date_modif;}
+    void setTitre(QString _titre){titre = _titre;}
     virtual ~Note(){}
     Note(QString id, QString _titre) : identificateur(id), titre(_titre){
         date_creation = QDateTime::currentDateTime();
@@ -59,6 +60,7 @@ private:
 class Article : public Note {
 public:
     QString getTexte() const {return texte;}
+    void setTexte(QString _texte){texte = _texte;}
     Article(QString id, QString _titre, QString _texte): Note(id,_titre), texte(_texte){}
     ~Article(){}
 private:
@@ -84,6 +86,10 @@ public:
     unsigned int getPriorite(){return priorite;}
     QDateTime getDateEcheance(){return date_echeance;}
     TypeStatut getStatut(){return statut;}
+    void setAction(QString _action){action = _action;}
+    void setPriority(unsigned int _priorite){priorite = _priorite;}
+    void setDateEcheance(QDateTime dateEcheance){date_echeance = dateEcheance;}
+    void setStatut(TypeStatut _statut){statut = _statut;}
 private:
     QString action;
     unsigned int priorite; // optionnel
@@ -102,6 +108,8 @@ public:
     QString getDescription(){return description;}
     QString getFicher(){return fichier;}
     TypeMultimedia getType(){return type;}
+    void setDescription(QString desc){description = desc;}
+    void setFichier(QString file){fichier = file;}
 private:
     QString description;
     QString fichier; // adresse du fichier
@@ -165,6 +173,7 @@ public:
         return Iterator(tabNotes, nbMaxNotes);
     }
 
+    Note& getNote(const QString& id);
     void createNote(const string& id, const string& titre); // crée une note vide avec id / titre / date
     void saveNote(const string& id); // enregistre une note avec tout ce qu'il faut / ça fait un memento
 
@@ -178,9 +187,13 @@ private:
 
     static NotesManager* instance;
     NotesManager();
-   // NotesManager(const NotesManager&);
     ~NotesManager();
-   // void operator =(const NotesManager&);
+
+    //on interdit le constructeur de recopie et l'affectation.
+    NotesManager(const NotesManager&){}
+    void operator =(const NotesManager&){}
+
+
 
 };
 

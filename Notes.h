@@ -3,6 +3,7 @@
 
 #include <QXmlStreamWriter>
 #include <QDateTime>
+#include "Memento.h"
 
 using namespace std;
 
@@ -39,11 +40,14 @@ public:
         date_creation = QDateTime::currentDateTime();
         date_modif = QDateTime::currentDateTime();
     }
+
 private:
     QString identificateur;
     QString titre;
     QDateTime date_creation;
     QDateTime date_modif;
+
+    Gardien* gardien_note;
 
     friend class NotesManager;
 
@@ -53,8 +57,8 @@ private:
     //Pour l'instant en virtuel, pour pouvoir enregistrer les paramètres des fils selon le type de note
     // passage par parametre de QXmlStreamWriter pour test si on peut ecrire sur un fichier avec plusieurs fonctions
 
-    void createMemento(); // enregistre un memento
-    void restoreMemento(); // restaure un memento
+    virtual Memento* createMemento() const{} // enregistre un memento
+    //virtual void restoreMemento( Memento* mem ){} // restaure un memento
 };
 
 class Article : public Note {
@@ -63,8 +67,11 @@ public:
     void setTexte(QString _texte){texte = _texte;}
     Article(QString id, QString _titre, QString _texte): Note(id,_titre), texte(_texte){}
     ~Article(){}
+
 private:
     QString texte;
+
+    Memento* createMemento() const; // enregistre un memento
 
     void save(QXmlStreamWriter* stream);
 
@@ -96,7 +103,10 @@ private:
     QDateTime date_echeance; //optionnel
     TypeStatut statut;
 
-    void save(QXmlStreamWriter* stream);
+    Memento* createMemento() const; // enregistre un memento
+
+    //void save(QXmlStreamWriter* stream);
+    /// Je l'ai commenté car il n'était pas encore défini...
 };
 
 class Multimedia : public Note {
@@ -114,6 +124,8 @@ private:
     QString description;
     QString fichier; // adresse du fichier
     TypeMultimedia type; //type du fichier
+
+    Memento* createMemento() const; // enregistre un memento
 
     void save(QXmlStreamWriter* stream);
 };

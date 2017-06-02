@@ -66,3 +66,20 @@ void Multimedia::save(QXmlStreamWriter *stream){
     (*stream).writeTextElement("description", this->getDescription());
     (*stream).writeEndElement();
 }
+
+
+
+/// Memento
+
+Memento* Article::createMemento() const{
+    return new MementoArticle( Note::getTitre(), texte );
+}
+
+Memento* Multimedia::createMemento() const{
+    return new MementoMultimedia( Note::getTitre(), description, fichier, 124578); // remplacer 124578 par indice du type
+}
+
+Memento* Tache::createMemento() const{
+    return new MementoTache( Note::getTitre(), action, date_echeance, priorite, 124578); // remplacer 124578 par indice du type
+}
+

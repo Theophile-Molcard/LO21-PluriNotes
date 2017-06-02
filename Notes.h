@@ -48,7 +48,7 @@ private:
 
     // fonctions appellées par NM
 
-    virtual void save(QXmlStreamWriter* stream); // enregistre avec tous les paramètres
+    virtual void save(QXmlStreamWriter* stream) = 0;// enregistre avec tous les paramètres
     //Pour l'instant en virtuel, pour pouvoir enregistrer les paramètres des fils selon le type de note
     // passage par parametre de QXmlStreamWriter pour test si on peut ecrire sur un fichier avec plusieurs fonctions
 
@@ -112,6 +112,8 @@ private:
 
 class NotesManager{
 public:
+    void addNote(Note* n);
+
     static NotesManager& donneInstance(){
         if (!instance)
             instance = new NotesManager();

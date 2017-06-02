@@ -10,6 +10,22 @@ NotesManager::~NotesManager(){
         delete[] tabNotes;
 }
 
+void NotesManager::addNote(Note* n){
+    for(unsigned int i=0; i<nbNotes; i++){
+        if (tabNotes[i]->getId()==n->getId()) throw NotesException("erreur, creation d'une note avec un id deja existant");
+    }
+    if (nbNotes==nbMaxNotes){
+        Note** newNotes = new Note*[nbMaxNotes+5];
+        for(unsigned int i=0; i<nbNotes; i++) newNotes[i]=tabNotes[i];
+        Note** oldNotes=tabNotes;
+        tabNotes=newNotes;
+        nbMaxNotes+=5;
+        if (oldNotes) delete[] oldNotes;
+    }
+    tabNotes[nbNotes++]= n;
+}
+
+
 void NotesManager::SaveEverything(){
     QFile fichier("test_notes.xml");
     if (!fichier.open(QIODevice::WriteOnly | QIODevice::Text))

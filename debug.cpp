@@ -13,7 +13,7 @@
 void DebugTest::Debug()
 {
     NotesManager& notes = NotesManager::donneInstance();
-
+    //notes.LoadFileXML();
     Article copain("super","c'est la base", "La destruction de la planète est en marche");
     qDebug() << copain.getTexte();
     qDebug() << copain.getDateCrea();

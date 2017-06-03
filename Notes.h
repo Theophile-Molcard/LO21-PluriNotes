@@ -31,6 +31,9 @@ public:
         date_modif = QDateTime::currentDateTime();
         gardien_note = new Gardien;
     }
+    Note(QString id, QString _titre, QDateTime _dateCrea, QDateTime _dateModif) : identificateur(id), titre(_titre), date_creation(_dateCrea), date_modif(_dateModif){
+        gardien_note = new Gardien;
+    }
 
     QString dateTimeToString(QDateTime date);
 
@@ -53,6 +56,8 @@ private:
     virtual Memento* createMemento() const = 0 ; // enregistre un memento
     virtual void restateMemento( Memento* mem ) = 0 ; // restaure un memento
 
+
+
 };
 
 class Article : public Note {
@@ -60,6 +65,8 @@ public:
     QString getTexte() const {return texte;}
     void setTexte(QString _texte){texte = _texte;}
     Article(QString id, QString _titre, QString _texte): Note(id,_titre), texte(_texte){}
+    Article(QString id, QString _titre, QString _texte, QDateTime _dateCrea, QDateTime _dateModif): Note(id,_titre,_dateCrea,_dateModif), texte(_texte){}
+
     ~Article(){}
 
 private:
@@ -70,6 +77,7 @@ private:
 
     void saveXML(QXmlStreamWriter* stream);
 
+
 };
 
 class Tache : public Note {
@@ -79,6 +87,7 @@ public:
     Tache(QString id, QString _titre, QString _action, unsigned int _priorite = 0, TypeStatut _statut = cours) : Note(id,_titre), action(_action), date_echeance(), priorite(_priorite), statut(_statut){}//cas sans date
     //on peut vérifier si une date est nulle avec isValid() ou isNull(), la priorité par défaut = 0 ?
     //voir si les valeurs par défaut sont plutot gérer par l'interface
+    Tache(QString id, QString _titre, QString _action, QDateTime date, QDateTime _dateCrea, QDateTime _dateModif, unsigned int _priorite = 0, TypeStatut _statut = cours): Note(id,_titre,_dateCrea,_dateModif), action(_action), date_echeance(date), priorite(_priorite), statut(_statut){}
 
     ~Tache(){}
 
@@ -102,12 +111,14 @@ private:
 
     void saveXML(QXmlStreamWriter* stream);
 
-};
+    };
 
 class Multimedia : public Note {
 public:
     QString getDescription() const {return description;}
     Multimedia(QString id, QString _titre, QString desc, QString _fichier, TypeMultimedia _type): Note(id,_titre), description(desc), fichier(_fichier), type(_type){}
+    Multimedia(QString id, QString _titre, QString desc, QString _fichier, TypeMultimedia _type, QDateTime _dateCrea, QDateTime _dateModif): Note(id,_titre,_dateCrea,_dateModif), description(desc), fichier(_fichier), type(_type){}
+
     ~Multimedia(){}
 
     QString getDescription(){return description;}
@@ -126,7 +137,8 @@ private:
     void restateMemento(Memento* mem);
 
     void saveXML(QXmlStreamWriter* stream);
-};
+
+    };
 
 
 
@@ -188,7 +200,7 @@ public:
     void saveNote(const string& id); // enregistre une note avec tout ce qu'il faut / ça fait un memento
 
     void SaveEverythingXML(); // Ecris Tout dans un fichier xml
-    //void LoadFileXML();
+    void LoadFileXML();
 
     void saveVersion(Note* _note) const;
     void restateVersion(Note* _note, unsigned int version);

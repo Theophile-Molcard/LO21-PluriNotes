@@ -24,14 +24,15 @@ private:
 
 class Memento{
 public:
-    QString getTitle() const { return title; }
+    QString getTitre() const { return titre; }
 
     const QDateTime& getDateModif() const { return date_modif; }
-    Memento(QString _title) // il faut voir pour la version
-        : title(_title)
+    Memento(QString _titre) // il faut voir pour la version
+        : titre(_titre)
     {
         date_modif=QDateTime::currentDateTime();
     }
+    Memento(QString _titre, QDateTime _dateModif): titre(_titre), date_modif(_dateModif){}
 
     virtual ~Memento() {}
     virtual void saveXML(QXmlStreamWriter* stream) = 0;
@@ -41,18 +42,19 @@ public:
     }
 
 private:
-    QString title;
+    QString titre;
     QDateTime date_modif;
 
 };
 
 class MementoArticle : public Memento{
 public:
-    MementoArticle(QString _title, QString _texte)
-        : Memento(_title)
+    MementoArticle(QString _titre, QString _texte)
+        : Memento(_titre)
     {
         texte = _texte;
     }
+    MementoArticle(QString _titre, QString _texte, QDateTime _dateModif): Memento(_titre,_dateModif), texte(_texte){}
 
     QString getTexte() const {return texte;}
     virtual void saveXML(QXmlStreamWriter* stream);
@@ -65,16 +67,17 @@ private:
 
 class MementoTache : public Memento{
 public:
-    MementoTache(QString _title, QString _action, QDateTime _date_echeance, unsigned int _priorite = 0,TypeStatut _statut = cours )
-        : Memento(_title), action(_action), priorite(_priorite), date_echeance(_date_echeance), statut(_statut){}
+    MementoTache(QString _titre, QString _action, QDateTime _date_echeance, unsigned int _priorite = 0,TypeStatut _statut = cours )
+        : Memento(_titre), action(_action), priorite(_priorite), date_echeance(_date_echeance), statut(_statut){}
 
-    MementoTache(QString _title, QString _action, unsigned int _priorite = 0, TypeStatut _statut = cours )
-        : Memento(_title), action(_action), priorite(_priorite), statut(_statut)
+    MementoTache(QString _titre, QString _action, unsigned int _priorite = 0, TypeStatut _statut = cours )
+        : Memento(_titre), action(_action), priorite(_priorite), statut(_statut)
     {
         QDateTime a;
         a.addDays(0);
         date_echeance = a; // à revoir...
     }
+    MementoTache(QString _titre, QString _action, QDateTime _dateModif, QDateTime _date_echeance, TypeStatut _statut = cours, unsigned int _priorite = 0 ): Memento(_titre,_dateModif), action(_action), priorite(_priorite), statut(_statut), date_echeance(_date_echeance){}
 
     QString getAction() const {return action;}
     unsigned int getPriorite() const {return priorite;}
@@ -95,9 +98,10 @@ private:
 
 class MementoMultimedia : public Memento{
 public:
-    MementoMultimedia(QString _title, QString _description, QString _fichier, TypeMultimedia _type)
-        : Memento(_title), description(_description), fichier(_fichier), type(_type){}
-
+    MementoMultimedia(QString _titre, QString _description, QString _fichier, TypeMultimedia _type)
+        : Memento(_titre), description(_description), fichier(_fichier), type(_type){}
+    MementoMultimedia(QString _titre, QString _description, QString _fichier, TypeMultimedia _type, QDateTime _dateModif)
+        : Memento(_titre, _dateModif), description(_description), fichier(_fichier), type(_type){}
     QString getDescription() const {return description;}
     QString getFichier() const {return fichier;}
     TypeMultimedia getType() const {return type;}

@@ -3,8 +3,8 @@
 
 void MementoArticle::saveXML(QXmlStreamWriter *stream){
     (*stream).writeStartElement("Memento");
-    (*stream).writeTextElement("DateModif",this->dateToString(this->getDateModif()));
-    (*stream).writeTextElement("titre",this->getTitle());
+    (*stream).writeTextElement("dateModif",this->dateToString(this->getDateModif()));
+    (*stream).writeTextElement("titre",this->getTitre());
     (*stream).writeTextElement("texte",this->getTexte());
     (*stream).writeEndElement();
 
@@ -12,8 +12,8 @@ void MementoArticle::saveXML(QXmlStreamWriter *stream){
 
 void MementoMultimedia::saveXML(QXmlStreamWriter *stream){
     (*stream).writeStartElement("Memento");
-    (*stream).writeTextElement("DateModif",this->dateToString(this->getDateModif()));
-    (*stream).writeTextElement("titre",this->getTitle());
+    (*stream).writeTextElement("dateModif",this->dateToString(this->getDateModif()));
+    (*stream).writeTextElement("titre",this->getTitre());
     (*stream).writeTextElement("description",this->getDescription());
     (*stream).writeTextElement("fichier",this->getFichier());
     (*stream).writeTextElement("type",this->typeToString());
@@ -23,8 +23,8 @@ void MementoMultimedia::saveXML(QXmlStreamWriter *stream){
 
 void MementoTache::saveXML(QXmlStreamWriter *stream){
     (*stream).writeStartElement("Memento");
-    (*stream).writeTextElement("DateModif",this->dateToString(this->getDateModif()));
-    (*stream).writeTextElement("titre",this->getTitle());
+    (*stream).writeTextElement("dateModif",this->dateToString(this->getDateModif()));
+    (*stream).writeTextElement("titre",this->getTitre());
     (*stream).writeTextElement("action",this->getAction());
     (*stream).writeTextElement("dateEcheance",this->dateToString(this->getEcheance()));
     (*stream).writeTextElement("priorite",QString::number(this->getPriorite()));

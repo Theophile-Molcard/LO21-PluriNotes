@@ -84,12 +84,10 @@ private:
 
 class Tache : public Note {
 public:
-    Tache(QString id, QString _titre, QString _action, QDateTime date, unsigned int _priorite, TypeStatut _statut) : Note(id,_titre), action(_action), date_echeance(date), priorite(_priorite), statut(_statut){} //cas avec tous les attributs
+    Tache(QString id, QString _titre, QString _action, QDateTime date, unsigned int _priorite = 0, TypeStatut _statut = 1) : Note(id,_titre), action(_action), date_echeance(date), priorite(_priorite), statut(_statut){} //cas avec tous les attributs
 
-    Tache(QString id, QString _titre, QString _action, unsigned int _priorite, TypeStatut _statut) : Note(id,_titre), action(_action), date_echeance(), priorite(_priorite), statut(_statut){}//cas sans date
-    Tache(QString id, QString _titre, QString _action, QDateTime date, TypeStatut _statut) : Note(id,_titre), action(_action), date_echeance(date), priorite(0), statut(_statut){} // cas sans priorité
-    Tache(QString id, QString _titre, QString _action, TypeStatut _statut) : Note(id,_titre), action(_action), date_echeance(), priorite(0), statut(_statut){} // cas sans les deux attributs optionnels
-    //on peut vérifier si une date est nulle avec isValid() ou isNull(), la priorité par défaut = 0 ? , valeur par défaut impossible s'il y a un parametre sans valeur par défaut après ?
+    Tache(QString id, QString _titre, QString _action, unsigned int _priorite = 0, TypeStatut _statut = 1) : Note(id,_titre), action(_action), date_echeance(), priorite(_priorite), statut(_statut){}//cas sans date
+    //on peut vérifier si une date est nulle avec isValid() ou isNull(), la priorité par défaut = 0 ?
     //voir si les valeurs par défaut sont plutot gérer par l'interface
 
     ~Tache(){}

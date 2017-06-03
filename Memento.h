@@ -3,9 +3,10 @@
 
 #include<QStack>
 #include<QDateTime>
+#include <QXmlStreamWriter>
 
 using namespace std;
-
+enum TypeMultimedia;
 
 class MementoException{ // je ne pouvais pas inclure notes ici car memento inclu dans notes
 public:
@@ -28,6 +29,7 @@ public:
     }
 
     virtual ~Memento() {}
+    virtual void saveXML(QXmlStreamWriter* stream) = 0;
 
 private:
     QString title;
@@ -44,6 +46,7 @@ public:
     }
 
     QString getTexte() const {return texte;}
+    virtual void saveXML(QXmlStreamWriter* stream);
 
 private:
     QString texte;
@@ -69,6 +72,7 @@ public:
     QDateTime getEcheance() const {return date_echeance;}
     unsigned int getStatut() const {return statut;}
 
+    virtual void saveXML(QXmlStreamWriter* stream);
 private:
     QString action;
     unsigned int priorite; // optionnel
@@ -88,6 +92,7 @@ public:
     QString getFichier() const {return fichier;}
     unsigned int getType() const {return type;}
 
+    virtual void saveXML(QXmlStreamWriter* stream);
 private:
     QString description;
     QString fichier; // adresse du fichier
@@ -101,6 +106,10 @@ private:
 
 class Gardien{
 public:
+
+    Gardien(){
+    }
+
     Gardien(Memento* mem){
         pileMemento.push(mem);
     }
@@ -121,6 +130,18 @@ public:
 
         return pileMemento.top();
 
+    }
+
+    Memento* popMemento(){
+        return pileMemento.pop();
+    }
+
+    unsigned int sizeMemento(){
+        return pileMemento.size();
+    }
+
+    bool empty(){
+        return pileMemento.empty();
     }
 
 private:

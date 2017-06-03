@@ -35,6 +35,7 @@ public:
     QString getTitre() const {return titre;}
     QDateTime getDateCrea() const {return date_creation;}
     QDateTime getDateModif() const {return date_modif;}
+    Gardien* getGardien() const {return gardien_note;}
 
     void setTitre(QString _titre){titre = _titre;}
 
@@ -42,7 +43,10 @@ public:
     Note(QString id, QString _titre) : identificateur(id), titre(_titre){
         date_creation = QDateTime::currentDateTime();
         date_modif = QDateTime::currentDateTime();
+        gardien_note = new Gardien;
     }
+
+    QString dateTimeToString(QDateTime date);
 
 private:
     QString identificateur;
@@ -84,9 +88,9 @@ private:
 
 class Tache : public Note {
 public:
-    Tache(QString id, QString _titre, QString _action, QDateTime date, unsigned int _priorite = 0, TypeStatut _statut = 1) : Note(id,_titre), action(_action), date_echeance(date), priorite(_priorite), statut(_statut){} //cas avec tous les attributs
+    Tache(QString id, QString _titre, QString _action, QDateTime date, unsigned int _priorite = 0, TypeStatut _statut = cours) : Note(id,_titre), action(_action), date_echeance(date), priorite(_priorite), statut(_statut){} //cas avec tous les attributs
 
-    Tache(QString id, QString _titre, QString _action, unsigned int _priorite = 0, TypeStatut _statut = 1) : Note(id,_titre), action(_action), date_echeance(), priorite(_priorite), statut(_statut){}//cas sans date
+    Tache(QString id, QString _titre, QString _action, unsigned int _priorite = 0, TypeStatut _statut = cours) : Note(id,_titre), action(_action), date_echeance(), priorite(_priorite), statut(_statut){}//cas sans date
     //on peut vérifier si une date est nulle avec isValid() ou isNull(), la priorité par défaut = 0 ?
     //voir si les valeurs par défaut sont plutot gérer par l'interface
 
@@ -198,7 +202,7 @@ public:
     void saveNote(const string& id); // enregistre une note avec tout ce qu'il faut / ça fait un memento
 
     void SaveEverythingXML(); // Ecris Tout dans un fichier xml
-    //void LoadFile();
+    //void LoadFileXML();
 
     void saveVersion(Note* _note) const;
     void restateVersion(Note* _note, unsigned int version);

@@ -19,12 +19,26 @@ void DebugTest::Debug()
     qDebug() << copain.getDateCrea();
     qDebug() << "Oui ca marche !!";
 
+
+
     QDate date(2017,6,3);
     QTime heure(10,00);
     Tache copainT("encore", "Ta poule", "manger", QDateTime(date,heure), 2, attente);
 
+    Multimedia copainM("Ainsi", "va la vie", "Chaque jour passe" , "C:/dossierX", video);
     notes.addNote(&copain);
     notes.addNote(&copainT);
+    notes.addNote(&copainM);
+
+    notes.saveVersion(&copain);
+
+    copain.setTitre("NOOOOOOO!");
+
+    notes.saveVersion(&copain);
+
+    copain.setTitre("OUIIIII!");
+
+
     NotesManager::Iterator it = notes.getIterator();
     qDebug() << (*it)->getId();
 

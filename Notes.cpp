@@ -2,6 +2,7 @@
 #include <QFile>
 #include "Notes.h"
 
+
 NotesManager* NotesManager::instance = nullptr;
 
 NotesManager::NotesManager(): tabNotes(nullptr), nbNotes(0), nbMaxNotes(0){}
@@ -34,6 +35,10 @@ Note& NotesManager::getNote(const QString& id){
     throw NotesException(QString("Erreur, la note n'existe pas."));
 }
 
+/*void NotesManager::LoadFileXML(){
+
+}*/
+
 void NotesManager::SaveEverythingXML(){
     QFile fichier("test_notes.xml");
     if (!fichier.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -51,22 +56,79 @@ void NotesManager::SaveEverythingXML(){
 }
 
 
+
 void Article::saveXML(QXmlStreamWriter* stream){
     (*stream).writeStartElement("article");
+    (*stream).writeStartElement("Current");
     (*stream).writeTextElement("id",this->getId()); //On utilisera un design pattern pour pas répeter l'ecriture de l'indentifiant dans les autres saves.
     (*stream).writeTextElement("titre",this->getTitre());
+    (*stream).writeTextElement("dateCrea",this->dateTimeToString(this->getDateCrea()));
+    (*stream).writeTextElement("dateModif",this->dateTimeToString(this->getDateModif()));
     (*stream).writeTextElement("texte",this->getTexte());
+    (*stream).writeEndElement();
+    Gardien* MementoS = this->getGardien();
+    if(!MementoS->empty())
+    {
+        for(unsigned int i = 0; i<=MementoS->sizeMemento(); i++)
+        {
+            Memento* memento = MementoS->popMemento();
+            memento->saveXML(stream);
+        }
+    }
     (*stream).writeEndElement();
 }
 
 void Tache::saveXML(QXmlStreamWriter *stream){
     (*stream).writeStartElement("tache");
+    (*stream).writeStartElement("Current");
     (*stream).writeTextElement("id",this->getId()); //On utilisera un design pattern pour pas répeter l'ecriture de l'indentifiant dans les autres saves.
     (*stream).writeTextElement("titre",this->getTitre());
+    (*stream).writeTextElement("dateCrea",this->dateTimeToString(this->getDateCrea()));
+    (*stream).writeTextElement("dateModif",this->dateTimeToString(this->getDateModif()));
     (*stream).writeTextElement("action",this->getAction());
+    (*stream).writeTextElement("dateEcheance",this->dateTimeToString(this->getDateEcheance()));
     (*stream).writeTextElement("statut",this->statutToString());
     (*stream).writeTextElement("priorite",QString::number(this->getPriorite()));
     (*stream).writeEndElement();
+    Gardien* MementoS = this->getGardien();
+    if(!MementoS->empty())
+    {
+        for(unsigned int i = 0; i<=MementoS->sizeMemento(); i++)
+        {
+            Memento* memento = MementoS->popMemento();
+            memento->saveXML(stream);
+        }
+    }
+    (*stream).writeEndElement();
+}
+
+
+void Multimedia::saveXML(QXmlStreamWriter *stream){
+    (*stream).writeStartElement("multimedia");
+    (*stream).writeStartElement("Current");
+    (*stream).writeTextElement("id",this->getId());
+    (*stream).writeTextElement("titre",this->getTitre());
+    (*stream).writeTextElement("dateCrea",this->dateTimeToString(this->getDateCrea()));
+    (*stream).writeTextElement("dateModif",this->dateTimeToString(this->getDateModif()));
+    (*stream).writeTextElement("description", this->getDescription());
+    (*stream).writeTextElement("fichier", this->getFicher());
+    (*stream).writeTextElement("type", this->typeToString());
+    (*stream).writeEndElement();
+    Gardien* MementoS = this->getGardien();
+    if(!MementoS->empty())
+    {
+        for(unsigned int i = 0; i<=MementoS->sizeMemento(); i++)
+        {
+            Memento* memento = MementoS->popMemento();
+            memento->saveXML(stream);
+        }
+    }
+    (*stream).writeEndElement();
+}
+
+
+QString Note::dateTimeToString(QDateTime date){
+    return date.toString("dd-MM-yyyy hh:mm:ss");
 }
 
 QString Tache::statutToString(){
@@ -102,16 +164,6 @@ QString Multimedia::typeToString(){
    }
 
 }
-
-void Multimedia::saveXML(QXmlStreamWriter *stream){
-    (*stream).writeStartElement("multimedia");
-    (*stream).writeTextElement("id",this->getId());
-    (*stream).writeTextElement("titre",this->getTitre());
-    (*stream).writeTextElement("description", this->getDescription());
-    (*stream).writeEndElement();
-}
-
-
 
 /// Memento
 

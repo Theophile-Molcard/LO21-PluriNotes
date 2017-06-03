@@ -19,12 +19,15 @@ private:
 class Memento{
 public:
     QString getTitle() const { return title; }
+
     const QDateTime& getDateModif() const { return date_modif; }
     Memento(QString _title) // il faut voir pour la version
         : title(_title)
     {
         date_modif=QDateTime::currentDateTime();
     }
+
+    virtual ~Memento() {}
 
 private:
     QString title;
@@ -39,6 +42,8 @@ public:
     {
         texte = _texte;
     }
+
+    QString getTexte() const {return texte;}
 
 private:
     QString texte;
@@ -59,6 +64,11 @@ public:
         date_echeance = a; // à revoir...
     }
 
+    QString getAction() const {return action;}
+    unsigned int getPriorite() const {return priorite;}
+    QDateTime getEcheance() const {return date_echeance;}
+    unsigned int getStatut() const {return statut;}
+
 private:
     QString action;
     unsigned int priorite; // optionnel
@@ -73,6 +83,10 @@ class MementoMultimedia : public Memento{
 public:
     MementoMultimedia(QString _title, QString _description, QString _fichier, unsigned int _type)
         : Memento(_title), description(_description), fichier(_fichier), type(_type){}
+
+    QString getDescription() const {return description;}
+    QString getFichier() const {return fichier;}
+    unsigned int getType() const {return type;}
 
 private:
     QString description;

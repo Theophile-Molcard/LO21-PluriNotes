@@ -71,6 +71,7 @@ void Multimedia::save(QXmlStreamWriter *stream){
 
 /// Memento
 
+// create
 Memento* Article::createMemento() const{
     return new MementoArticle( Note::getTitre(), texte );
 }
@@ -81,5 +82,43 @@ Memento* Multimedia::createMemento() const{
 
 Memento* Tache::createMemento() const{
     return new MementoTache( Note::getTitre(), action, date_echeance, priorite, 124578); // remplacer 124578 par indice du type
+}
+
+// restate
+void Article::restateMemento(Memento *mem){
+    MementoArticle* mem_art = dynamic_cast<MementoArticle*>(mem);
+    setTitre(mem_art->getTitle());
+    texte = mem_art->getTexte();
+}
+
+void Multimedia::restateMemento(Memento *mem){
+    MementoMultimedia* mem_mult = dynamic_cast<MementoMultimedia*>(mem);
+    setTitre( mem_mult->getTitle() );
+    description = mem_mult->getDescription();
+    //type = mem_mult->getType(); getType renvoie un indice
+    fichier = mem_mult->getFichier();
+
+}
+
+void Tache::restateMemento(Memento *mem){
+    MementoTache* mem_tache = dynamic_cast<MementoTache*>(mem);
+    setTitre( mem_tache->getTitle() );
+    action = mem_tache->getAction();
+    date_echeance = mem_tache->getEcheance();
+    priorite = mem_tache->getPriorite();
+    //statut = mem_tache->getStatut();
+}
+
+
+// NM - save un memento
+
+void NotesManager::saveVersion(Note* _note) const{
+    _note->gardien_note->addMemento(_note->createMemento());
+}
+
+void NotesManager::restateVersion(Note* _note, unsigned int version){
+    Memento* version_note;
+    version_note = _note->gardien_note->getMemento(version);
+    _note->restateMemento(version_note);
 }
 

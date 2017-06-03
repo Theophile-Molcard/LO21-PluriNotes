@@ -32,4 +32,13 @@ void DebugTest::Debug()
     notes.SaveEverythingXML();
 }
 
+void DebugTest::Debug_theophile(){
+
+    A a(1);
+    B b(10,20);
+    A* pointeur_a = &b;
+
+    B* pointeur_b = dynamic_cast<B*>(pointeur_a);
+
+}
 

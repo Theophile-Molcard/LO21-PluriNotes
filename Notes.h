@@ -35,7 +35,9 @@ public:
     QString getTitre() const {return titre;}
     QDateTime getDateCrea() const {return date_creation;}
     QDateTime getDateModif() const {return date_modif;}
+
     void setTitre(QString _titre){titre = _titre;}
+
     virtual ~Note(){}
     Note(QString id, QString _titre) : identificateur(id), titre(_titre){
         date_creation = QDateTime::currentDateTime();
@@ -59,7 +61,9 @@ private:
     // passage par parametre de QXmlStreamWriter pour test si on peut ecrire sur un fichier avec plusieurs fonctions
 
     virtual Memento* createMemento() const = 0; // enregistre un memento
-    //virtual void restoreMemento( Memento* mem ){} // restaure un memento
+    virtual Memento* createMemento() const =0 ; // enregistre un memento
+    virtual void restateMemento( Memento* mem ) = 0 ; // restaure un memento
+
 };
 
 class Article : public Note {
@@ -73,6 +77,7 @@ private:
     QString texte;
 
     Memento* createMemento() const; // enregistre un memento
+    void restateMemento(Memento* mem);
 
     void saveXML(QXmlStreamWriter* stream);
 
@@ -106,6 +111,7 @@ private:
     TypeStatut statut;
 
     Memento* createMemento() const; // enregistre un memento
+    void restateMemento(Memento* mem);
 
     void saveXML(QXmlStreamWriter* stream);
 
@@ -130,6 +136,7 @@ private:
     QString fichier; // adresse du fichier
     TypeMultimedia type; //type du fichier
     Memento* createMemento() const; // enregistre un memento
+    void restateMemento(Memento* mem);
 
     void saveXML(QXmlStreamWriter* stream);
 };
@@ -195,6 +202,9 @@ public:
 
     void SaveEverythingXML(); // Ecris Tout dans un fichier xml
     //void LoadFile();
+
+    void saveVersion(Note* _note) const;
+    void restateVersion(Note* _note, unsigned int version);
 
 private:
     Note** tabNotes;

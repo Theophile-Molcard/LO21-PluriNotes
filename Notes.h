@@ -60,8 +60,7 @@ private:
     //Pour l'instant en virtuel, pour pouvoir enregistrer les paramètres des fils selon le type de note
     // passage par parametre de QXmlStreamWriter pour test si on peut ecrire sur un fichier avec plusieurs fonctions
 
-    virtual Memento* createMemento() const = 0; // enregistre un memento
-    virtual Memento* createMemento() const =0 ; // enregistre un memento
+    virtual Memento* createMemento() const = 0 ; // enregistre un memento
     virtual void restateMemento( Memento* mem ) = 0 ; // restaure un memento
 
 };

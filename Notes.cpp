@@ -34,7 +34,7 @@ Note& NotesManager::getNote(const QString& id){
     throw NotesException(QString("Erreur, la note n'existe pas."));
 }
 
-void NotesManager::SaveEverything(){
+void NotesManager::SaveEverythingXML(){
     QFile fichier("test_notes.xml");
     if (!fichier.open(QIODevice::WriteOnly | QIODevice::Text))
         throw NotesException(QString("erreur sauvegarde articles : ouverture fichier xml"));
@@ -43,7 +43,7 @@ void NotesManager::SaveEverything(){
        stream.writeStartDocument();
        stream.writeStartElement("Notes");
        for(unsigned int i=0; i<nbNotes; i++){
-           this->tabNotes[i]->save(&stream); // Je tente un truc
+           this->tabNotes[i]->saveXML(&stream); // Je tente un truc
        }
        stream.writeEndElement();
        stream.writeEndDocument();
@@ -51,7 +51,7 @@ void NotesManager::SaveEverything(){
 }
 
 
-void Article::save(QXmlStreamWriter* stream){
+void Article::saveXML(QXmlStreamWriter* stream){
     (*stream).writeStartElement("article");
     (*stream).writeTextElement("id",this->getId()); //On utilisera un design pattern pour pas répeter l'ecriture de l'indentifiant dans les autres saves.
     (*stream).writeTextElement("titre",this->getTitre());
@@ -59,7 +59,51 @@ void Article::save(QXmlStreamWriter* stream){
     (*stream).writeEndElement();
 }
 
-void Multimedia::save(QXmlStreamWriter *stream){
+void Tache::saveXML(QXmlStreamWriter *stream){
+    (*stream).writeStartElement("tache");
+    (*stream).writeTextElement("id",this->getId()); //On utilisera un design pattern pour pas répeter l'ecriture de l'indentifiant dans les autres saves.
+    (*stream).writeTextElement("titre",this->getTitre());
+    (*stream).writeTextElement("action",this->getAction());
+    (*stream).writeTextElement("statut",this->statutToString());
+    (*stream).writeTextElement("priorite",QString::number(this->getPriorite()));
+    (*stream).writeEndElement();
+}
+
+QString Tache::statutToString(){
+    switch(statut){
+        case 0:
+            return "attente";
+        break;
+        case 1:
+            return "cours";
+        break;
+        case 2:
+            return "termine";
+        break;
+        default:
+            return "";
+
+    }
+}
+
+QString Multimedia::typeToString(){
+    switch(type){
+        case 0:
+            return "video";
+        break;
+        case 1:
+            return "audio";
+        break;
+        case 2:
+            return "image";
+        break;
+        default:
+            return "";
+   }
+
+}
+
+void Multimedia::saveXML(QXmlStreamWriter *stream){
     (*stream).writeStartElement("multimedia");
     (*stream).writeTextElement("id",this->getId());
     (*stream).writeTextElement("titre",this->getTitre());

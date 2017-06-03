@@ -19,12 +19,17 @@ void DebugTest::Debug()
     qDebug() << copain.getDateCrea();
     qDebug() << "Oui ca marche !!";
 
+    QDate date(2017,6,3);
+    QTime heure(10,00);
+    Tache copainT("encore", "Ta poule", "manger", QDateTime(date,heure), 2, attente);
+
     notes.addNote(&copain);
+    notes.addNote(&copainT);
     NotesManager::Iterator it = notes.getIterator();
     qDebug() << (*it)->getId();
 
     qDebug() << notes.getNote("super").getDateModif();
-    notes.SaveEverything();
+    notes.SaveEverythingXML();
 }
 
 

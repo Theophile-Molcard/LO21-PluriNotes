@@ -4,6 +4,7 @@
 #include <QXmlStreamWriter>
 #include <QDateTime>
 #include "Memento.h"
+#include <QMetaEnum>
 
 using namespace std;
 
@@ -53,11 +54,11 @@ private:
 
     // fonctions appellées par NM
 
-    virtual void save(QXmlStreamWriter* stream) = 0;// enregistre avec tous les paramètres
+    virtual void saveXML(QXmlStreamWriter* stream) = 0;// enregistre avec tous les paramètres
     //Pour l'instant en virtuel, pour pouvoir enregistrer les paramètres des fils selon le type de note
     // passage par parametre de QXmlStreamWriter pour test si on peut ecrire sur un fichier avec plusieurs fonctions
 
-    virtual Memento* createMemento() const{} // enregistre un memento
+    virtual Memento* createMemento() const = 0; // enregistre un memento
     //virtual void restoreMemento( Memento* mem ){} // restaure un memento
 };
 
@@ -73,7 +74,7 @@ private:
 
     Memento* createMemento() const; // enregistre un memento
 
-    void save(QXmlStreamWriter* stream);
+    void saveXML(QXmlStreamWriter* stream);
 
 };
 
@@ -97,6 +98,7 @@ public:
     void setPriority(unsigned int _priorite){priorite = _priorite;}
     void setDateEcheance(QDateTime dateEcheance){date_echeance = dateEcheance;}
     void setStatut(TypeStatut _statut){statut = _statut;}
+    QString statutToString();
 private:
     QString action;
     unsigned int priorite; // optionnel
@@ -105,8 +107,8 @@ private:
 
     Memento* createMemento() const; // enregistre un memento
 
-    //void save(QXmlStreamWriter* stream);
-    /// Je l'ai commenté car il n'était pas encore défini...
+    void saveXML(QXmlStreamWriter* stream);
+
 };
 
 class Multimedia : public Note {
@@ -118,16 +120,18 @@ public:
     QString getDescription(){return description;}
     QString getFicher(){return fichier;}
     TypeMultimedia getType(){return type;}
+
     void setDescription(QString desc){description = desc;}
     void setFichier(QString file){fichier = file;}
+
+    QString typeToString();
 private:
     QString description;
     QString fichier; // adresse du fichier
     TypeMultimedia type; //type du fichier
-
     Memento* createMemento() const; // enregistre un memento
 
-    void save(QXmlStreamWriter* stream);
+    void saveXML(QXmlStreamWriter* stream);
 };
 
 
@@ -189,7 +193,7 @@ public:
     void createNote(const string& id, const string& titre); // crée une note vide avec id / titre / date
     void saveNote(const string& id); // enregistre une note avec tout ce qu'il faut / ça fait un memento
 
-    void SaveEverything(); // Ecris Tout dans un fichier xml
+    void SaveEverythingXML(); // Ecris Tout dans un fichier xml
     //void LoadFile();
 
 private:

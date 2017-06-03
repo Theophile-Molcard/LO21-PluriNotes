@@ -6,11 +6,16 @@
 #include <QXmlStreamWriter>
 
 using namespace std;
-enum TypeMultimedia;
+enum TypeMultimedia{video, audio, image};
+enum TypeStatut{attente, cours, termine};
 
-class MementoException{ // je ne pouvais pas inclure notes ici car memento inclu dans notes
+
+/// ------ Note Exception ------ ///
+
+
+class NotesException{
 public:
-    MementoException(const QString& message):info(message){}
+    NotesException(const QString& message):info(message){}
     QString getInfo() const { return info; }
 private:
     QString info;
@@ -30,6 +35,10 @@ public:
 
     virtual ~Memento() {}
     virtual void saveXML(QXmlStreamWriter* stream) = 0;
+
+    QString dateToString(QDateTime date){
+        return date.toString("dd-MM-yyyy hh:mm:ss");
+    }
 
 private:
     QString title;
@@ -56,10 +65,10 @@ private:
 
 class MementoTache : public Memento{
 public:
-    MementoTache(QString _title, QString _action, QDateTime _date_echeance, unsigned int _priorite = 0, unsigned int _statut = 1 )
+    MementoTache(QString _title, QString _action, QDateTime _date_echeance, unsigned int _priorite = 0,TypeStatut _statut = cours )
         : Memento(_title), action(_action), priorite(_priorite), date_echeance(_date_echeance), statut(_statut){}
 
-    MementoTache(QString _title, QString _action, unsigned int _priorite = 0, unsigned int _statut = 1 )
+    MementoTache(QString _title, QString _action, unsigned int _priorite = 0, TypeStatut _statut = cours )
         : Memento(_title), action(_action), priorite(_priorite), statut(_statut)
     {
         QDateTime a;
@@ -71,13 +80,14 @@ public:
     unsigned int getPriorite() const {return priorite;}
     QDateTime getEcheance() const {return date_echeance;}
     unsigned int getStatut() const {return statut;}
+    QString statutToString();
 
     virtual void saveXML(QXmlStreamWriter* stream);
 private:
     QString action;
     unsigned int priorite; // optionnel
     QDateTime date_echeance; //optionnel
-    unsigned int statut;
+    TypeStatut statut;
 
 };
 
@@ -85,18 +95,19 @@ private:
 
 class MementoMultimedia : public Memento{
 public:
-    MementoMultimedia(QString _title, QString _description, QString _fichier, unsigned int _type)
+    MementoMultimedia(QString _title, QString _description, QString _fichier, TypeMultimedia _type)
         : Memento(_title), description(_description), fichier(_fichier), type(_type){}
 
     QString getDescription() const {return description;}
     QString getFichier() const {return fichier;}
-    unsigned int getType() const {return type;}
+    TypeMultimedia getType() const {return type;}
+    QString typeToString();
 
     virtual void saveXML(QXmlStreamWriter* stream);
 private:
     QString description;
     QString fichier; // adresse du fichier
-    unsigned int type; //type du fichier
+    TypeMultimedia type; //type du fichier
 };
 
 
@@ -120,8 +131,7 @@ public:
 
     Memento* getMemento(int version){ // voir comment gérer les versions...
         if(version > pileMemento.size()){
-            MementoException error = MementoException("Dépassement de Pille");
-            throw error;
+            throw NotesException(QString("erreur : depassement de pile"));
         }
         else{
             for(int i = 0 ; i < version ; i++)

@@ -8,20 +8,6 @@
 
 using namespace std;
 
-enum TypeMultimedia{video, audio, image};
-enum TypeStatut{attente, cours, termine};
-
-
-/// ------ Note Exception ------ ///
-
-
-class NotesException{
-public:
-    NotesException(const QString& message):info(message){}
-    QString getInfo() const { return info; }
-private:
-    QString info;
-};
 
 
 

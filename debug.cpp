@@ -30,6 +30,12 @@ void DebugTest::Debug()
     notes.addNote(&copainT);
     notes.addNote(&copainM);
 
+    notes.saveVersion(&copainT);
+    copainT.setAction("VOLER VERS L'INFINI ET L'AU DELA");
+    copainT.setPriority(5);
+    copainT.setTitre("n'oublie pas les pommes");
+    copainT.setStatut(termine);
+
     notes.saveVersion(&copain);
 
     copain.setTitre("NOOOOOOO!");

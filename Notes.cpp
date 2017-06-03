@@ -173,11 +173,11 @@ Memento* Article::createMemento() const{
 }
 
 Memento* Multimedia::createMemento() const{
-    return new MementoMultimedia( Note::getTitre(), description, fichier, 124578); // remplacer 124578 par indice du type
+    return new MementoMultimedia( Note::getTitre(), description, fichier, type); // remplacer 124578 par indice du type
 }
 
 Memento* Tache::createMemento() const{
-    return new MementoTache( Note::getTitre(), action, date_echeance, priorite, 124578); // remplacer 124578 par indice du type
+    return new MementoTache( Note::getTitre(), action, date_echeance, priorite, statut); // remplacer 124578 par indice du type
 }
 
 // restate

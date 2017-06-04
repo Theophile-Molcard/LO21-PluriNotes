@@ -2,8 +2,9 @@
 #define EXPLORATEURWINDOW_H
 
 #include <QWidget>
+#include <QAction>
 
-#include <QListView>
+#include <QListWidget>
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -19,19 +20,19 @@ class ExplorateurWindow : public QWidget{
 
 public:
     ExplorateurWindow(QWidget *parent = 0);
+    QListView* getListe() {return liste;}
+    QPushButton* getButtonOpen() {return button_open;}
 
 private:
 
     QVBoxLayout *fenetre_vbox;
 
     QLabel *titre;
-    QListView *liste;
+    QListWidget *liste;
 
     QHBoxLayout *button_layout;
     QPushButton *button_open;
     QPushButton *button_close;
-
-
 
 };
 

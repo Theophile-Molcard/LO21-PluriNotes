@@ -24,10 +24,16 @@ MainWindow::MainWindow(QWidget *parent) :
     article_window = 0;
     multimedia_window = 0;
     tache_window = 0;
+    explo_window = 0;
 
     /// Les menus
-    QMenu *menuNotes, *menuRef;
-    QAction *nouvelle_note;
+    QMenu *menuNotes, *menuRef, *menuExplo;
+    QAction *nouvelle_note, *explo_notes;
+
+    menuExplo = menuBar()->addMenu("Afficher");
+    explo_notes = menuExplo->addAction("Notes");
+
+    QObject::connect(explo_notes, SIGNAL(triggered(bool)), this, SLOT(ouvrir_explorateur()) );
 
     menuNotes = menuBar()->addMenu("Note");
     nouvelle_note = menuNotes->addAction("Nouvelle");
@@ -75,6 +81,13 @@ void MainWindow::ouvrir_note() {
 
     QObject::connect(note_window->getPushButton(), SIGNAL(clicked(bool)), this, SLOT(create()) );
     note_window->show();
+}
+
+void MainWindow::ouvrir_explorateur() {
+    if(explo_window) explo_window->close();
+    explo_window =  new ExplorateurWindow(this);
+    explo_window->getListe()->addAction(new QAction("dryfghjk", this));
+    explo_window->show();
 }
 
 

@@ -28,6 +28,8 @@ public:
     void editeur_multimedia();
     void editeur_tache();
 
+    // Exploration ?
+
 
 private:
     Ui::MainWindow *ui;
@@ -43,6 +45,8 @@ private:
 public slots:
     void ouvrir_note();
     void create();
+
+    void ouvrir_explorateur();
 };
 
 

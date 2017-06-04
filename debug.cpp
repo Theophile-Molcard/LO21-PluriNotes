@@ -48,11 +48,12 @@ void DebugTest::Debug()
     qDebug() << (*it)->getId();
 
     qDebug() << notes.getNote("super").getDateModif();
-    notes.SaveEverythingXML();
+
 }
 
 void DebugTest::DebugRelation(){
 
+    NotesManager& notes = NotesManager::donneInstance();
     Relation* rela = new Relation("Copain", "on s'amuse");
     rela->addCouple("encore","Ainsi");
     rela->addCouple("super", "encore");
@@ -64,10 +65,11 @@ void DebugTest::DebugRelation(){
         qDebug() << (*it)->gety();
         it++;
     }
-    rela->deleteCouple("encore", "Ainsi");
+    //rela->deleteCouple("encore", "Ainsi");
 
     Relation* relaNonOriente = new Relation("Exact", "Faux", false);
     relaNonOriente->addCouple("encore", "Ainsi");
+    relaNonOriente->addCouple("super", "encore");
     Relation::Iterator it2 = relaNonOriente->getIterator();
     while(!it2.isdone())
     {
@@ -76,7 +78,7 @@ void DebugTest::DebugRelation(){
         it2++;
     }
     qDebug() << "delete";
-    relaNonOriente->deleteCouple("encore", "Ainsi");
+   // relaNonOriente->deleteCouple("encore", "Ainsi");
     Relation::Iterator it3 = relaNonOriente->getIterator();
     while(!it3.isdone())
     {
@@ -88,7 +90,22 @@ void DebugTest::DebugRelation(){
     RelationManager& Rels = RelationManager::donneInstance();
 
     Rels.addRelation(rela);
+    Rels.addRelation(relaNonOriente);
     qDebug() << Rels.getRelation("Copain").getTitre();
+
+    notes.SaveEverythingXML();
+    /*RelationManager& Rels = RelationManager::donneInstance();
+    RelationManager::Iterator it = Rels.getIterator();
+    while (!it.isdone()) {
+        Relation::Iterator itr = (*it)->getIterator();
+        qDebug() << (*it)->getTitre();
+        while (!itr.isdone()) {
+            qDebug() << (*itr)->getx();
+            qDebug() << (*itr)->gety();
+            itr++;
+        }
+        it++;
+    }*/
 
 
 }

@@ -1,6 +1,7 @@
 #include <qxml.h>
 #include <QFile>
 #include "Notes.h"
+#include "relations.h"
 #include <QDebug>
 
 
@@ -48,7 +49,9 @@ void NotesManager::LoadFileXML(){
         QXmlStreamReader::TokenType token = stream.readNext();
         if(token == QXmlStreamReader::StartDocument) continue; //continue permet d'aller directement à la fin de la boucle
         if(token == QXmlStreamReader::StartElement) {
+            if(stream.name() == "PluriNotes") continue;
             if(stream.name() == "Notes") continue;
+            if(stream.name() == "Relations") continue;
             if(stream.name() == "article") {
                 qDebug()<<"new article\n";
                 QString id;
@@ -402,6 +405,10 @@ void NotesManager::LoadFileXML(){
                 }
                 qDebug()<<"ajout multimedia "<<id<<"\n";
             }
+            if(stream.name() == "relation"){
+                RelationManager& Rels = RelationManager::donneInstance();
+                Rels.LoadRelationXML(&stream);
+             }
         }
     }
     // Error handling.
@@ -420,10 +427,14 @@ void NotesManager::SaveEverythingXML(){
     QXmlStreamWriter stream(&fichier);
        stream.setAutoFormatting(true);
        stream.writeStartDocument();
+       stream.writeStartElement("PluriNotes");
        stream.writeStartElement("Notes");
        for(unsigned int i=0; i<nbNotes; i++){
            this->tabNotes[i]->saveXML(&stream); // Je tente un truc
        }
+       stream.writeEndElement();
+       RelationManager& Rels = RelationManager::donneInstance();
+       Rels.saveEveryRelationsXML(&stream);
        stream.writeEndElement();
        stream.writeEndDocument();
        fichier.close();

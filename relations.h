@@ -2,6 +2,7 @@
 #define RELATIONS_H
 
 #include <QString>
+#include <QXmlStreamWriter>
 
 class Couple{
     friend class Relation;
@@ -15,6 +16,8 @@ private:
     QString x;
     QString y;
     QString label;
+
+    void saveXML(QXmlStreamWriter* stream);
 };
 
 
@@ -59,6 +62,8 @@ public:
     Iterator getIterator() {
         return Iterator(tabCouples, nbCouples);
     }
+
+    void saveXML(QXmlStreamWriter* stream);
 
 private:
     QString titre;
@@ -119,6 +124,8 @@ public:
         return Iterator(tabRelations, nbRelations);
     }
 
+    void saveEveryRelationsXML(QXmlStreamWriter* stream);
+    void LoadRelationXML(QXmlStreamReader* stream);
 private:
     Relation** tabRelations;
     unsigned int nbRelations;

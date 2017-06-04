@@ -11,8 +11,8 @@ ExplorateurWindow::ExplorateurWindow(QWidget *parent){
     titre = new QLabel("toutes les notes");
 
     liste = new QListView;
-    liste->addAction("blabla");
-    liste->addAction("blibli");
+    //liste->addAction("blabla");
+    //liste->addAction("blibli");
 
     button_open = new QPushButton("ouvrir");
     button_close = new QPushButton("fermer");

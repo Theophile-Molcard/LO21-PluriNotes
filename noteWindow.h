@@ -2,6 +2,7 @@
 #define NOTEWINDOW_H
 
 #include <QWidget>
+#include "Notes.h"
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -57,6 +58,7 @@ class ArticleWindow : public QWidget{
 
 public:
     ArticleWindow(QString _id, QString _title, QWidget *parent = 0);
+    ArticleWindow(Note& note, QWidget *parent = 0);
     QString getTitle() const { return title->text(); }
     QString getText() const { return text->toPlainText(); }
 
@@ -93,6 +95,7 @@ class MultimediaWindow : public QWidget{
 
 public:
     MultimediaWindow(QString _id, QString _title, QWidget *parent = 0);
+    MultimediaWindow(Note& note, QWidget *parent = 0);
     QString getTitle() const { return title->text(); }
     QString getDescription() const { return description->toPlainText(); }
     QString getType() const { return fichier_type->currentText(); }
@@ -139,6 +142,7 @@ class TacheWindow : public QWidget{
 
 public:
     TacheWindow(QString _id, QString _title, QWidget *parent = 0);
+    TacheWindow(Note& note, QWidget *parent = 0);
     QString getTitle() const { return title->text(); }
     QString getAction() const { return action->toPlainText(); }
     QString getPriorite() const { return priorite->text(); }

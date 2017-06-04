@@ -2,7 +2,7 @@
 #define EXPLORATEURWINDOW_H
 
 #include <QWidget>
-#include <QAction>
+#include <QList>
 
 #include <QListWidget>
 
@@ -20,10 +20,18 @@ class ExplorateurWindow : public QWidget{
 
 public:
     ExplorateurWindow(QWidget *parent = 0);
-    QListView* getListe() {return liste;}
+    QListWidget* getListe() {return liste;}
+    QString getIdIndice(unsigned int indice) const {
+        if(indice > tab_id.size())
+            throw "erreur";
+        else
+            return tab_id[indice];
+    }
     QPushButton* getButtonOpen() {return button_open;}
 
 private:
+
+    QList<QString> tab_id;
 
     QVBoxLayout *fenetre_vbox;
 

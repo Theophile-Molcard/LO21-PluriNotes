@@ -1,6 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <typeinfo>
+
+#include<QDebug>
+
+#include "Notes.h"
 #include "notewindow.h"
 #include "explorateurwindow.h"
 
@@ -28,7 +33,10 @@ public:
     void editeur_multimedia();
     void editeur_tache();
 
-    // Exploration ?
+    // Ouvrir()
+    void ouvre_tache(Note& note);
+    void ouvre_multi(Note& note);
+    void ouvre_article(Note& note);
 
 
 private:
@@ -43,10 +51,11 @@ private:
 
 
 public slots:
-    void ouvrir_note();
+    void cree_note();
     void create();
 
     void ouvrir_explorateur();
+    void ouvre_note();
 };
 
 

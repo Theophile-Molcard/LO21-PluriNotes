@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "notewindow.h"
+#include "explorateurwindow.h"
 
 #include <QMainWindow>
 #include <QPushButton>
@@ -35,6 +36,8 @@ private:
     ArticleWindow * article_window;
     MultimediaWindow * multimedia_window;
     TacheWindow * tache_window;
+
+    ExplorateurWindow *explo_window;
 
 
 public slots:

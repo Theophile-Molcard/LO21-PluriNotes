@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     menuNotes = menuBar()->addMenu("Note");
     nouvelle_note = menuNotes->addAction("Nouvelle");
 
-    QObject::connect(nouvelle_note, SIGNAL(triggered(bool)), this, SLOT(ouvrir_fenetre()) );
+    QObject::connect(nouvelle_note, SIGNAL(triggered(bool)), this, SLOT(ouvrir_note()) );
 
     menuRef = menuBar()->addMenu(tr("Référence"));
     menuRef->addAction("autre");
@@ -65,7 +65,7 @@ void MainWindow::create() {
     }
 }
 
-void MainWindow::ouvrir_fenetre() {
+void MainWindow::ouvrir_note() {
     if(article_window) article_window->close();
     if(multimedia_window) multimedia_window->close();
     if(tache_window) tache_window->close();

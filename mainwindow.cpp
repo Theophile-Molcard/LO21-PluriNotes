@@ -28,12 +28,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     /// Les menus
     QMenu *menuNotes, *menuRef, *menuExplo;
-    QAction *nouvelle_note, *explo_notes;
+    QAction *nouvelle_note, *explo_notes, *agenda_taches;
 
     menuExplo = menuBar()->addMenu("Afficher");
     explo_notes = menuExplo->addAction("Notes");
 
     QObject::connect(explo_notes, SIGNAL(triggered(bool)), this, SLOT(ouvrir_explorateur()) );
+
+    agenda_taches = menuExplo->addAction("Taches");
+
+    QObject::connect(agenda_taches, SIGNAL(triggered(bool)), this, SLOT(ouvrir_agenda_taches()) );
 
     menuNotes = menuBar()->addMenu("Note");
     nouvelle_note = menuNotes->addAction("Nouvelle");
@@ -86,7 +90,15 @@ void MainWindow::cree_note() {
 void MainWindow::ouvrir_explorateur() {
     if(explo_window) explo_window->close();
     explo_window =  new ExplorateurWindow(this);
-    connect(explo_window->getButtonOpen(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note()));
+    //connect(explo_window->getButtonOpen(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note()));
+    connect(explo_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvre_note()));
+    explo_window->show();
+}
+
+void MainWindow::ouvrir_agenda_taches() {
+    if(explo_window) explo_window->close();
+    explo_window =  new ExplorateurWindow(0, this);
+    //connect(explo_window->getButtonOpen(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note()));
     connect(explo_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvre_note()));
     explo_window->show();
 }

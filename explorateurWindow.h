@@ -20,6 +20,7 @@ class ExplorateurWindow : public QWidget{
 
 public:
     ExplorateurWindow(QWidget *parent = 0);
+    ExplorateurWindow(int i, QWidget *parent = 0);
     QListWidget* getListe() {return liste;}
     QString getIdIndice(int indice) const {
         if(indice > tab_id.size())
@@ -43,5 +44,7 @@ private:
     QPushButton *button_close;
 
 };
+
+void sortByPrioDate(QList<QString>& id, QList<QDateTime> date, QList<int> prio);
 
 #endif // EXPLORATEURWINDOW_H

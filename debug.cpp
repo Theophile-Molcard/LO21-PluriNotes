@@ -20,20 +20,21 @@ void DebugTest::Debug()
     qDebug() << copain->getDateCrea();
     qDebug() << "Oui ca marche !!";
 
-    QDate date(2017,6,3);
+    QDate date1(2016,6,3);
+    QDate date2(2019,12,3);
+    QDate date3(2018,6,3);
     QTime heure(10,00);
-    Tache* copainT = new Tache("encore", "Ta poule", "manger", QDateTime(date,heure), 2, attente);
+    Tache* copainT1 = new Tache("encore", "Ta poule1", "manger", QDateTime(date1,heure), 2, attente);
+    Tache* copainT2 = new Tache("a", "Ta poule2", "manger", QDateTime(date2,heure), 1, termine);
+    Tache* copainT3 = new Tache("e", "Ta poule3", "manger", QDateTime(date3,heure), 1, attente);
 
     Multimedia* copainM = new Multimedia("Ainsi", "va la vie", "Chaque jour passe" , "C:/dossierX", video);
     notes.addNote(copain);
-    notes.addNote(copainT);
+    notes.addNote(copainT1);
+    notes.addNote(copainT2);
+    notes.addNote(copainT3);
     notes.addNote(copainM);
 
-    notes.saveVersion(copainT);
-    copainT->setAction("VOLER VERS L'INFINI ET L'AU DELA");
-    copainT->setPriority(5);
-    copainT->setTitre("n'oublie pas les pommes");
-    copainT->setStatut(termine);
 
     notes.saveVersion(copain);
 

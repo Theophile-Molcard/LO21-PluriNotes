@@ -55,6 +55,7 @@ public slots:
     void create();
 
     void ouvrir_explorateur();
+    void ouvrir_agenda_taches();
     void ouvre_note();
 };
 

@@ -374,7 +374,7 @@ TacheWindow::TacheWindow(Note &note, QWidget *parent) : QWidget(parent)
     priorite_hbox = new QHBoxLayout;
     priorite_label = new QLabel("Priorité");
     priorite = new QLineEdit;
-    priorite->setText(static_cast<QString>(tache_note.getPriorite()));
+    priorite->setText(QString::number(tache_note.getPriorite()));
     priorite->setMaximumWidth(20);
     priorite->setValidator( new QIntValidator(0, 5, this) );
 

@@ -30,7 +30,7 @@ SOURCES += main.cpp\
     Memento.cpp \
     noteWindow.cpp \
     debug.cpp \
-    relations.cpp
+    relations.cpp\
     explorateurWindow.cpp
 
 HEADERS  += mainwindow.h \
@@ -39,7 +39,7 @@ HEADERS  += mainwindow.h \
     Memento.h \
     noteWindow.h \
     debug.h \
-    relations.h
+    relations.h\
     explorateurWindow.h
 
 FORMS    += mainwindow.ui

@@ -87,6 +87,7 @@ void MainWindow::ouvrir_explorateur() {
     if(explo_window) explo_window->close();
     explo_window =  new ExplorateurWindow(this);
     connect(explo_window->getButtonOpen(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note()));
+    connect(explo_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvre_note()));
     explo_window->show();
 }
 

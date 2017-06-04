@@ -21,7 +21,7 @@ class ExplorateurWindow : public QWidget{
 public:
     ExplorateurWindow(QWidget *parent = 0);
     QListWidget* getListe() {return liste;}
-    QString getIdIndice(unsigned int indice) const {
+    QString getIdIndice(int indice) const {
         if(indice > tab_id.size())
             throw "erreur";
         else

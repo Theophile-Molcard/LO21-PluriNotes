@@ -41,7 +41,7 @@ private:
 
 
 public slots:
-    void ouvrir_fenetre();
+    void ouvrir_note();
     void create();
 };
 

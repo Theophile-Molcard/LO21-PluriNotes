@@ -100,7 +100,50 @@ ArticleWindow::ArticleWindow(QString _id, QString _title, QWidget *parent) : QWi
 
 }
 
+ArticleWindow::ArticleWindow(Note &note, QWidget *parent) : QWidget(parent)
+{
+    Article& article_note = dynamic_cast<Article&>(note);
 
+    setFixedSize(200, 400);
+    move(200, 40);
+
+
+    fenetre_vbox = new QVBoxLayout;
+
+    id_hbox = new QHBoxLayout;
+    id_label = new QLabel("Identifiant");
+    id = new QLabel(article_note.getId());
+
+    title_hbox = new QHBoxLayout;
+    title_label = new QLabel("Titre");
+    title = new QLineEdit;
+    title->setText(article_note.getTitre());
+
+    text_hbox = new QHBoxLayout;
+    text_label = new QLabel("Texte");
+    text = new QTextEdit;
+    text->setText(article_note.getTexte());
+
+    button_hbox = new QHBoxLayout;
+    save_button = new QPushButton("save");
+    connect(save_button, SIGNAL(clicked(bool)), this, SLOT(save()));
+    close_button = new QPushButton("close");
+    connect(close_button, SIGNAL(clicked(bool)), this, SLOT(close()));
+
+    id_hbox->addWidget(id_label); id_hbox->addWidget(id);
+    title_hbox->addWidget(title_label); title_hbox->addWidget(title);
+    text_hbox->addWidget(text_label); text_hbox->addWidget(text);
+    button_hbox->addWidget(save_button); button_hbox->addWidget(close_button);
+
+    fenetre_vbox->addLayout(id_hbox);
+    fenetre_vbox->addLayout(title_hbox);
+    fenetre_vbox->addLayout(text_hbox);
+    fenetre_vbox->addLayout(button_hbox);
+
+
+    this->setLayout(fenetre_vbox);
+
+}
 
 
 /// Editeur Multimédia
@@ -131,9 +174,9 @@ MultimediaWindow::MultimediaWindow(QString _id, QString _title, QWidget *parent)
 
     fichier_hbox = new QHBoxLayout;
     fichier_type = new QComboBox;
-    fichier_type->addItem("Image");
-    fichier_type->addItem("Vidéo");
-    fichier_type->addItem("Audio");
+    fichier_type->addItem("image");
+    fichier_type->addItem("video");
+    fichier_type->addItem("audio");
     fichier = new QPushButton("fichier");
     connect(fichier, SIGNAL(clicked(bool)), this, SLOT(trouveFichier()));
 
@@ -167,6 +210,69 @@ MultimediaWindow::MultimediaWindow(QString _id, QString _title, QWidget *parent)
 void MultimediaWindow::trouveFichier(){
     path = QFileDialog::getOpenFileName();
     printed_path->setText("C:/  ...  "+path.right(20));
+}
+
+MultimediaWindow::MultimediaWindow(Note& note, QWidget *parent) : QWidget(parent)
+{
+
+    Multimedia& multi_note = dynamic_cast<Multimedia&>(note);
+
+
+    setFixedSize(200, 400);
+    move(200, 40);
+
+
+    fenetre_vbox = new QVBoxLayout;
+
+    id_hbox = new QHBoxLayout;
+    id_label = new QLabel("Identifiant");
+    id = new QLabel(multi_note.getId());
+
+    title_hbox = new QHBoxLayout;
+    title_label = new QLabel("Titre");
+    title = new QLineEdit;
+    title->setText(multi_note.getTitre());
+
+    description_hbox = new QHBoxLayout;
+    description_label = new QLabel("Description");
+    description = new QTextEdit;
+    description->setText(multi_note.getDescription());
+
+    fichier_hbox = new QHBoxLayout;
+    fichier_type = new QComboBox;
+    fichier_type->addItem("image");
+    fichier_type->addItem("video");
+    fichier_type->addItem("audio");
+    fichier_type->currentIndexChanged(multi_note.typeToString());
+    fichier = new QPushButton("fichier");
+    connect(fichier, SIGNAL(clicked(bool)), this, SLOT(trouveFichier()));
+
+    button_hbox = new QHBoxLayout;
+    save_button = new QPushButton("save");
+    connect(save_button, SIGNAL(clicked(bool)), this, SLOT(save()));
+    close_button = new QPushButton("close");
+    connect(close_button, SIGNAL(clicked(bool)), this, SLOT(close()));
+
+    printed_path = new QLabel("C:/  ...  "+multi_note.getFicher().right(20));
+    path = "";
+
+    id_hbox->addWidget(id_label); id_hbox->addWidget(id);
+    title_hbox->addWidget(title_label); title_hbox->addWidget(title);
+    description_hbox->addWidget(description_label); description_hbox->addWidget(description);
+    fichier_hbox->addWidget(fichier_type); fichier_hbox->addWidget(fichier);
+    button_hbox->addWidget(save_button); button_hbox->addWidget(close_button);
+
+    fenetre_vbox->addLayout(id_hbox);
+    fenetre_vbox->addLayout(title_hbox);
+    fenetre_vbox->addLayout(description_hbox);
+    fenetre_vbox->addLayout(fichier_hbox);
+    fenetre_vbox->addWidget(printed_path);
+    fenetre_vbox->addLayout(button_hbox);
+
+
+    this->setLayout(fenetre_vbox);
+
+
 }
 
 
@@ -209,9 +315,83 @@ TacheWindow::TacheWindow(QString _id, QString _title, QWidget *parent) : QWidget
     statut_hbox = new QHBoxLayout;
     statut_label = new QLabel("Statut");
     statut = new QComboBox;
-    statut->addItem("En Atente");
-    statut->addItem("En Cours");
-    statut->addItem("Terminé");
+    statut->addItem("attente");
+    statut->addItem("cours");
+    statut->addItem("termine");
+
+    button_hbox = new QHBoxLayout;
+    save_button = new QPushButton("save");
+    connect(save_button, SIGNAL(clicked(bool)), this, SLOT(save()));
+    close_button = new QPushButton("close");
+    connect(close_button, SIGNAL(clicked(bool)), this, SLOT(close()));
+
+
+    id_hbox->addWidget(id_label); id_hbox->addWidget(id);
+    title_hbox->addWidget(title_label); title_hbox->addWidget(title);
+    action_hbox->addWidget(action_label); action_hbox->addWidget(action);
+    priorite_hbox->addWidget(priorite_label); priorite_hbox->addWidget(priorite);
+    echeance_hbox->addWidget(echeance_label); echeance_hbox->addWidget(echeance);
+    statut_hbox->addWidget(statut_label); statut_hbox->addWidget(statut);
+    button_hbox->addWidget(save_button); button_hbox->addWidget(close_button);
+
+    fenetre_vbox->addLayout(id_hbox);
+    fenetre_vbox->addLayout(title_hbox);
+    fenetre_vbox->addLayout(action_hbox);
+    fenetre_vbox->addLayout(priorite_hbox);
+    fenetre_vbox->addLayout(echeance_hbox);
+    fenetre_vbox->addLayout(button_hbox);
+
+
+    this->setLayout(fenetre_vbox);
+
+}
+
+TacheWindow::TacheWindow(Note &note, QWidget *parent) : QWidget(parent)
+{
+
+    Tache& tache_note = dynamic_cast<Tache&>(note);
+
+    setFixedSize(200, 400);
+    move(200, 40);
+
+
+    fenetre_vbox = new QVBoxLayout;
+
+    id_hbox = new QHBoxLayout;
+    id_label = new QLabel("Identifiant");
+    id = new QLabel(tache_note.getId());
+
+    title_hbox = new QHBoxLayout;
+    title_label = new QLabel("Titre");
+    title = new QLineEdit;
+    title->setText(tache_note.getId());
+
+    action_hbox = new QHBoxLayout;
+    action_label = new QLabel("Action");
+    action = new QTextEdit;
+    action->setText(tache_note.getAction());
+
+    priorite_hbox = new QHBoxLayout;
+    priorite_label = new QLabel("Priorité");
+    priorite = new QLineEdit;
+    priorite->setText(static_cast<QString>(tache_note.getPriorite()));
+    priorite->setMaximumWidth(20);
+    priorite->setValidator( new QIntValidator(0, 5, this) );
+
+
+    echeance_hbox = new QHBoxLayout;
+    echeance_label = new QLabel("Date");
+    echeance = new QDateTimeEdit;
+    echeance->setDateTime(tache_note.getDateEcheance());
+
+    statut_hbox = new QHBoxLayout;
+    statut_label = new QLabel("Statut");
+    statut = new QComboBox;
+    statut->addItem("attente");
+    statut->addItem("cours");
+    statut->addItem("termine");
+    statut->setCurrentText(tache_note.statutToString());
+
 
     button_hbox = new QHBoxLayout;
     save_button = new QPushButton("save");

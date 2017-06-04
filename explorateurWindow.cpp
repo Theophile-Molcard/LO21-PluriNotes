@@ -17,7 +17,9 @@ ExplorateurWindow::ExplorateurWindow(QWidget *parent): QWidget(parent)
 
     for( NotesManager::Iterator it = NM.getIterator() ; !it.isdone() ; it++){
         liste->addItem((*it)->getTitre());
+        tab_id.append((*it)->getId());
     }
+
 
     button_open = new QPushButton("ouvrir");
     button_close = new QPushButton("fermer");

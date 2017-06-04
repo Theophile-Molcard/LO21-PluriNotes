@@ -38,7 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
     menuNotes = menuBar()->addMenu("Note");
     nouvelle_note = menuNotes->addAction("Nouvelle");
 
-    QObject::connect(nouvelle_note, SIGNAL(triggered(bool)), this, SLOT(ouvrir_note()) );
+    QObject::connect(nouvelle_note, SIGNAL(triggered(bool)), this, SLOT(cree_note()) );
 
     menuRef = menuBar()->addMenu(tr("Référence"));
     menuRef->addAction("autre");
@@ -71,7 +71,7 @@ void MainWindow::create() {
     }
 }
 
-void MainWindow::ouvrir_note() {
+void MainWindow::cree_note() {
     if(article_window) article_window->close();
     if(multimedia_window) multimedia_window->close();
     if(tache_window) tache_window->close();
@@ -86,8 +86,46 @@ void MainWindow::ouvrir_note() {
 void MainWindow::ouvrir_explorateur() {
     if(explo_window) explo_window->close();
     explo_window =  new ExplorateurWindow(this);
-    explo_window->getListe()->addAction(new QAction("dryfghjk", this));
+    connect(explo_window->getButtonOpen(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note()));
     explo_window->show();
+}
+
+void MainWindow::ouvre_note() {
+    if(article_window) article_window->close();
+    if(multimedia_window) multimedia_window->close();
+    if(tache_window) tache_window->close();
+
+    if(note_window) note_window->close();
+
+    NotesManager& NM = NotesManager::donneInstance();
+
+    Note& note = NM.getNote( explo_window->getIdIndice(explo_window->getListe()->currentRow()) );
+
+
+    if(typeid(note)==typeid(Tache))
+        ouvre_tache(note);
+    else if(typeid(note)==typeid(Multimedia))
+        ouvre_multi(note);
+    else
+        ouvre_article(note);
+
+}
+
+void MainWindow::ouvre_tache(Note &note){
+    tache_window = new TacheWindow(note, this);
+    tache_window->show();
+}
+
+
+void MainWindow::ouvre_multi(Note &note){
+    multimedia_window = new MultimediaWindow(note, this);
+    multimedia_window->show();
+}
+
+
+void MainWindow::ouvre_article(Note &note){
+    article_window = new ArticleWindow(note, this);
+    article_window->show();
 }
 
 

@@ -99,12 +99,21 @@ void DebugTest::Debug_theophile(){
     //notes.LoadFileXML();
     Article *copain = new Article("super","c'est la base", "La destruction de la planète est en marche");
 
+    Article *copainA2 = new Article("a1","check", "La destruction de la planète est en marche");
+
+    Article *copainA3 = new Article("a2","Elizabetheeee !!! ", "La destruction de la planète est en marche");
+
     QDate date(2017,6,3);
     QTime heure(10,00);
+
+
     Tache *copainT= new Tache("encore", "Ta poule", "manger", QDateTime(date,heure), 2, attente);
 
     Multimedia *copainM= new Multimedia("Ainsi", "va la vie", "Chaque jour passe" , "C:/dossierX", video);
     notes.addNote(copain);
+    notes.addNote(copainA2);
+    notes.addNote(copainA3);
+
     notes.addNote(copainT);
     notes.addNote(copainM);
 

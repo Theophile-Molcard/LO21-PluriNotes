@@ -9,6 +9,7 @@
 namespace DebugTest {
 
 void Debug();
+void DebugRelation();
 void Debug_theophile();
     class A{
     public:

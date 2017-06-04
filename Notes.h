@@ -170,18 +170,19 @@ public:
         }
         Note* operator ++(){
             if(last == 0)
-                throw "il faut faire une calsse d'exceptions";
+                throw NotesException(QString("Erreur, arrive au bout."));
             --last;
             return *(++current);
         }
         Note* operator ++(int){
             if(last == 0)
-                throw "il faut faire une calsse d'exceptions";
+                throw NotesException(QString("Erreur, arrive au bout."));
             Note* save = *current;
             ++current;
             --last;
             return save;
         }
+        bool isdone(){return last == 0;}
 
     private:
         Note** current;
@@ -192,7 +193,7 @@ public:
     };
 
     Iterator getIterator() {
-        return Iterator(tabNotes, nbMaxNotes);
+        return Iterator(tabNotes, nbNotes);
     }
 
     Note& getNote(const QString& id);

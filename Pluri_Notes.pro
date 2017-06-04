@@ -29,13 +29,15 @@ SOURCES += main.cpp\
     Notes.cpp \
     Memento.cpp \
     noteWindow.cpp \
-    debug.cpp
+    debug.cpp \
+    relations.cpp
 
 HEADERS  += mainwindow.h \
     tache.h \
     Notes.h \
     Memento.h \
     noteWindow.h \
-    debug.h
+    debug.h \
+    relations.h
 
 FORMS    += mainwindow.ui

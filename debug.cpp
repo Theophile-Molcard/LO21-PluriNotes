@@ -1,7 +1,7 @@
 #include <QtDebug>
 #include "debug.h"
 #include "Notes.h"
-
+#include "relations.h"
 //Fichier debug pour le mode console
 
 
@@ -50,6 +50,32 @@ void DebugTest::Debug()
 
     qDebug() << notes.getNote("super").getDateModif();
     notes.SaveEverythingXML();
+}
+
+void DebugTest::DebugRelation(){
+    Relation rela("Copain", "on s'amuse");
+    rela.addCouple("encore","Ainsi");
+    rela.addCouple("super", "encore");
+    Relation::Iterator it = rela.getIterator();
+    qDebug() << rela.getDescription();
+    while(!it.isdone())
+    {
+        qDebug() << (*it)->getx();
+        qDebug() << (*it)->gety();
+        it++;
+    }
+    rela.deleteCouple("encore", "Ainsi");
+
+    Relation relaNonOriente("Exact", "Faux", false);
+    //relaNonOriente.addCouple("encore", "Ainsi");
+    Relation::Iterator it2 = relaNonOriente.getIterator();
+    while(!it2.isdone())
+    {
+        qDebug() << (*it2)->getx();
+        qDebug() << (*it2)->gety();
+        it2++;
+    }
+
 }
 
 void DebugTest::Debug_theophile(){

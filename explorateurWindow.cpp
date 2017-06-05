@@ -18,8 +18,10 @@ ExplorateurWindow::ExplorateurWindow(QWidget *parent): QWidget(parent)
     NotesManager& NM = NotesManager::donneInstance();
 
     for( NotesManager::Iterator it = NM.getIterator() ; !it.isdone() ; it++){
-        liste->addItem((*it)->getTitre());
-        tab_id.append((*it)->getId());
+        if((*it)->etatToString()=="active"){
+            liste->addItem((*it)->getTitre());
+            tab_id.append((*it)->getId());
+        }
     }
 
 
@@ -42,7 +44,6 @@ ExplorateurWindow::ExplorateurWindow(QWidget *parent): QWidget(parent)
 
 ExplorateurWindow::ExplorateurWindow(int i, QWidget *parent): QWidget(parent)
 {
-    i++; //ne sert à riennnnn
 
     setFixedSize(200, 400);
     move(0, 40);
@@ -55,23 +56,38 @@ ExplorateurWindow::ExplorateurWindow(int i, QWidget *parent): QWidget(parent)
 
     NotesManager& NM = NotesManager::donneInstance();
 
-    QList<int> tab_prio;
-    QList<QDateTime> tab_date;
+    if( i == 0 )
+    {
 
-    for( NotesManager::Iterator it = NM.getIterator() ; !it.isdone() ; it++){
-        if(typeid(*(*it))==typeid(Tache)){
-            if(dynamic_cast<Tache*>(*it)->getDateEcheance() > QDateTime::currentDateTime()){
-                tab_id.append((*it)->getId());
-                tab_date.append(dynamic_cast<Tache*>(*it)->getDateEcheance());
-                tab_prio.append(dynamic_cast<Tache*>(*it)->getPriorite());
+        QList<int> tab_prio;
+        QList<QDateTime> tab_date;
+
+        for( NotesManager::Iterator it = NM.getIterator() ; !it.isdone() ; it++){
+            if(typeid(*(*it))==typeid(Tache) && (*it)->etatToString()=="active"){
+                if(dynamic_cast<Tache*>(*it)->getDateEcheance() > QDateTime::currentDateTime()){
+                    tab_id.append((*it)->getId());
+                    tab_date.append(dynamic_cast<Tache*>(*it)->getDateEcheance());
+                    tab_prio.append(dynamic_cast<Tache*>(*it)->getPriorite());
+                }
             }
         }
+
+        sortByPrioDate(tab_id, tab_date, tab_prio);
+
+        for(int i = 0; i < tab_id.size() ; i++)
+            liste->addItem(NM.getNote(tab_id[i]).getTitre());
     }
+    else
+    {
 
-    sortByPrioDate(tab_id, tab_date, tab_prio);
+        for( NotesManager::Iterator it = NM.getIterator() ; !it.isdone() ; it++){
+            if((*it)->etatToString()=="archive"){
+                liste->addItem((*it)->getTitre());
+                tab_id.append((*it)->getId());
+            }
+        }
 
-    for(int i = 0; i < tab_id.size() ; i++)
-        liste->addItem(NM.getNote(tab_id[i]).getTitre());
+    }
 
 
     button_open = new QPushButton("à définir...");
@@ -102,7 +118,6 @@ void sortByPrioDate(QList<QString>& id, QList<QDateTime> date, QList<int> prio){
             if(prio[j]<prio[max])
                 max = j;
             else if(prio[j]==prio[max] && date[j] > date[max]){
-                qDebug()<<"Comparaison de dates";
                 max = j;
             }
         }

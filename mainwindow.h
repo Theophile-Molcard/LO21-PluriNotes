@@ -55,18 +55,21 @@ private:
     ExplorateurRelationWindow * explo_rela_window;
     CoupleWindow * couple_window;
 
+
     void fermer_slot_1();
     void fermer_slot_2();
     void fermer_slot_3();
 
 
 public slots:
+
     void cree_note();
     void create();
 
     void ouvrir_explorateur();
     void ouvrir_agenda_taches();
     void ouvre_note();
+    void ouvrir_archives();
 
     void ouvrir_crea_rela();
     void parcourir_rela();

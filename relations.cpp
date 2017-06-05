@@ -203,9 +203,14 @@ void RelationManager::LoadRelationXML(QXmlStreamReader *stream){
                 stream->readNext();
                 orientee=stream->text().toInt();
                 qDebug()<<"orientee="<<QString::number(orientee)<<"\n";
-
-                Relation* rel = new Relation(titre,description, orientee);
-                addRelation(rel);
+                if(titre =="Reference")
+                {
+                    this->createReference();
+                }
+                else{
+                    Relation* rel = new Relation(titre,description, orientee);
+                    addRelation(rel);
+                }
                 j++;
             }
             if(stream->name() == "couple"){

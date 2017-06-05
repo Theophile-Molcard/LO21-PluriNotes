@@ -140,6 +140,7 @@ void NotesManager::LoadFileXML(){
                 QString texte;
                 QDateTime dateCrea;
                 QDateTime dateModif;
+                TypeEtatNote etat;
                 //QXmlStreamAttributes attributes = stream.attributes();
                 stream.readNext();
                 //We're going to loop over the things because the order might change.
@@ -181,12 +182,20 @@ void NotesManager::LoadFileXML(){
                                         dateModif = QDateTime::fromString(stream.text().toString(),"dd-MM-yyyy hh:mm:ss");
                                         qDebug()<<"dateModif="<<dateModif<<"\n";
                                     }
+                                    if(stream.name() == "etat") {
+                                        stream.readNext();
+                                        QString tempType =stream.text().toString();
+                                        if(tempType == "archive")
+                                            etat = archive;
+                                        else
+                                            etat = active;
+                                    }
 
 
                                 }
                                 stream.readNext();
                             }
-                            Article* article = new Article(id,titre,texte, dateCrea, dateModif);
+                            Article* article = new Article(id,titre,texte, dateCrea, dateModif,etat);
                             addNote(article);
                             i++;
                         }
@@ -237,7 +246,7 @@ void NotesManager::LoadFileXML(){
                 qDebug() << dateEcheance;
                 TypeStatut statut;
                 unsigned int priorite;
-
+                TypeEtatNote etat;
                 //QXmlStreamAttributes attributes = stream.attributes();
                 stream.readNext();
                 //We're going to loop over the things because the order might change.
@@ -300,10 +309,18 @@ void NotesManager::LoadFileXML(){
                                         priorite = stream.text().toInt();
                                         qDebug()<<"priorite="<<priorite<<"\n";
                                     }
+                                    if(stream.name() == "etat") {
+                                        stream.readNext();
+                                        QString tempType =stream.text().toString();
+                                        if(tempType == "archive")
+                                            etat = archive;
+                                        else
+                                            etat = active;
+                                    }
                                 }
                                 stream.readNext();
                             }
-                            Tache* tache = new Tache(id,titre,action,dateEcheance,dateCrea,dateModif,priorite,statut);
+                            Tache* tache = new Tache(id,titre,action,dateEcheance,dateCrea,dateModif,priorite,statut,etat);
                             addNote(tache);
                             i++;
                         }
@@ -372,6 +389,7 @@ void NotesManager::LoadFileXML(){
                 QString description;
                 QString fichier;
                 TypeMultimedia type;
+                TypeEtatNote etat;
 
                 //QXmlStreamAttributes attributes = stream.attributes();
                 stream.readNext();
@@ -430,10 +448,18 @@ void NotesManager::LoadFileXML(){
                                         fichier = stream.text().toString();
                                         qDebug()<<"fichier="<<fichier<<"\n";
                                     }
+                                    if(stream.name() == "etat") {
+                                        stream.readNext();
+                                        QString tempType =stream.text().toString();
+                                        if(tempType == "archive")
+                                            etat = archive;
+                                        else
+                                            etat = active;
+                                    }
                                 }
                                 stream.readNext();
                             }
-                            Multimedia* multimedia = new Multimedia(id,titre,description,fichier,type,dateCrea,dateModif);
+                            Multimedia* multimedia = new Multimedia(id,titre,description,fichier,type,dateCrea,dateModif,etat);
                             addNote(multimedia);
                             i++;
                         }
@@ -511,7 +537,10 @@ void NotesManager::SaveEverythingXML(){
        stream.writeStartElement("PluriNotes");
        stream.writeStartElement("Notes");
        for(unsigned int i=0; i<nbNotes; i++){
-           this->tabNotes[i]->saveXML(&stream); // Je tente un truc
+           if(tabNotes[i]->etat != corbeille)
+           {
+                this->tabNotes[i]->saveXML(&stream);
+           }
        }
        stream.writeEndElement();
        RelationManager& Rels = RelationManager::donneInstance();
@@ -531,6 +560,7 @@ void Article::saveXML(QXmlStreamWriter* stream){
     (*stream).writeTextElement("dateCrea",this->dateTimeToString(this->getDateCrea()));
     (*stream).writeTextElement("dateModif",this->dateTimeToString(this->getDateModif()));
     (*stream).writeTextElement("texte",this->getTexte());
+    stream->writeTextElement("etat", this->etatToString());
     (*stream).writeEndElement();
     Gardien* MementoS = this->getGardien();
     if(!MementoS->empty())
@@ -555,6 +585,7 @@ void Tache::saveXML(QXmlStreamWriter *stream){
     (*stream).writeTextElement("dateEcheance",this->dateTimeToString(this->getDateEcheance()));
     (*stream).writeTextElement("statut",this->statutToString());
     (*stream).writeTextElement("priorite",QString::number(this->getPriorite()));
+    stream->writeTextElement("etat", this->etatToString());
     (*stream).writeEndElement();
     Gardien* MementoS = this->getGardien();
     if(!MementoS->empty())
@@ -579,6 +610,7 @@ void Multimedia::saveXML(QXmlStreamWriter *stream){
     (*stream).writeTextElement("description", this->getDescription());
     (*stream).writeTextElement("fichier", this->getFicher());
     (*stream).writeTextElement("type", this->typeToString());
+    stream->writeTextElement("etat", this->etatToString());
     (*stream).writeEndElement();
     Gardien* MementoS = this->getGardien();
     if(!MementoS->empty())

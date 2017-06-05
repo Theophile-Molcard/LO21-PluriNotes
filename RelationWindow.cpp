@@ -112,7 +112,9 @@ ExplorateurRelationWindow::ExplorateurRelationWindow(QWidget *parent): QWidget(p
     liste = new QListWidget;
 
     for( RelationManager::Iterator it1 = RM.getIterator() ; !it1.isdone() ; it1++){
-        liste->addItem((*it1)->getTitre());
+        if((*it1)->getTitre()!="Reference"){
+            liste->addItem((*it1)->getTitre());
+        }
     }
 
     button_supprimer = new QPushButton("ouvrir");

@@ -245,7 +245,10 @@ MultimediaWindow::MultimediaWindow(Note& note, QWidget *parent) : QWidget(parent
     fichier_type->addItem("image");
     fichier_type->addItem("video");
     fichier_type->addItem("audio");
-    fichier_type->currentIndexChanged(multi_note.typeToString());
+    if(multi_note.typeToString()== "video")
+        fichier_type->setCurrentIndex(1);
+    if(multi_note.typeToString()== "audio")
+        fichier_type->setCurrentIndex(2);
     fichier = new QPushButton("fichier");
     connect(fichier, SIGNAL(clicked(bool)), this, SLOT(trouveFichier()));
 

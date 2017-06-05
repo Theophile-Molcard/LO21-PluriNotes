@@ -256,7 +256,7 @@ MultimediaWindow::MultimediaWindow(Note& note, QWidget *parent) : QWidget(parent
     connect(close_button, SIGNAL(clicked(bool)), this, SLOT(close()));
 
     printed_path = new QLabel("C:/  ...  "+multi_note.getFicher().right(20));
-    path = "";
+    path = multi_note.getFicher();
 
     id_hbox->addWidget(id_label); id_hbox->addWidget(id);
     title_hbox->addWidget(title_label); title_hbox->addWidget(title);

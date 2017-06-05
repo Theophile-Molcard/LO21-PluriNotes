@@ -143,8 +143,14 @@ private:
     QPushButton *button_supprimer;
     QPushButton *button_close;
 
+    QHBoxLayout *label_hbox;
+    QLabel *label_label;
+    QLineEdit *label;
+    QPushButton * label_save;
+
 public slots:
     void afficherCouples();
+    void editer_couple();
 
 };
 

@@ -276,16 +276,9 @@ void MainWindow::visualiser_rela(){
 
     rela_viz_window = new RelationVizingWindow(this);
 
-
-
-
-
-
     rela_viz_window->show();
 
 }
-
-
 
 
 

@@ -264,6 +264,8 @@ RelationVizingWindow::RelationVizingWindow(QWidget *parent): QWidget(parent)
     setFixedSize(200, 400);
     move(400, 40);
 
+    label=0;
+
     fenetre_vbox = new QVBoxLayout;
 
     relation = new QComboBox;
@@ -282,9 +284,12 @@ RelationVizingWindow::RelationVizingWindow(QWidget *parent): QWidget(parent)
 
     for( Relation::Iterator it = r.getIterator() ; !it.isdone() ; it++){
 
-        liste_couples->addItem((*it)->getLabel());
+        liste_couples->addItem((*it)->getx()+" -> "+(*it)->gety());
 
     }
+
+    connect(liste_couples, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(editer_couple()));
+
 
     connect(relation, SIGNAL(currentIndexChanged(int)), this, SLOT(afficherCouples()) );
 
@@ -316,14 +321,42 @@ void RelationVizingWindow::afficherCouples(){
     for( Relation::Iterator it = r.getIterator() ; !it.isdone() ; it++){
 
         qDebug() << (*it)->getLabel();
-        liste_couples->addItem((*it)->getLabel());
+        liste_couples->addItem((*it)->getx()+" -> "+(*it)->gety());
 
     }
 
 }
 
+void RelationVizingWindow::editer_couple(){
 
 
+
+
+    RelationManager& RM = RelationManager::donneInstance();
+
+    Relation& r = RM.getRelation(relation->currentText());
+
+    QString label_initial;
+    Relation::Iterator it = r.getIterator();
+
+    for( int i = 0 ; i<liste_couples->currentRow() ; i++) it++;
+
+    if(label){
+        label->setText((*it)->getLabel());
+    }
+    else{
+        label_hbox = new QHBoxLayout;
+        label_label = new QLabel("label");
+        label_save = new QPushButton("ok");
+        label = new QLineEdit((*it)->getLabel());
+
+        label_hbox->addWidget(label); label_hbox->addWidget(label_save);
+
+        fenetre_vbox->addWidget(label_label);
+        fenetre_vbox->addLayout(label_hbox);
+
+    }
+}
 
 
 

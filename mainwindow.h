@@ -54,6 +54,7 @@ private:
     CreationRelationWindow * crea_rela_window;
     ExplorateurRelationWindow * explo_rela_window;
     CoupleWindow * couple_window;
+    RelationVizingWindow * rela_viz_window;
 
 
     void fermer_slot_1();
@@ -75,6 +76,7 @@ public slots:
     void parcourir_rela();
     void ouvrir_rela();
     void ouvre_couplage();
+    void visualiser_rela();
 };
 
 

@@ -254,3 +254,86 @@ void CoupleWindow::save(){
     }
 
 }
+
+
+RelationVizingWindow::RelationVizingWindow(QWidget *parent): QWidget(parent)
+{
+
+
+    setFixedSize(200, 400);
+    move(400, 40);
+
+    fenetre_vbox = new QVBoxLayout;
+
+    relation = new QComboBox;
+
+    RelationManager& RM = RelationManager::donneInstance();
+
+
+    for( RelationManager::Iterator it1 = RM.getIterator() ; !it1.isdone() ; it1++){
+        relation->addItem((*it1)->getTitre());
+    }
+
+
+    liste_couples = new QListWidget;
+
+    Relation& r = RM.getRelation(relation->currentText());
+
+    for( Relation::Iterator it = r.getIterator() ; !it.isdone() ; it++){
+
+        liste_couples->addItem((*it)->getLabel());
+
+    }
+
+    connect(relation, SIGNAL(currentIndexChanged(int)), this, SLOT(afficherCouples()) );
+
+
+    button_supprimer = new QPushButton("supprimer");
+    button_close = new QPushButton("fermer");
+    connect(button_close, SIGNAL(clicked(bool)), this, SLOT(close()));
+
+
+    button_layout = new QHBoxLayout;
+    button_layout->addWidget(button_supprimer);
+    button_layout->addWidget(button_close);
+
+    fenetre_vbox->addWidget(relation);
+    fenetre_vbox->addWidget(liste_couples);
+    fenetre_vbox->addLayout(button_layout);
+
+
+    this->setLayout(fenetre_vbox);
+}
+
+void RelationVizingWindow::afficherCouples(){
+    RelationManager& RM = RelationManager::donneInstance();
+
+    liste_couples->clear();
+
+    Relation& r = RM.getRelation(relation->currentText());
+
+    for( Relation::Iterator it = r.getIterator() ; !it.isdone() ; it++){
+
+        qDebug() << (*it)->getLabel();
+        liste_couples->addItem((*it)->getLabel());
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

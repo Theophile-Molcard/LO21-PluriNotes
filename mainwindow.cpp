@@ -28,10 +28,11 @@ MainWindow::MainWindow(QWidget *parent) :
     crea_rela_window = 0;
     explo_rela_window = 0;
     couple_window = 0;
+    rela_viz_window = 0;
 
     /// Les menus
     QMenu *menuNotes, *menuRef, *menuExplo;
-    QAction *nouvelle_note, *explo_notes, *explo_archives, *agenda_taches, *creer_ref, *enrichir_ref;
+    QAction *nouvelle_note, *explo_notes, *explo_archives, *agenda_taches, *creer_ref, *enrichir_ref, *affiche_couples;
 
     /// exploration
 
@@ -66,6 +67,10 @@ MainWindow::MainWindow(QWidget *parent) :
     enrichir_ref = menuRef->addAction("parcourir");
 
     QObject::connect(enrichir_ref, SIGNAL(triggered(bool)), this, SLOT(parcourir_rela()) );
+
+    affiche_couples = menuRef->addAction("couples");
+
+    QObject::connect(affiche_couples, SIGNAL(triggered(bool)), this, SLOT(visualiser_rela()) );
 
 
 
@@ -213,6 +218,7 @@ void MainWindow::fermer_slot_3(){
     if(crea_rela_window) crea_rela_window->close();
     if(explo_rela_window) explo_rela_window->close();
     if(couple_window) couple_window->close();
+    if(rela_viz_window) rela_viz_window->close();
 
 }
 
@@ -261,6 +267,21 @@ void MainWindow::ouvre_couplage(){
     couple_window = new CoupleWindow(rela, this);
     couple_window->show();
 
+
+}
+
+void MainWindow::visualiser_rela(){
+
+    fermer_slot_3();
+
+    rela_viz_window = new RelationVizingWindow(this);
+
+
+
+
+
+
+    rela_viz_window->show();
 
 }
 

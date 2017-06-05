@@ -17,6 +17,7 @@
 
 #include <QPushButton>
 #include <QCheckBox>
+#include <QComboBox>
 
 
 class CreationRelationWindow : public QWidget{
@@ -115,6 +116,35 @@ private:
 
 public slots:
     void save();
+
+};
+
+
+
+class RelationVizingWindow : public QWidget{
+
+    Q_OBJECT
+
+public:
+    RelationVizingWindow(QWidget *parent = 0);
+
+    QPushButton* getButtonSuprime() {return button_supprimer;}
+    QListWidget* getListeCouple() {return liste_couples; }
+
+private:
+
+    QVBoxLayout *fenetre_vbox;
+
+    QComboBox *relation;
+
+    QListWidget *liste_couples;
+
+    QHBoxLayout *button_layout;
+    QPushButton *button_supprimer;
+    QPushButton *button_close;
+
+public slots:
+    void afficherCouples();
 
 };
 

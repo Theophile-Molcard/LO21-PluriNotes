@@ -5,7 +5,6 @@
 #include <QMessageBox>
 #include <mainwindow.h>
 
-
 /// Créateur de Notes - MainWindow::ouvrir_fenetre()
 
 NoteWindow::NoteWindow(QWidget *parent) : QWidget(parent)

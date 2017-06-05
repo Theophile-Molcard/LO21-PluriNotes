@@ -3,6 +3,8 @@
 #include "relations.h"
 #include <typeinfo>
 #include <QDebug>
+#include <QErrorMessage>
+#include <QMessageBox>
 
 CreationRelationWindow::CreationRelationWindow(QWidget *parent): QWidget(parent)
 {
@@ -32,7 +34,7 @@ CreationRelationWindow::CreationRelationWindow(QWidget *parent): QWidget(parent)
     button_create = new QPushButton("créer");
     button_close = new QPushButton("fermer");
     connect(button_close, SIGNAL(clicked(bool)), this, SLOT(close()));
-
+    connect(button_create,SIGNAL(clicked(bool)),this, SLOT(save()));
 
     button_layout = new QHBoxLayout;
     button_layout->addWidget(button_create);
@@ -174,7 +176,7 @@ CoupleWindow::CoupleWindow(Relation* rela, QWidget *parent): QWidget(parent)
     button_create = new QPushButton("créer");
     button_close = new QPushButton("fermer");
     connect(button_close, SIGNAL(clicked(bool)), this, SLOT(close()));
-
+    connect(button_create, SIGNAL(clicked(bool)), this, SLOT(save()));
 
     button_layout = new QHBoxLayout;
     button_layout->addWidget(button_create);
@@ -190,3 +192,60 @@ CoupleWindow::CoupleWindow(Relation* rela, QWidget *parent): QWidget(parent)
     this->setLayout(fenetre_vbox);
 }
 
+void CreationRelationWindow::save(){
+    if(this->titre->text() != "" && this->description->toPlainText() != ""){
+        RelationManager& RM = RelationManager::donneInstance();
+        if(RM.existeRelation(titre->text()))
+        {
+            Relation& rel = RM.getRelation(titre->text());
+            rel.setDescription(description->toPlainText());
+            rel.setTitre(titre->text());
+
+        }
+        else
+        {
+            Relation* rel = new Relation(titre->text(),description->toPlainText(),!non_oriente->isChecked());
+            RM.addRelation(rel);
+        }
+        QMessageBox::information(this, "Bravo", "Sauvegarde Reussie !");
+    }
+    else
+    {
+        QErrorMessage* em = new QErrorMessage;
+        em->showMessage("Entrez le Titre et une description");
+    }
+}
+
+void CoupleWindow::save(){
+    if(this->liste_x->currentRow() !=-1 && this->liste_y->currentRow() != -1 ){
+        RelationManager& RM = RelationManager::donneInstance();
+        Relation& rel = RM.getRelation(titre_rela->text());
+        if(rel.existeCouple(tab_id_x[ liste_x->currentRow() ],tab_id_y[ liste_y->currentRow() ] ))
+        {
+            QErrorMessage* em = new QErrorMessage;
+            em->showMessage("Ce couple existe déjà");
+        }
+        else if(tab_id_x[ liste_x->currentRow() ] == tab_id_y[ liste_y->currentRow() ])
+        {
+            QErrorMessage* em = new QErrorMessage;
+            em->showMessage("Impossible de créer une relation entre deux mêmes notes");
+        }
+        else
+        {
+            QString label;
+            if(couple_label->text() == "") label = "default";
+            else label = couple_label->text();
+            qDebug()<<tab_id_x[ liste_x->currentRow() ];
+            qDebug() << tab_id_y[ liste_y->currentRow() ];
+            rel.addCouple( tab_id_x[ liste_x->currentRow() ],  tab_id_y[ liste_y->currentRow() ],label);
+            QMessageBox::information(this, "Bravo", "Sauvegarde Reussie !");
+        }
+
+    }
+    else
+    {
+        QErrorMessage* em = new QErrorMessage;
+        em->showMessage("Choisissez un couple");
+    }
+
+}

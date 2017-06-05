@@ -36,6 +36,13 @@ Relation& RelationManager::getRelation(QString _titre){
     throw NotesException(QString("Erreur, la relation n'existe pas."));
 }
 
+bool RelationManager::existeRelation(QString _titre){
+    for(unsigned int i=0; i<nbRelations; i++){
+        if (tabRelations[i]->getTitre()==_titre) return true;
+    }
+    return false;
+}
+
 void RelationManager::deleteRelation(QString _titre){
     if(_titre == "Reference") throw("erreur, on ne peut supprimer la relation Reference.");
     unsigned int i;
@@ -124,6 +131,12 @@ void Relation::deleteCouple(QString _x, QString _y){
             }
         }
     }
+}
+bool Relation::existeCouple(QString _x, QString _y){
+    for(unsigned int i=0; i <nbCouples; i++){
+        if(tabCouples[i]->getx() == _x && tabCouples[i]->gety() == _y) return true;
+    }
+    return false;
 }
 
 void Relation::saveXML(QXmlStreamWriter *stream){

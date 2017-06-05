@@ -27,6 +27,7 @@ public:
     ~Relation();
     void addCouple(QString _x, QString _y, QString _label = "default");
     void deleteCouple(QString _x, QString _y);
+    bool existeCouple(QString _x, QString _y);
 
     QString getTitre(){return titre;}
     QString getDescription(){return description;}
@@ -83,6 +84,7 @@ public:
     void deleteRelation(QString _titre);
     Relation& getRelation(QString _titre);
     void createReference();
+    bool existeRelation(QString _titre);
 
     static RelationManager& donneInstance(){
         if (!instance)

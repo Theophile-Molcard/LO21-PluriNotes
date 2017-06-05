@@ -52,6 +52,9 @@ private:
     QPushButton *button_create;
     QPushButton *button_close;
 
+public slots:
+    void save();
+
 };
 
 
@@ -108,6 +111,9 @@ private:
     QHBoxLayout *button_layout;
     QPushButton *button_create;
     QPushButton *button_close;
+
+public slots:
+    void save();
 
 };
 

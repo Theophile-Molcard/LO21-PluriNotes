@@ -28,6 +28,7 @@ public:
     CreationRelationWindow(Relation* rela, QWidget *parent = 0);
 
     QPushButton* getButtonCreate() {return button_create;}
+    QPushButton* getButtonClose() {return button_close;}
 
 private:
 

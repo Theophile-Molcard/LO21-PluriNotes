@@ -205,8 +205,6 @@ void MainWindow::ouvrir_crea_rela(){
 void MainWindow::parcourir_rela(){
     fermer_slot_3();
 
-    QAction* action_rela;
-
     explo_rela_window = new ExplorateurRelationWindow(this);
 
     connect(explo_rela_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvrir_rela()) );
@@ -223,6 +221,10 @@ void MainWindow::ouvrir_rela(){
 
     crea_rela_window = new CreationRelationWindow(&RM.getRelation(titre_rela), this);
     crea_rela_window->getButtonCreate()->setText("ajouter couple");
+
+    crea_rela_window->getButtonClose()->setText("précedent");
+    connect(crea_rela_window->getButtonClose(), SIGNAL(clicked(bool)), this, SLOT(parcourir_rela()));
+
     crea_rela_window->show();
 }
 

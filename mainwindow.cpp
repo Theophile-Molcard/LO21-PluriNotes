@@ -242,10 +242,9 @@ void MainWindow::ouvrir_rela(){
     RelationManager& RM = RelationManager::donneInstance();
 
     crea_rela_window = new CreationRelationWindow(&RM.getRelation(titre_rela), this);
-    crea_rela_window->getButtonCreate()->setText("ajouter couple");
+
     connect(crea_rela_window->getButtonCreate(), SIGNAL(clicked(bool)), this, SLOT(ouvre_couplage()));
 
-    crea_rela_window->getButtonClose()->setText("précedent");
     connect(crea_rela_window->getButtonClose(), SIGNAL(clicked(bool)), this, SLOT(parcourir_rela()));
 
     crea_rela_window->show();

@@ -42,6 +42,7 @@ HEADERS  += mainwindow.h \
     debug.h \
     relations.h\
     explorateurWindow.h \
-    RelationWindow.h
+    RelationWindow.h \
+    arborescence.h
 
 FORMS    += mainwindow.ui

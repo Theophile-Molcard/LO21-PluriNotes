@@ -51,6 +51,7 @@ private:
     QHBoxLayout *button_layout;
     QPushButton *button_create;
     QPushButton *button_close;
+    QPushButton *button_save;
 
 public slots:
     void save();

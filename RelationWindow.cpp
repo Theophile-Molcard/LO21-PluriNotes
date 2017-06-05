@@ -32,7 +32,7 @@ CreationRelationWindow::CreationRelationWindow(QWidget *parent): QWidget(parent)
 
 
     button_create = new QPushButton("créer");
-    button_close = new QPushButton("fermer");
+    button_close = new QPushButton("retour");
     connect(button_close, SIGNAL(clicked(bool)), this, SLOT(close()));
     connect(button_create,SIGNAL(clicked(bool)),this, SLOT(save()));
 
@@ -79,13 +79,17 @@ CreationRelationWindow::CreationRelationWindow(Relation *rela, QWidget *parent):
     non_oriente->setChecked(!(rela->getOrientee()));
 
 
-    button_create = new QPushButton("créer");
-    button_close = new QPushButton("fermer");
+    button_create = new QPushButton("+ couple");
+    button_close = new QPushButton("retour");
     connect(button_close, SIGNAL(clicked(bool)), this, SLOT(close()));
+
+
+    button_save = new QPushButton("save");
 
 
     button_layout = new QHBoxLayout;
     button_layout->addWidget(button_create);
+    button_layout->addWidget(button_save);
     button_layout->addWidget(button_close);
 
     fenetre_vbox->addLayout(titre_hbox);
@@ -177,6 +181,7 @@ CoupleWindow::CoupleWindow(Relation* rela, QWidget *parent): QWidget(parent)
     button_close = new QPushButton("fermer");
     connect(button_close, SIGNAL(clicked(bool)), this, SLOT(close()));
     connect(button_create, SIGNAL(clicked(bool)), this, SLOT(save()));
+
 
     button_layout = new QHBoxLayout;
     button_layout->addWidget(button_create);

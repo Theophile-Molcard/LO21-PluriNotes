@@ -118,6 +118,13 @@ Note& NotesManager::getNote(const QString& id){
     throw NotesException(QString("Erreur, la note n'existe pas."));
 }
 
+bool NotesManager::existeNote(const QString &id){
+    for(unsigned int i=0; i<nbNotes; i++){
+        if (tabNotes[i]->getId()==id) return true;
+    }
+    return false;
+}
+
 void NotesManager::LoadFileXML(){
     QFile fichier("test_notes.xml");
     if (!fichier.open(QIODevice::ReadOnly | QIODevice::Text)) {

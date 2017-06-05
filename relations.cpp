@@ -90,8 +90,9 @@ void Relation::addCouple(QString _x, QString _y, QString _label){
             stop = true;
     }
     NotesManager& notes = NotesManager::donneInstance();
-    notes.getNote(_x); //à modifier, pour l'instant on compte sur le fait que getNote envoie une erreur si la note existe pas (très moche)
-    notes.getNote(_y);
+    if(!notes.existeNote(_x) || !notes.existeNote(_y)){
+        throw NotesException("erreur, un des id n'existe pas");
+    }
     if(nbCouples == nbMaxCouples){
         Couple** newCouples = new Couple*[nbMaxCouples+5];
         for(unsigned int i=0; i<nbCouples; i++)

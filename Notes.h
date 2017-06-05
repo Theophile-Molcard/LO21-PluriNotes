@@ -128,6 +128,7 @@ public:
 
     void setDescription(QString desc){description = desc;}
     void setFichier(QString file){fichier = file;}
+    void setType(TypeMultimedia _type){type = _type;}
 
     QString typeToString();
 private:
@@ -154,6 +155,7 @@ public:
     void viderCorbeille();
     void restaurerCorbeille();
     void restaurerArchiveNote(const QString& id);
+    bool existeNote(const QString& id);
 
     static NotesManager& donneInstance(){
         if (!instance)

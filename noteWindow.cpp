@@ -2,6 +2,8 @@
 #include "mainwindow.h"
 
 #include <QErrorMessage>
+#include <QMessageBox>
+#include <mainwindow.h>
 
 
 /// Créateur de Notes - MainWindow::ouvrir_fenetre()
@@ -429,7 +431,18 @@ void ArticleWindow::save(){
 
     if(this->getTitle() != "" && this->getText() != "")
     {
-        /// Enregistrer note, faire appel à note manager ?
+        NotesManager& NM = NotesManager::donneInstance();
+        if(NM.existeNote(this->id->text())){
+            Article& article = dynamic_cast<Article&>(NM.getNote(id->text()));
+            article.setTexte(text->toPlainText());
+            article.setTitre(title->text());
+        }
+        else
+        {
+            Article* article = new Article(id->text(),title->text(), text->toPlainText());
+            NM.addNote(article);
+        }
+        QMessageBox::information(this, "Bravo", "Sauvegarde Reussie !");
     }
     else
     {
@@ -445,7 +458,20 @@ void TacheWindow::save(){
 
     if(this->getTitle() != "" && this->getAction() != "")
     {
-        /// Enregistrer note, faire appel à note manager ?
+        NotesManager& NM = NotesManager::donneInstance();
+        if(NM.existeNote(this->id->text())){
+            Tache& tache = dynamic_cast<Tache&>(NM.getNote(id->text()));
+            tache.setAction(action->toPlainText());
+            tache.setTitre(title->text());
+            tache.setDateEcheance(echeance->dateTime());
+            tache.setPriority(priorite->text().toUInt());
+        }
+        else
+        {
+            Tache* tache = new Tache(id->text(),title->text(), action->toPlainText(),echeance->dateTime(),priorite->text().toUInt());
+            NM.addNote(tache);
+        }
+        QMessageBox::information(this, "Bravo", "Sauvegarde Reussie !");
     }
     else
     {
@@ -461,7 +487,33 @@ void MultimediaWindow::save(){
 
     if(this->getTitle() != "" && this->getDescription() != "" && this->path != "")
     {
-        /// Enregistrer note, faire appel à note manager ?
+        NotesManager& NM = NotesManager::donneInstance();
+        if(NM.existeNote(this->id->text())){
+            Multimedia& multi = dynamic_cast<Multimedia&>(NM.getNote(id->text()));
+            multi.setDescription(description->toPlainText());
+            multi.setFichier(path);
+            multi.setTitre(title->text());
+            if(fichier_type->currentText() == "video")
+                multi.setType(video);
+            else if(fichier_type->currentText() == "audio")
+                multi.setType(audio);
+            else
+                multi.setType(image);
+        }
+        else
+        {
+            TypeMultimedia type;
+            if(fichier_type->currentText() == "video")
+                type = video;
+            else if(fichier_type->currentText() == "audio")
+                type = audio;
+            else
+                type = image;
+
+            Multimedia* multi = new Multimedia(id->text(),title->text(),description->toPlainText(),path,type);
+            NM.addNote(multi);
+        }
+        QMessageBox::information(this, "Bravo", "Sauvegarde Reussie !");
     }
     else
     {

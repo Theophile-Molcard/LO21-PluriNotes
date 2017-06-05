@@ -341,6 +341,7 @@ TacheWindow::TacheWindow(QString _id, QString _title, QWidget *parent) : QWidget
     fenetre_vbox->addLayout(action_hbox);
     fenetre_vbox->addLayout(priorite_hbox);
     fenetre_vbox->addLayout(echeance_hbox);
+    fenetre_vbox->addLayout(statut_hbox);
     fenetre_vbox->addLayout(button_hbox);
 
 
@@ -366,7 +367,7 @@ TacheWindow::TacheWindow(Note &note, QWidget *parent) : QWidget(parent)
     title_hbox = new QHBoxLayout;
     title_label = new QLabel("Titre");
     title = new QLineEdit;
-    title->setText(tache_note.getId());
+    title->setText(tache_note.getTitre());
 
     action_hbox = new QHBoxLayout;
     action_label = new QLabel("Action");
@@ -415,6 +416,7 @@ TacheWindow::TacheWindow(Note &note, QWidget *parent) : QWidget(parent)
     fenetre_vbox->addLayout(action_hbox);
     fenetre_vbox->addLayout(priorite_hbox);
     fenetre_vbox->addLayout(echeance_hbox);
+    fenetre_vbox->addLayout(statut_hbox);
     fenetre_vbox->addLayout(button_hbox);
 
 

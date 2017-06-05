@@ -321,8 +321,6 @@ TacheWindow::TacheWindow(QString _id, QString _title, QWidget *parent) : QWidget
     statut_label = new QLabel("Statut");
     statut = new QComboBox;
     statut->addItem("attente");
-    statut->addItem("cours");
-    statut->addItem("termine");
 
     button_hbox = new QHBoxLayout;
     save_button = new QPushButton("save");

@@ -238,8 +238,9 @@ void CoupleWindow::save(){
         else
         {
             QString label;
-            if(couple_label->text() == "") label = "default";
-            else label = couple_label->text();
+            qDebug() << couple->text();
+            if(couple->text() == "") label = "default";
+            else label = couple->text();
             qDebug()<<tab_id_x[ liste_x->currentRow() ];
             qDebug() << tab_id_y[ liste_y->currentRow() ];
             rel.addCouple( tab_id_x[ liste_x->currentRow() ],  tab_id_y[ liste_y->currentRow() ],label);

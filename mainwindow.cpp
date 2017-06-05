@@ -25,10 +25,12 @@ MainWindow::MainWindow(QWidget *parent) :
     multimedia_window = 0;
     tache_window = 0;
     explo_window = 0;
+    crea_rela_window = 0;
+    explo_rela_window = 0;
 
     /// Les menus
     QMenu *menuNotes, *menuRef, *menuExplo;
-    QAction *nouvelle_note, *explo_notes, *agenda_taches, *creer_ref;
+    QAction *nouvelle_note, *explo_notes, *agenda_taches, *creer_ref, *enrichir_ref;
 
     menuExplo = menuBar()->addMenu("Afficher");
     explo_notes = menuExplo->addAction("Notes");
@@ -47,7 +49,11 @@ MainWindow::MainWindow(QWidget *parent) :
     menuRef = menuBar()->addMenu(tr("Relation"));
     creer_ref = menuRef->addAction("créer");
 
-    QObject::connect(creer_ref, SIGNAL(triggered(bool)), this, SLOT(ouvrir_crea_ref()) );
+    QObject::connect(creer_ref, SIGNAL(triggered(bool)), this, SLOT(ouvrir_crea_rela()) );
+
+    enrichir_ref = menuRef->addAction("parcourir");
+
+    QObject::connect(enrichir_ref, SIGNAL(triggered(bool)), this, SLOT(parcourir_rela()) );
 
 
 
@@ -59,6 +65,21 @@ MainWindow::~MainWindow()
 }
 
 /// Slots
+
+void MainWindow::fermer_slot_1(){
+
+    if(article_window) article_window->close();
+    if(multimedia_window) multimedia_window->close();
+    if(tache_window) tache_window->close();
+
+    if(note_window) note_window->close();
+
+}
+void MainWindow::fermer_slot_2(){
+
+    if(explo_window) explo_window->close();
+
+}
 
 void MainWindow::create() {
 
@@ -78,11 +99,8 @@ void MainWindow::create() {
 }
 
 void MainWindow::cree_note() {
-    if(article_window) article_window->close();
-    if(multimedia_window) multimedia_window->close();
-    if(tache_window) tache_window->close();
+    fermer_slot_1();
 
-    if(note_window) note_window->close();
     note_window =  new NoteWindow(this);
 
     QObject::connect(note_window->getPushButton(), SIGNAL(clicked(bool)), this, SLOT(create()) );
@@ -90,7 +108,8 @@ void MainWindow::cree_note() {
 }
 
 void MainWindow::ouvrir_explorateur() {
-    if(explo_window) explo_window->close();
+    fermer_slot_2();
+
     explo_window =  new ExplorateurWindow(this);
     //connect(explo_window->getButtonOpen(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note()));
     connect(explo_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvre_note()));
@@ -98,7 +117,8 @@ void MainWindow::ouvrir_explorateur() {
 }
 
 void MainWindow::ouvrir_agenda_taches() {
-    if(explo_window) explo_window->close();
+    fermer_slot_2();
+
     explo_window =  new ExplorateurWindow(0, this);
     //connect(explo_window->getButtonOpen(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note()));
     connect(explo_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvre_note()));
@@ -106,11 +126,7 @@ void MainWindow::ouvrir_agenda_taches() {
 }
 
 void MainWindow::ouvre_note() {
-    if(article_window) article_window->close();
-    if(multimedia_window) multimedia_window->close();
-    if(tache_window) tache_window->close();
-
-    if(note_window) note_window->close();
+    fermer_slot_1();
 
     NotesManager& NM = NotesManager::donneInstance();
 
@@ -171,9 +187,42 @@ void MainWindow::editeur_tache(){
 
 ///Editeur de references
 
+void MainWindow::fermer_slot_3(){
 
-void MainWindow::ouvrir_crea_ref(){
+    if(crea_rela_window) crea_rela_window->close();
+    if(explo_rela_window) explo_rela_window->close();
+
+}
+
+
+void MainWindow::ouvrir_crea_rela(){
+    fermer_slot_3();
+
     crea_rela_window = new CreationRelationWindow(this);
+    crea_rela_window->show();
+}
+
+void MainWindow::parcourir_rela(){
+    fermer_slot_3();
+
+    QAction* action_rela;
+
+    explo_rela_window = new ExplorateurRelationWindow(this);
+
+    connect(explo_rela_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvrir_rela()) );
+
+    explo_rela_window->show();
+}
+
+void MainWindow::ouvrir_rela(){
+
+    QString titre_rela = explo_rela_window->getListe()->currentItem()->text();
+    fermer_slot_3();
+
+    RelationManager& RM = RelationManager::donneInstance();
+
+    crea_rela_window = new CreationRelationWindow(&RM.getRelation(titre_rela), this);
+    crea_rela_window->getButtonCreate()->setText("ajouter couple");
     crea_rela_window->show();
 }
 

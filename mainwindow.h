@@ -6,6 +6,7 @@
 #include<QDebug>
 
 #include "Notes.h"
+#include "relations.h"
 #include "notewindow.h"
 #include "explorateurwindow.h"
 #include "RelationWindow.h"
@@ -51,6 +52,11 @@ private:
     ExplorateurWindow *explo_window;
 
     CreationRelationWindow * crea_rela_window;
+    ExplorateurRelationWindow * explo_rela_window;
+
+    void fermer_slot_1();
+    void fermer_slot_2();
+    void fermer_slot_3();
 
 
 public slots:
@@ -61,7 +67,9 @@ public slots:
     void ouvrir_agenda_taches();
     void ouvre_note();
 
-    void ouvrir_crea_ref();
+    void ouvrir_crea_rela();
+    void parcourir_rela();
+    void ouvrir_rela();
 };
 
 

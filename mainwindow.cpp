@@ -44,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(nouvelle_note, SIGNAL(triggered(bool)), this, SLOT(cree_note()) );
 
-    menuRef = menuBar()->addMenu(tr("Référence"));
+    menuRef = menuBar()->addMenu(tr("Relation"));
     creer_ref = menuRef->addAction("créer");
 
     QObject::connect(creer_ref, SIGNAL(triggered(bool)), this, SLOT(ouvrir_crea_ref()) );

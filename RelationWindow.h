@@ -1,0 +1,4 @@
+#ifndef CREARELAWINDOW_H
+#define CREARELAWINDOW_H
+
+#endif // CREARELAWINDOW_H

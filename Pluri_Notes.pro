@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     noteWindow.cpp \
     debug.cpp \
     relations.cpp\
-    explorateurWindow.cpp
+    explorateurWindow.cpp \
+    RelationWindow.cpp
 
 HEADERS  += mainwindow.h \
     tache.h \
@@ -40,6 +41,7 @@ HEADERS  += mainwindow.h \
     noteWindow.h \
     debug.h \
     relations.h\
-    explorateurWindow.h
+    explorateurWindow.h \
+    RelationWindow.h
 
 FORMS    += mainwindow.ui

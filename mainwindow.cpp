@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     /// Les menus
     QMenu *menuNotes, *menuRef, *menuExplo;
-    QAction *nouvelle_note, *explo_notes, *agenda_taches;
+    QAction *nouvelle_note, *explo_notes, *agenda_taches, *creer_ref;
 
     menuExplo = menuBar()->addMenu("Afficher");
     explo_notes = menuExplo->addAction("Notes");
@@ -45,7 +45,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(nouvelle_note, SIGNAL(triggered(bool)), this, SLOT(cree_note()) );
 
     menuRef = menuBar()->addMenu(tr("Référence"));
-    menuRef->addAction("autre");
+    creer_ref = menuRef->addAction("créer");
+
+    QObject::connect(creer_ref, SIGNAL(triggered(bool)), this, SLOT(ouvrir_crea_ref()) );
 
 
 
@@ -166,3 +168,27 @@ void MainWindow::editeur_tache(){
     tache_window->show();
 
 }
+
+///Editeur de references
+
+
+void MainWindow::ouvrir_crea_ref(){
+    crea_rela_window = new CreationRelationWindow(this);
+    crea_rela_window->show();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

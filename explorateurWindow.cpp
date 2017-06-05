@@ -49,7 +49,7 @@ ExplorateurWindow::ExplorateurWindow(int i, QWidget *parent): QWidget(parent)
 
     fenetre_vbox = new QVBoxLayout;
 
-    titre = new QLabel("toutes les notes");
+    titre = new QLabel("Agenda des Taches");
 
     liste = new QListWidget;
 

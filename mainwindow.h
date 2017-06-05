@@ -8,6 +8,7 @@
 #include "Notes.h"
 #include "notewindow.h"
 #include "explorateurwindow.h"
+#include "RelationWindow.h"
 
 #include <QMainWindow>
 #include <QPushButton>
@@ -49,6 +50,8 @@ private:
 
     ExplorateurWindow *explo_window;
 
+    CreationRelationWindow * crea_rela_window;
+
 
 public slots:
     void cree_note();
@@ -57,6 +60,8 @@ public slots:
     void ouvrir_explorateur();
     void ouvrir_agenda_taches();
     void ouvre_note();
+
+    void ouvrir_crea_ref();
 };
 
 

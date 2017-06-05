@@ -30,6 +30,7 @@ public:
 
     QString getTitre(){return titre;}
     QString getDescription(){return description;}
+    bool getOrientee(){return orientee;}
 
     void setTitre(QString _titre){if (titre != "Reference") titre=_titre;}
     void setDescription(QString _desc){if (description != "Relation forte") description = _desc;}
@@ -81,6 +82,7 @@ public:
     void addRelation(Relation* rel);
     void deleteRelation(QString _titre);
     Relation& getRelation(QString _titre);
+    void createReference();
 
     static RelationManager& donneInstance(){
         if (!instance)

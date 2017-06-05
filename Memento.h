@@ -8,6 +8,7 @@
 using namespace std;
 enum TypeMultimedia{video, audio, image};
 enum TypeStatut{attente, cours, termine};
+enum TypeEtatNote{active,archive,corbeille};
 
 
 /// ------ Note Exception ------ ///

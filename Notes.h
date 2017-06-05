@@ -26,23 +26,24 @@ public:
     void setTitre(QString _titre){titre = _titre;}
 
     virtual ~Note(){}
-    Note(QString id, QString _titre) : identificateur(id), titre(_titre){
+    Note(QString id, QString _titre) : identificateur(id), titre(_titre), etat(active){
         date_creation = QDateTime::currentDateTime();
         date_modif = QDateTime::currentDateTime();
         gardien_note = new Gardien;
     }
-    Note(QString id, QString _titre, QDateTime _dateCrea, QDateTime _dateModif) : identificateur(id), titre(_titre), date_creation(_dateCrea), date_modif(_dateModif){
+    Note(QString id, QString _titre, QDateTime _dateCrea, QDateTime _dateModif, TypeEtatNote _etat = active) : identificateur(id), titre(_titre), date_creation(_dateCrea), date_modif(_dateModif), etat(_etat){
         gardien_note = new Gardien;
     }
 
     QString dateTimeToString(QDateTime date);
+    QString etatToString();
 
 private:
     QString identificateur;
     QString titre;
     QDateTime date_creation;
     QDateTime date_modif;
-
+    TypeEtatNote etat;
     Gardien* gardien_note;
 
     friend class NotesManager;
@@ -65,7 +66,7 @@ public:
     QString getTexte() const {return texte;}
     void setTexte(QString _texte){texte = _texte;}
     Article(QString id, QString _titre, QString _texte): Note(id,_titre), texte(_texte){}
-    Article(QString id, QString _titre, QString _texte, QDateTime _dateCrea, QDateTime _dateModif): Note(id,_titre,_dateCrea,_dateModif), texte(_texte){}
+    Article(QString id, QString _titre, QString _texte, QDateTime _dateCrea, QDateTime _dateModif, TypeEtatNote _etat = active): Note(id,_titre,_dateCrea,_dateModif, _etat), texte(_texte){}
 
     ~Article(){}
 
@@ -87,7 +88,7 @@ public:
     Tache(QString id, QString _titre, QString _action, unsigned int _priorite = 0, TypeStatut _statut = cours) : Note(id,_titre), action(_action), date_echeance(), priorite(_priorite), statut(_statut){}//cas sans date
     //on peut vérifier si une date est nulle avec isValid() ou isNull(), la priorité par défaut = 0 ?
     //voir si les valeurs par défaut sont plutot gérer par l'interface
-    Tache(QString id, QString _titre, QString _action, QDateTime date, QDateTime _dateCrea, QDateTime _dateModif, unsigned int _priorite = 0, TypeStatut _statut = cours): Note(id,_titre,_dateCrea,_dateModif), action(_action), date_echeance(date), priorite(_priorite), statut(_statut){}
+    Tache(QString id, QString _titre, QString _action, QDateTime date, QDateTime _dateCrea, QDateTime _dateModif, unsigned int _priorite = 0, TypeStatut _statut = cours, TypeEtatNote _etat = active): Note(id,_titre,_dateCrea,_dateModif, _etat), action(_action), date_echeance(date), priorite(_priorite), statut(_statut){}
 
     ~Tache(){}
 
@@ -117,7 +118,7 @@ class Multimedia : public Note {
 public:
     QString getDescription() const {return description;}
     Multimedia(QString id, QString _titre, QString desc, QString _fichier, TypeMultimedia _type): Note(id,_titre), description(desc), fichier(_fichier), type(_type){}
-    Multimedia(QString id, QString _titre, QString desc, QString _fichier, TypeMultimedia _type, QDateTime _dateCrea, QDateTime _dateModif): Note(id,_titre,_dateCrea,_dateModif), description(desc), fichier(_fichier), type(_type){}
+    Multimedia(QString id, QString _titre, QString desc, QString _fichier, TypeMultimedia _type, QDateTime _dateCrea, QDateTime _dateModif,  TypeEtatNote _etat = active): Note(id,_titre,_dateCrea,_dateModif, _etat), description(desc), fichier(_fichier), type(_type){}
 
     ~Multimedia(){}
 
@@ -149,6 +150,10 @@ private:
 class NotesManager{
 public:
     void addNote(Note* n);
+    void deleteNote(const QString& id);
+    void viderCorbeille();
+    void restaurerCorbeille();
+    void restaurerArchiveNote(const QString& id);
 
     static NotesManager& donneInstance(){
         if (!instance)

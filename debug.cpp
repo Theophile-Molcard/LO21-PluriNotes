@@ -28,13 +28,23 @@ void DebugTest::Debug()
     Tache* copainT2 = new Tache("a", "Ta poule2", "manger", QDateTime(date2,heure), 1, termine);
     Tache* copainT3 = new Tache("e", "Ta poule3", "manger", QDateTime(date3,heure), 1, attente);
 
+    Article* copain2 = new Article("je", "suis", "voué à être supprimé");
+
+
     Multimedia* copainM = new Multimedia("Ainsi", "va la vie", "Chaque jour passe" , "C:/dossierX", video);
     notes.addNote(copain);
     notes.addNote(copainT1);
     notes.addNote(copainT2);
     notes.addNote(copainT3);
     notes.addNote(copainM);
+    notes.addNote(copain2);
 
+    RelationManager& Rels= RelationManager::donneInstance();
+    Rels.createReference();
+    Rels.getRelation("Reference").addCouple("encore", "super");
+    Relation* rel = new Relation("cool", "a la vie comme a la mort");
+    rel->addCouple("je", "encore");
+    Rels.addRelation(rel);
 
     notes.saveVersion(copain);
 
@@ -44,6 +54,14 @@ void DebugTest::Debug()
 
     copain->setTitre("OUIIIII!");
 
+    notes.deleteNote("super");
+    qDebug() << "suppr 1";
+    qDebug() << notes.getNote("super").etatToString();
+    qDebug() << "suppr 2";
+    notes.deleteNote("je");
+    qDebug() << notes.getNote("je").etatToString();
+
+    notes.viderCorbeille();
 
     NotesManager::Iterator it = notes.getIterator();
     qDebug() << (*it)->getId();
@@ -95,17 +113,17 @@ void DebugTest::DebugRelation(){
     qDebug() << Rels.getRelation("Copain").getTitre();
 
     notes.SaveEverythingXML();
-    /*RelationManager& Rels = RelationManager::donneInstance();
-    RelationManager::Iterator it = Rels.getIterator();
-    while (!it.isdone()) {
-        Relation::Iterator itr = (*it)->getIterator();
-        qDebug() << (*it)->getTitre();
+   /* RelationManager& Rels = RelationManager::donneInstance();
+    RelationManager::Iterator it5 = Rels.getIterator();
+    while (!it5.isdone()) {
+        Relation::Iterator itr = (*it5)->getIterator();
+        qDebug() << (*it5)->getTitre();
         while (!itr.isdone()) {
             qDebug() << (*itr)->getx();
             qDebug() << (*itr)->gety();
             itr++;
         }
-        it++;
+        it5++;
     }*/
 
 

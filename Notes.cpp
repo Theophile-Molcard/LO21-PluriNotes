@@ -30,6 +30,84 @@ void NotesManager::addNote(Note* n){
     tabNotes[nbNotes++]= n;
 }
 
+void NotesManager::deleteNote(const QString &id){
+    unsigned int i;
+    for(i=0; i<nbNotes && tabNotes[i]->getId() != id; i++){}
+    if(nbNotes != 0)
+    {
+        if(tabNotes[i]->getId() == id)
+        {
+            RelationManager& Rels = RelationManager::donneInstance();
+            Relation& rel = Rels.getRelation("Reference");
+            Relation::Iterator it = rel.getIterator();
+            bool reference = false;
+            while(!it.isdone())
+            {
+                if((*it)->gety() == id)
+                    reference = true;
+                it++;
+            }
+
+            if(reference)
+            {
+                tabNotes[i]->etat = archive;
+            }
+            else
+            {
+                tabNotes[i]->etat = corbeille;
+            }
+        }
+    }
+}
+
+void NotesManager::viderCorbeille(){
+    for(unsigned int i = 0; i<nbNotes; i++)
+    {
+        if(tabNotes[i]->etat == corbeille)
+        {
+
+            RelationManager& Rels = RelationManager::donneInstance();
+            RelationManager::Iterator it = Rels.getIterator();
+            while (!it.isdone()) {
+                if((*it)->getTitre() != "Reference")
+                {
+                    Relation::Iterator itr = (*it)->getIterator();
+                    qDebug() << (*it)->getTitre();
+                    while (!itr.isdone()) {
+                        qDebug() << (*itr)->getx();
+                        qDebug() << (*itr)->gety();
+                        if((*itr)->getx() == tabNotes[i]->getId() || (*itr)->gety() == tabNotes[i]->getId())
+                        {
+                            (*it)->deleteCouple((*itr)->getx(),(*itr)->gety());
+                        }
+                        itr++;
+                    }
+                }
+                it++;
+            }
+        }
+    }
+}
+
+void NotesManager::restaurerCorbeille(){
+    for(unsigned int i = 0; i < nbNotes; i++)
+    {
+        if(tabNotes[i]->etat == corbeille)
+        {
+            tabNotes[i]->etat = active;
+        }
+    }
+}
+
+void NotesManager::restaurerArchiveNote(const QString &id){
+    unsigned int i;
+    for(i = 0; i < nbNotes && tabNotes[i]->getId() != id ; i++){}
+    if(tabNotes[i]->getId() == id)
+    {
+        tabNotes[i]->etat = active;
+    }
+}
+
 Note& NotesManager::getNote(const QString& id){
     for(unsigned int i=0; i<nbNotes; i++){
         if (tabNotes[i]->getId()==id) return *tabNotes[i];
@@ -514,6 +592,23 @@ void Multimedia::saveXML(QXmlStreamWriter *stream){
 
 QString Note::dateTimeToString(QDateTime date){
     return date.toString("dd-MM-yyyy hh:mm:ss");
+}
+
+QString Note::etatToString(){
+    switch(etat){
+        case 0:
+            return "active";
+        break;
+        case 1:
+            return "archive";
+        break;
+        case 2:
+            return "corbeille";
+        break;
+        default:
+            return "";
+
+    }
 }
 
 QString Tache::statutToString(){

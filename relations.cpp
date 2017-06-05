@@ -39,7 +39,7 @@ Relation& RelationManager::getRelation(QString _titre){
 void RelationManager::deleteRelation(QString _titre){
     if(_titre == "Reference") throw("erreur, on ne peut supprimer la relation Reference.");
     unsigned int i;
-    for(i=0; i<nbRelations && tabRelations[i]->getTitre() == _titre; i++){}
+    for(i=0; i<nbRelations && tabRelations[i]->getTitre() != _titre; i++){}
     if(nbRelations != 0)
     {
         if(tabRelations[i]->getTitre() == _titre)
@@ -56,6 +56,24 @@ void RelationManager::saveEveryRelationsXML(QXmlStreamWriter *stream){
         this->tabRelations[i]->saveXML(stream);
     }
     stream->writeEndElement();
+}
+
+void RelationManager::createReference(){
+    for(unsigned int i=0; i <nbRelations; i++){
+        if(tabRelations[i]->getTitre() == "Reference")
+            throw NotesException("erreur, Reference existe déjà");
+    }
+    if(nbRelations == nbMaxRelations){
+        Relation** newRelations = new Relation*[nbMaxRelations+5];
+        for(unsigned int i=0; i<nbRelations; i++)
+            newRelations[i] = tabRelations[i];
+        Relation** oldRelations = tabRelations;
+        tabRelations = newRelations;
+        nbMaxRelations+=5;
+        if(oldRelations) delete[] oldRelations;
+    }
+    Relation* rel = new Relation("Reference", "relations fortes");
+    tabRelations[nbRelations++] = rel;
 }
 
 Relation::~Relation(){

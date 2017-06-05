@@ -64,7 +64,10 @@ void DebugTest::Debug()
     notes.viderCorbeille();
 
     NotesManager::Iterator it = notes.getIterator();
-    qDebug() << (*it)->getId();
+    while (!it.isdone()) {
+        qDebug() << (*it)->getId();
+        it++;
+    }
 
     qDebug() << notes.getNote("super").getDateModif();
 

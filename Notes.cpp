@@ -85,6 +85,9 @@ void NotesManager::viderCorbeille(){
                 }
                 it++;
             }
+            delete tabNotes[i]->getGardien();
+            delete tabNotes[i];
+            tabNotes[i] = tabNotes[--nbNotes];
         }
     }
 }

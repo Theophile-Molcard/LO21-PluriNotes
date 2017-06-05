@@ -467,6 +467,12 @@ void TacheWindow::save(){
             tache.setTitre(title->text());
             tache.setDateEcheance(echeance->dateTime());
             tache.setPriority(priorite->text().toUInt());
+            if(statut->currentText() == "termine")
+                tache.setStatut(termine);
+            else if(statut->currentText() == "cours")
+                tache.setStatut(cours);
+            else
+                tache.setStatut(attente);
         }
         else
         {

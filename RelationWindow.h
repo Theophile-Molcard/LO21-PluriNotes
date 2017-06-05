@@ -29,6 +29,7 @@ public:
 
     QPushButton* getButtonCreate() {return button_create;}
     QPushButton* getButtonClose() {return button_close;}
+    QLineEdit* getTitre() {return titre; }
 
 private:
 
@@ -79,13 +80,12 @@ private:
 };
 
 
-/*
-class CreationRelationWindow : public QWidget{
+class CoupleWindow : public QWidget{
 
     Q_OBJECT
 
 public:
-    CreationRelationWindow(QWidget *parent = 0);
+    CoupleWindow(Relation* rela, QWidget *parent = 0);
 
     QPushButton* getButtonCreate() {return button_create;}
 
@@ -96,15 +96,11 @@ private:
 
     QVBoxLayout *fenetre_vbox;
 
-    QHBoxLayout *titre_hbox;
-    QLabel *titre_label;
-    QLineEdit *titre;
+    QLabel *titre_rela;
 
-    QHBoxLayout * description_hbox;
-    QLabel *description_label;
-    QTextEdit *description;
-
-    QCheckBox *non_oriente;
+    QHBoxLayout * couple_hbox;
+    QLabel *couple_label;
+    QLineEdit *couple;
 
     QListWidget *liste_x;
     QListWidget *liste_y;
@@ -113,7 +109,7 @@ private:
     QPushButton *button_create;
     QPushButton *button_close;
 
-};*/
+};
 
 
 #endif // CREARELAWINDOW_H

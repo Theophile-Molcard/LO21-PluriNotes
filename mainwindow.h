@@ -53,6 +53,7 @@ private:
 
     CreationRelationWindow * crea_rela_window;
     ExplorateurRelationWindow * explo_rela_window;
+    CoupleWindow * couple_window;
 
     void fermer_slot_1();
     void fermer_slot_2();
@@ -70,6 +71,7 @@ public slots:
     void ouvrir_crea_rela();
     void parcourir_rela();
     void ouvrir_rela();
+    void ouvre_couplage();
 };
 
 

@@ -132,10 +132,10 @@ ExplorateurRelationWindow::ExplorateurRelationWindow(QWidget *parent): QWidget(p
     this->setLayout(fenetre_vbox);
 }
 
-/*
 
 
-CreationRelationWindow::CreationRelationWindow(QWidget *parent): QWidget(parent)
+
+CoupleWindow::CoupleWindow(Relation* rela, QWidget *parent): QWidget(parent)
 {
 
     setFixedSize(200, 400);
@@ -143,21 +143,14 @@ CreationRelationWindow::CreationRelationWindow(QWidget *parent): QWidget(parent)
 
     fenetre_vbox = new QVBoxLayout;
 
-    titre_hbox = new QHBoxLayout;
-    titre_label = new QLabel("titre");
-    titre = new QLineEdit;
+    titre_rela = new QLabel(rela->getTitre());
 
-    titre_hbox->addWidget(titre_label);
-    titre_hbox->addWidget(titre);
+    couple_hbox = new QHBoxLayout;
+    couple_label = new QLabel("label");
+    couple = new QLineEdit;
 
-    description_hbox = new QHBoxLayout;
-    description_label = new QLabel("Description");
-    description = new QTextEdit;
-
-    description_hbox->addWidget(description_label);
-    description_hbox->addWidget(description);
-
-    non_oriente = new QCheckBox("non orienté");
+    couple_hbox->addWidget(couple_label);
+    couple_hbox->addWidget(couple);
 
     liste_x = new QListWidget;
 
@@ -185,9 +178,8 @@ CreationRelationWindow::CreationRelationWindow(QWidget *parent): QWidget(parent)
     button_layout->addWidget(button_create);
     button_layout->addWidget(button_close);
 
-    fenetre_vbox->addLayout(titre_hbox);
-    fenetre_vbox->addLayout(description_hbox);
-    fenetre_vbox->addWidget(non_oriente);
+    fenetre_vbox->addWidget(titre_rela);
+    fenetre_vbox->addLayout(couple_hbox);
     fenetre_vbox->addWidget(liste_x);
     fenetre_vbox->addWidget(liste_y);
     fenetre_vbox->addLayout(button_layout);
@@ -195,4 +187,4 @@ CreationRelationWindow::CreationRelationWindow(QWidget *parent): QWidget(parent)
 
     this->setLayout(fenetre_vbox);
 }
-*/
+

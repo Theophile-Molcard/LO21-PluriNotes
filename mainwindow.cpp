@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
     explo_window = 0;
     crea_rela_window = 0;
     explo_rela_window = 0;
+    couple_window = 0;
 
     /// Les menus
     QMenu *menuNotes, *menuRef, *menuExplo;
@@ -191,6 +192,7 @@ void MainWindow::fermer_slot_3(){
 
     if(crea_rela_window) crea_rela_window->close();
     if(explo_rela_window) explo_rela_window->close();
+    if(couple_window) couple_window->close();
 
 }
 
@@ -221,6 +223,7 @@ void MainWindow::ouvrir_rela(){
 
     crea_rela_window = new CreationRelationWindow(&RM.getRelation(titre_rela), this);
     crea_rela_window->getButtonCreate()->setText("ajouter couple");
+    connect(crea_rela_window->getButtonCreate(), SIGNAL(clicked(bool)), this, SLOT(ouvre_couplage()));
 
     crea_rela_window->getButtonClose()->setText("précedent");
     connect(crea_rela_window->getButtonClose(), SIGNAL(clicked(bool)), this, SLOT(parcourir_rela()));
@@ -228,7 +231,19 @@ void MainWindow::ouvrir_rela(){
     crea_rela_window->show();
 }
 
+void MainWindow::ouvre_couplage(){
 
+    RelationManager& RM = RelationManager::donneInstance();
+
+    Relation* rela = &RM.getRelation( crea_rela_window->getTitre()->text() );
+
+    fermer_slot_3();
+
+    couple_window = new CoupleWindow(rela, this);
+    couple_window->show();
+
+
+}
 
 
 

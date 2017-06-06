@@ -156,7 +156,7 @@ public slots:
     void saveLabel();
     void deleteCouple();
     void activer_suppr(){
-        if(relation->currentIndex() == 0)
+        if(relation->currentText() == "Reference")
             button_supprimer->setEnabled(false);
         else
             button_supprimer->setEnabled(true);

@@ -314,6 +314,8 @@ RelationVizingWindow::RelationVizingWindow(QWidget *parent): QWidget(parent)
 
     }
 
+    connect(relation, SIGNAL(currentIndexChanged(int)), this, SLOT(activer_suppr()));
+
     connect(liste_couples, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(editer_couple()));
 
 
@@ -321,6 +323,7 @@ RelationVizingWindow::RelationVizingWindow(QWidget *parent): QWidget(parent)
 
 
     button_supprimer = new QPushButton("supprimer");
+    button_supprimer->setEnabled(false);
     button_close = new QPushButton("fermer");
     connect(button_close, SIGNAL(clicked(bool)), this, SLOT(close()));
     connect(button_supprimer, SIGNAL(clicked(bool)),this,SLOT(deleteCouple()));

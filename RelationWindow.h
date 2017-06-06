@@ -155,6 +155,12 @@ public slots:
     void editer_couple();
     void saveLabel();
     void deleteCouple();
+    void activer_suppr(){
+        if(relation->currentIndex() == 0)
+            button_supprimer->setEnabled(false);
+        else
+            button_supprimer->setEnabled(true);
+    }
 
 };
 

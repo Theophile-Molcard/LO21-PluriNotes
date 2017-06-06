@@ -323,7 +323,7 @@ RelationVizingWindow::RelationVizingWindow(QWidget *parent): QWidget(parent)
     button_supprimer = new QPushButton("supprimer");
     button_close = new QPushButton("fermer");
     connect(button_close, SIGNAL(clicked(bool)), this, SLOT(close()));
-
+    connect(button_supprimer, SIGNAL(clicked(bool)),this,SLOT(deleteCouple()));
 
     button_layout = new QHBoxLayout;
     button_layout->addWidget(button_supprimer);
@@ -354,8 +354,6 @@ void RelationVizingWindow::afficherCouples(){
 }
 
 void RelationVizingWindow::editer_couple(){
-
-
 
 
     RelationManager& RM = RelationManager::donneInstance();
@@ -417,7 +415,28 @@ void RelationVizingWindow::saveLabel(){
 
 
 
-
+void RelationVizingWindow::deleteCouple(){
+    if(relation->currentText() == "Reference")
+    {
+        QErrorMessage* em = new QErrorMessage;
+        em->showMessage("On ne peut pas supprimer un couple de la relation Reference");
+    }
+    else if(liste_couples->currentRow() != -1)
+    {
+        RelationManager& RM = RelationManager::donneInstance();
+        Relation& r = RM.getRelation(relation->currentText());
+        QStringList liste =  liste_couples->currentItem()->text().split(" -> ");
+        qDebug() << liste[0];
+        qDebug() << liste[1];
+        r.deleteCouple(liste[0],liste[1]);
+        QMessageBox::information(this, "Bravo", "Supression Reussie !");
+    }
+    else
+    {
+        QErrorMessage* em = new QErrorMessage;
+        em->showMessage("Selectionnez un couple");
+    }
+}
 
 
 

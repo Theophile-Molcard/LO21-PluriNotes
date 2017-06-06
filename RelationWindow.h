@@ -154,6 +154,7 @@ public slots:
     void afficherCouples();
     void editer_couple();
     void saveLabel();
+    void deleteCouple();
 
 };
 

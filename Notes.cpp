@@ -33,7 +33,7 @@ void NotesManager::addNote(Note* n){
 void NotesManager::deleteNote(const QString &id){
     unsigned int i;
     for(i=0; i<nbNotes && tabNotes[i]->getId() != id; i++){}
-    if(nbNotes != 0)
+    if(nbNotes != 0 && i<nbNotes)
     {
         if(tabNotes[i]->getId() == id)
         {
@@ -105,9 +105,11 @@ void NotesManager::restaurerCorbeille(){
 void NotesManager::restaurerArchiveNote(const QString &id){
     unsigned int i;
     for(i = 0; i < nbNotes && tabNotes[i]->getId() != id ; i++){}
-    if(tabNotes[i]->getId() == id)
-    {
-        tabNotes[i]->etat = active;
+    if(nbNotes !=0 && i < nbNotes){
+        if(tabNotes[i]->getId() == id)
+        {
+            tabNotes[i]->etat = active;
+        }
     }
 }
 

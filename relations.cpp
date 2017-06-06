@@ -47,7 +47,7 @@ void RelationManager::deleteRelation(QString _titre){
     if(_titre == "Reference") throw("erreur, on ne peut supprimer la relation Reference.");
     unsigned int i;
     for(i=0; i<nbRelations && tabRelations[i]->getTitre() != _titre; i++){}
-    if(nbRelations != 0)
+    if(nbRelations != 0 && i <nbRelations)
     {
         if(tabRelations[i]->getTitre() == _titre)
         {
@@ -118,11 +118,14 @@ void Relation::addCouple(QString _x, QString _y, QString _label){
 
 void Relation::deleteCouple(QString _x, QString _y){
     unsigned int i;
-    for(i=0; i<nbCouples && (tabCouples[i]->getx() != _x) && (tabCouples[i]->gety() != _y); i++){}
-    if(nbCouples != 0)
+    for(i=0; i<nbCouples && ((tabCouples[i]->getx() != _x) || (tabCouples[i]->gety() != _y)); i++){}
+    if(nbCouples != 0 && i < nbCouples)
     {
+        qDebug() <<tabCouples[i]->getx();
+        qDebug() << tabCouples[i]->gety();
         if(tabCouples[i]->getx() == _x && tabCouples[i]->gety() == _y)
         {
+
             delete tabCouples[i];
             tabCouples[i] = tabCouples[--nbCouples];
             if(!orientee)

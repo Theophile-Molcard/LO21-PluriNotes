@@ -143,6 +143,13 @@ ArticleWindow::ArticleWindow(Note &note, QWidget *parent) : QWidget(parent)
     fenetre_vbox->addLayout(text_hbox);
     fenetre_vbox->addLayout(button_hbox);
 
+    if(article_note.etatToString() == "archive"){
+        title->setEnabled(false);
+        text->setEnabled(false);
+        save_button->setText("Restaurée");
+        disconnect(save_button, SIGNAL(clicked(bool)), this, SLOT(save()));
+    }
+
 
     this->setLayout(fenetre_vbox);
 
@@ -276,6 +283,16 @@ MultimediaWindow::MultimediaWindow(Note& note, QWidget *parent) : QWidget(parent
     fenetre_vbox->addLayout(fichier_hbox);
     fenetre_vbox->addWidget(printed_path);
     fenetre_vbox->addLayout(button_hbox);
+
+    if(multi_note.etatToString() == "archive"){
+        title->setEnabled(false);
+        description->setEnabled(false);
+        fichier->setEnabled(false);
+        fichier_type->setEnabled(false);
+
+        save_button->setText("Restaurée");
+        disconnect(save_button, SIGNAL(clicked(bool)), this, SLOT(save()));
+    }
 
 
     this->setLayout(fenetre_vbox);
@@ -424,6 +441,17 @@ TacheWindow::TacheWindow(Note &note, QWidget *parent) : QWidget(parent)
     fenetre_vbox->addLayout(echeance_hbox);
     fenetre_vbox->addLayout(statut_hbox);
     fenetre_vbox->addLayout(button_hbox);
+
+    if(tache_note.etatToString() == "archive"){
+        title->setEnabled(false);
+        action->setEnabled(false);
+        echeance->setEnabled(false);
+        priorite->setEnabled(false);
+        statut->setEnabled(false);
+
+        save_button->setText("Restaurée");
+        disconnect(save_button, SIGNAL(clicked(bool)), this, SLOT(save()));
+    }
 
 
     this->setLayout(fenetre_vbox);

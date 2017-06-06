@@ -434,6 +434,15 @@ void RelationVizingWindow::deleteCouple(){
         r.deleteCouple(liste[0],liste[1]);
         QMessageBox::information(this, "Bravo", "Supression Reussie !");
         afficherCouples();
+        if(label){
+            fenetre_vbox->removeWidget(label_label);
+            label_hbox->removeWidget(label);
+            label_hbox->removeWidget(label_save);
+            label->close();
+            label_save->close();
+            label_label->close();
+            label = 0;
+        }
     }
     else
     {

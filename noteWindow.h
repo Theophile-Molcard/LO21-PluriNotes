@@ -61,6 +61,8 @@ public:
     ArticleWindow(Note& note, QWidget *parent = 0);
     QString getTitle() const { return title->text(); }
     QString getText() const { return text->toPlainText(); }
+    QPushButton* getSaveButton() { return save_button; }
+    QPushButton* getDeleteButton() { return delete_button; }
 
 private:
 
@@ -101,6 +103,8 @@ public:
     QString getTitle() const { return title->text(); }
     QString getDescription() const { return description->toPlainText(); }
     QString getType() const { return fichier_type->currentText(); }
+    QPushButton* getSaveButton() { return save_button; }
+    QPushButton* getDeleteButton() { return delete_button; }
 
 private:
 
@@ -152,6 +156,8 @@ public:
     QString getPriorite() const { return priorite->text(); }
     QDateTime getEcheance() const { return echeance->dateTime(); }
     QString getStatut() const { return statut->currentText(); }
+    QPushButton* getSaveButton() { return save_button; }
+    QPushButton* getDeleteButton() { return delete_button; }
 
 private:
 

@@ -170,18 +170,28 @@ void MainWindow::ouvre_note() {
 
 void MainWindow::ouvre_tache(Note &note){
     tache_window = new TacheWindow(note, this);
+    connect(tache_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_agenda_taches()));
+    connect(tache_window->getDeleteButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_agenda_taches()));
+    connect(tache_window->getDeleteButton(), SIGNAL(clicked(bool)), tache_window, SLOT(close()));
+
     tache_window->show();
 }
 
 
 void MainWindow::ouvre_multi(Note &note){
     multimedia_window = new MultimediaWindow(note, this);
+    connect(multimedia_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur()));
+    connect(multimedia_window->getDeleteButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur()));
+    connect(multimedia_window->getDeleteButton(), SIGNAL(clicked(bool)), multimedia_window, SLOT(close()));
     multimedia_window->show();
 }
 
 
 void MainWindow::ouvre_article(Note &note){
     article_window = new ArticleWindow(note, this);
+    connect(article_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur()));
+    connect(article_window->getDeleteButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur()));
+    connect(article_window->getDeleteButton(), SIGNAL(clicked(bool)), article_window, SLOT(close()));
     article_window->show();
 }
 

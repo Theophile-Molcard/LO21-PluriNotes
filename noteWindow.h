@@ -82,6 +82,7 @@ private:
     QHBoxLayout *button_hbox;
     QPushButton *save_button;
     QPushButton *close_button;
+    QPushButton *delete_button;
 
 public slots:
     void save();
@@ -127,6 +128,7 @@ private:
     QHBoxLayout *button_hbox;
     QPushButton *save_button;
     QPushButton *close_button;
+    QPushButton *delete_button;
 
 public slots:
     void save();
@@ -181,6 +183,7 @@ private:
     QHBoxLayout *button_hbox;
     QPushButton *save_button;
     QPushButton *close_button;
+    QPushButton *delete_button;
 
 public slots:
     void save();

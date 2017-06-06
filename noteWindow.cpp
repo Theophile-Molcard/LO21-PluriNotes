@@ -130,11 +130,12 @@ ArticleWindow::ArticleWindow(Note &note, QWidget *parent) : QWidget(parent)
     connect(save_button, SIGNAL(clicked(bool)), this, SLOT(save()));
     close_button = new QPushButton("close");
     connect(close_button, SIGNAL(clicked(bool)), this, SLOT(close()));
+    delete_button = new QPushButton("delete");
 
     id_hbox->addWidget(id_label); id_hbox->addWidget(id);
     title_hbox->addWidget(title_label); title_hbox->addWidget(title);
     text_hbox->addWidget(text_label); text_hbox->addWidget(text);
-    button_hbox->addWidget(save_button); button_hbox->addWidget(close_button);
+    button_hbox->addWidget(save_button); button_hbox->addWidget(close_button); button_hbox->addWidget(delete_button);
 
     fenetre_vbox->addLayout(id_hbox);
     fenetre_vbox->addLayout(title_hbox);
@@ -256,6 +257,7 @@ MultimediaWindow::MultimediaWindow(Note& note, QWidget *parent) : QWidget(parent
     connect(save_button, SIGNAL(clicked(bool)), this, SLOT(save()));
     close_button = new QPushButton("close");
     connect(close_button, SIGNAL(clicked(bool)), this, SLOT(close()));
+    delete_button = new QPushButton("delete");
 
     printed_path = new QLabel("C:/  ...  "+multi_note.getFicher().right(20));
     path = multi_note.getFicher();
@@ -264,7 +266,7 @@ MultimediaWindow::MultimediaWindow(Note& note, QWidget *parent) : QWidget(parent
     title_hbox->addWidget(title_label); title_hbox->addWidget(title);
     description_hbox->addWidget(description_label); description_hbox->addWidget(description);
     fichier_hbox->addWidget(fichier_type); fichier_hbox->addWidget(fichier);
-    button_hbox->addWidget(save_button); button_hbox->addWidget(close_button);
+    button_hbox->addWidget(save_button); button_hbox->addWidget(close_button); button_hbox->addWidget(delete_button);
 
     fenetre_vbox->addLayout(id_hbox);
     fenetre_vbox->addLayout(title_hbox);
@@ -401,6 +403,7 @@ TacheWindow::TacheWindow(Note &note, QWidget *parent) : QWidget(parent)
     connect(save_button, SIGNAL(clicked(bool)), this, SLOT(save()));
     close_button = new QPushButton("close");
     connect(close_button, SIGNAL(clicked(bool)), this, SLOT(close()));
+    delete_button = new QPushButton("delete");
 
 
     id_hbox->addWidget(id_label); id_hbox->addWidget(id);
@@ -409,7 +412,7 @@ TacheWindow::TacheWindow(Note &note, QWidget *parent) : QWidget(parent)
     priorite_hbox->addWidget(priorite_label); priorite_hbox->addWidget(priorite);
     echeance_hbox->addWidget(echeance_label); echeance_hbox->addWidget(echeance);
     statut_hbox->addWidget(statut_label); statut_hbox->addWidget(statut);
-    button_hbox->addWidget(save_button); button_hbox->addWidget(close_button);
+    button_hbox->addWidget(save_button); button_hbox->addWidget(close_button); button_hbox->addWidget(delete_button);
 
     fenetre_vbox->addLayout(id_hbox);
     fenetre_vbox->addLayout(title_hbox);

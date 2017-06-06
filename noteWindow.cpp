@@ -131,6 +131,7 @@ ArticleWindow::ArticleWindow(Note &note, QWidget *parent) : QWidget(parent)
     close_button = new QPushButton("close");
     connect(close_button, SIGNAL(clicked(bool)), this, SLOT(close()));
     delete_button = new QPushButton("delete");
+    connect(delete_button, SIGNAL(clicked(bool)), this, SLOT(deleteArticle()));
 
     id_hbox->addWidget(id_label); id_hbox->addWidget(id);
     title_hbox->addWidget(title_label); title_hbox->addWidget(title);
@@ -258,6 +259,7 @@ MultimediaWindow::MultimediaWindow(Note& note, QWidget *parent) : QWidget(parent
     close_button = new QPushButton("close");
     connect(close_button, SIGNAL(clicked(bool)), this, SLOT(close()));
     delete_button = new QPushButton("delete");
+    connect(delete_button, SIGNAL(clicked(bool)), this, SLOT(deleteMulti()));
 
     printed_path = new QLabel("C:/  ...  "+multi_note.getFicher().right(20));
     path = multi_note.getFicher();
@@ -404,6 +406,7 @@ TacheWindow::TacheWindow(Note &note, QWidget *parent) : QWidget(parent)
     close_button = new QPushButton("close");
     connect(close_button, SIGNAL(clicked(bool)), this, SLOT(close()));
     delete_button = new QPushButton("delete");
+    connect(delete_button, SIGNAL(clicked(bool)), this, SLOT(deleteTache()));
 
 
     id_hbox->addWidget(id_label); id_hbox->addWidget(id);
@@ -524,7 +527,7 @@ void MultimediaWindow::save(){
             Multimedia* multi = new Multimedia(id->text(),title->text(),description->toPlainText(),path,type);
             NM.addNote(multi);
         }
-        QMessageBox::information(this, "Bravo", "Sauvegarde Reussie !");
+        QMessageBox::information(this, "Bravo", "Sauvegarde Réussie !");
     }
     else
     {
@@ -535,8 +538,23 @@ void MultimediaWindow::save(){
 }
 
 
+void ArticleWindow::deleteArticle(){
+    NotesManager& NM = NotesManager::donneInstance();
+    NM.deleteNote(this->id->text());
+    QMessageBox::information(this, "Bravo", "Suppression Réussie !");
+}
 
+void TacheWindow::deleteTache(){
+    NotesManager& NM = NotesManager::donneInstance();
+    NM.deleteNote(this->id->text());
+    QMessageBox::information(this, "Bravo", "Suppression Réussie !");
+}
 
+void MultimediaWindow::deleteMulti(){
+    NotesManager& NM = NotesManager::donneInstance();
+    NM.deleteNote(this->id->text());
+    QMessageBox::information(this, "Bravo", "Suppression Réussie !");
+}
 
 
 

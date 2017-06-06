@@ -42,6 +42,7 @@ private:
     QHBoxLayout *titre_hbox;
     QLabel *titre_label;
     QLineEdit *titre;
+    QString titre_ancien;
 
     QHBoxLayout * description_hbox;
     QLabel *description_label;
@@ -55,6 +56,7 @@ private:
     QPushButton *button_save;
 
 public slots:
+    void create();
     void save();
 
 };
@@ -151,6 +153,7 @@ private:
 public slots:
     void afficherCouples();
     void editer_couple();
+    void saveLabel();
 
 };
 

@@ -132,6 +132,13 @@ void Relation::deleteCouple(QString _x, QString _y){
         }
     }
 }
+Couple& Relation::getCouple(QString _x, QString _y){
+    for(unsigned int i=0; i<nbCouples; i++){
+        if (tabCouples[i]->getx()==_x && tabCouples[i]->gety() == _y) return *tabCouples[i];
+    }
+    throw NotesException(QString("Erreur, le couple n'existe pas."));
+}
+
 bool Relation::existeCouple(QString _x, QString _y){
     for(unsigned int i=0; i <nbCouples; i++){
         if(tabCouples[i]->getx() == _x && tabCouples[i]->gety() == _y) return true;

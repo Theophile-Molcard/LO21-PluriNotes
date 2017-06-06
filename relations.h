@@ -28,6 +28,7 @@ public:
     void addCouple(QString _x, QString _y, QString _label = "default");
     void deleteCouple(QString _x, QString _y);
     bool existeCouple(QString _x, QString _y);
+    Couple& getCouple(QString _x, QString _y);
 
     QString getTitre(){return titre;}
     QString getDescription(){return description;}

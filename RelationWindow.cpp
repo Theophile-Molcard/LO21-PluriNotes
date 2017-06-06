@@ -34,7 +34,7 @@ CreationRelationWindow::CreationRelationWindow(QWidget *parent): QWidget(parent)
     button_create = new QPushButton("créer");
     button_close = new QPushButton("retour");
     connect(button_close, SIGNAL(clicked(bool)), this, SLOT(close()));
-    connect(button_create,SIGNAL(clicked(bool)),this, SLOT(save()));
+    connect(button_create,SIGNAL(clicked(bool)),this, SLOT(create()));
 
     button_layout = new QHBoxLayout;
     button_layout->addWidget(button_create);
@@ -62,7 +62,7 @@ CreationRelationWindow::CreationRelationWindow(Relation *rela, QWidget *parent):
     titre_label = new QLabel("titre");
     titre = new QLineEdit;
     titre->setText(rela->getTitre());
-
+    titre_ancien = rela->getTitre();
 
     titre_hbox->addWidget(titre_label);
     titre_hbox->addWidget(titre);
@@ -77,6 +77,7 @@ CreationRelationWindow::CreationRelationWindow(Relation *rela, QWidget *parent):
 
     non_oriente = new QCheckBox("non orienté");
     non_oriente->setChecked(!(rela->getOrientee()));
+    non_oriente->setEnabled(false);
 
 
     button_create = new QPushButton("+ couple");
@@ -85,7 +86,7 @@ CreationRelationWindow::CreationRelationWindow(Relation *rela, QWidget *parent):
 
 
     button_save = new QPushButton("save");
-
+    connect(button_save, SIGNAL(clicked(bool)), this, SLOT(save()));
 
     button_layout = new QHBoxLayout;
     button_layout->addWidget(button_create);
@@ -197,14 +198,13 @@ CoupleWindow::CoupleWindow(Relation* rela, QWidget *parent): QWidget(parent)
     this->setLayout(fenetre_vbox);
 }
 
-void CreationRelationWindow::save(){
+void CreationRelationWindow::create(){
     if(this->titre->text() != "" && this->description->toPlainText() != ""){
         RelationManager& RM = RelationManager::donneInstance();
         if(RM.existeRelation(titre->text()))
         {
-            Relation& rel = RM.getRelation(titre->text());
-            rel.setDescription(description->toPlainText());
-            rel.setTitre(titre->text());
+            QErrorMessage* em = new QErrorMessage;
+            em->showMessage("Attention ce titre existe déjà");
 
         }
         else
@@ -213,6 +213,32 @@ void CreationRelationWindow::save(){
             RM.addRelation(rel);
         }
         QMessageBox::information(this, "Bravo", "Sauvegarde Reussie !");
+    }
+    else
+    {
+        QErrorMessage* em = new QErrorMessage;
+        em->showMessage("Entrez le Titre et une description");
+    }
+}
+
+void CreationRelationWindow::save(){
+    if(this->titre->text() != "" && this->description->toPlainText() != ""){
+        RelationManager& RM = RelationManager::donneInstance();
+
+        if(titre->text() != titre_ancien && RM.existeRelation(titre->text()))
+        {
+            QErrorMessage* em = new QErrorMessage;
+            em->showMessage("Attention ce titre existe déjà");
+
+        }
+        else
+        {
+            Relation& rel = RM.getRelation(titre_ancien);
+            rel.setTitre(titre->text());
+            rel.setDescription(description->toPlainText());
+            QMessageBox::information(this, "Bravo", "Sauvegarde Reussie !");
+        }
+
     }
     else
     {
@@ -349,6 +375,7 @@ void RelationVizingWindow::editer_couple(){
         label_label = new QLabel("label");
         label_save = new QPushButton("ok");
         label = new QLineEdit((*it)->getLabel());
+        connect(label_save, SIGNAL(clicked(bool)), this, SLOT(saveLabel()));
 
         label_hbox->addWidget(label); label_hbox->addWidget(label_save);
 
@@ -359,7 +386,34 @@ void RelationVizingWindow::editer_couple(){
 }
 
 
+void RelationVizingWindow::saveLabel(){
+    if(this->label->text() != ""){
+        RelationManager& RM = RelationManager::donneInstance();
+        Relation& r = RM.getRelation(relation->currentText());
+        qDebug() << label->text();
+        QStringList liste =  liste_couples->currentItem()->text().split(" -> ");
+        qDebug() << liste[0];
+        qDebug() << liste[1];
+        Couple& c = r.getCouple(liste[0],liste[1]);
+        if(!r.getOrientee())
+        {
+            Couple& c2 = r.getCouple(liste[1],liste[0]);
+            c.setLabel(label->text());
+            c2.setLabel(label->text());
+        }
+        else
+        {
+            c.setLabel(label->text());
+        }
+        QMessageBox::information(this, "Bravo", "Sauvegarde Reussie !");
 
+    }
+    else
+    {
+        QErrorMessage* em = new QErrorMessage;
+        em->showMessage("Entrez le Titre et une description");
+    }
+}
 
 
 

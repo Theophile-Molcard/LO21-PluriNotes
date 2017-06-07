@@ -166,15 +166,19 @@ CoupleWindow::CoupleWindow(Relation* rela, QWidget *parent): QWidget(parent)
     NotesManager& NM = NotesManager::donneInstance();
 
     for( NotesManager::Iterator it1 = NM.getIterator() ; !it1.isdone() ; it1++){
-        liste_x->addItem((*it1)->getTitre());
-        tab_id_x.append((*it1)->getId());
+        if((*it1)->etatToString() == "active"){
+            liste_x->addItem((*it1)->getTitre());
+            tab_id_x.append((*it1)->getId());
+        }
     }
 
     liste_y = new QListWidget;
 
     for( NotesManager::Iterator it2 = NM.getIterator() ; !it2.isdone() ; it2++){
-        liste_y->addItem((*it2)->getTitre());
-        tab_id_y.append((*it2)->getId());
+        if((*it2)->etatToString() == "active"){
+            liste_y->addItem((*it2)->getTitre());
+            tab_id_y.append((*it2)->getId());
+        }
     }
 
 
@@ -348,8 +352,7 @@ void RelationVizingWindow::afficherCouples(){
     Relation& r = RM.getRelation(relation->currentText());
 
     for( Relation::Iterator it = r.getIterator() ; !it.isdone() ; it++){
-
-        qDebug() << (*it)->getLabel();
+        //qDebug() << "\n\ntest théo" + (*it)->getx()+" -> "+(*it)->gety();
         liste_couples->addItem((*it)->getx()+" -> "+(*it)->gety());
 
     }

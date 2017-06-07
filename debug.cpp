@@ -46,6 +46,35 @@ void DebugTest::Debug()
     rel->addCouple("je", "encore");
     Rels.addRelation(rel);
 
+    Multimedia* archive1 = new Multimedia("a1","a2","a3","C:/a4", image);
+
+    Tache* archive2 = new Tache("b1","b2","b3");
+
+    notes.addNote(archive1);
+    notes.addNote(archive2);
+
+    Rels.getRelation("Reference").addCouple("encore","a1","koko");
+    Rels.getRelation("Reference").addCouple("encore","b1");
+
+    notes.deleteNote("a1");
+    qDebug() << "totototo";
+    qDebug() << notes.getNote("a1").etatToString();
+    notes.deleteNote("b1");
+    qDebug() << "tatatata";
+    qDebug() << notes.getNote("b1").etatToString();
+    qDebug() << "\n\nflic floc flic floc \n\n";
+
+/*
+    RelationManager& RaezM = RelationManager::donneInstance();
+
+    Relation ruuu = RaezM.getRelation(rel->getTitre());
+
+    for( Relation::Iterator ita = ruuu.getIterator() ; !ita.isdone() ; ita++){
+
+        qDebug() <<(*ita)->getx()+" -> "+(*ita)->gety();
+
+    }*/
+
     notes.saveVersion(copain);
 
     copain->setTitre("NOOOOOOO!");
@@ -65,6 +94,7 @@ void DebugTest::Debug()
 
     NotesManager::Iterator it = notes.getIterator();
     while (!it.isdone()) {
+        qDebug() << "plop";
         qDebug() << (*it)->getId();
         it++;
     }

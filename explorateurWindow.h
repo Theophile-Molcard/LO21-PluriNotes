@@ -22,6 +22,7 @@ public:
     ExplorateurWindow(QWidget *parent = 0);
     ExplorateurWindow(int i, QWidget *parent = 0);
     QString getTitre() {return titre->text(); }
+    QLabel *getTitreWidget() {return titre; }
     QListWidget* getListe() {return liste;}
     QString getIdIndice(int indice) const {
         if(indice > tab_id.size())

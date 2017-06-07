@@ -148,6 +148,7 @@ void MainWindow::ouvrir_archives() {
     explo_window =  new ExplorateurWindow(1, this);
     //connect(explo_window->getButtonOpen(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note()));
     connect(explo_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvre_note()));
+    explo_window->getTitreWidget()->setText("archives");
     explo_window->show();
 }
 

@@ -72,10 +72,10 @@ void NotesManager::viderCorbeille(){
                 if((*it)->getTitre() != "Reference")
                 {
                     Relation::Iterator itr = (*it)->getIterator();
-                    qDebug() << (*it)->getTitre();
+                    //qDebug() << (*it)->getTitre();
                     while (!itr.isdone()) {
-                        qDebug() << (*itr)->getx();
-                        qDebug() << (*itr)->gety();
+                        //qDebug() << (*itr)->getx();
+                        //qDebug() << (*itr)->gety();
                         if((*itr)->getx() == tabNotes[i]->getId() || (*itr)->gety() == tabNotes[i]->getId())
                         {
                             (*it)->deleteCouple((*itr)->getx(),(*itr)->gety());
@@ -88,6 +88,7 @@ void NotesManager::viderCorbeille(){
             delete tabNotes[i]->getGardien();
             delete tabNotes[i];
             tabNotes[i] = tabNotes[--nbNotes];
+            i--;
         }
     }
 }

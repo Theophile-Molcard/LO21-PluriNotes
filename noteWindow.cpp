@@ -146,6 +146,8 @@ ArticleWindow::ArticleWindow(Note &note, QWidget *parent) : QWidget(parent)
     if(article_note.etatToString() == "archive"){
         title->setEnabled(false);
         text->setEnabled(false);
+        button_hbox->removeWidget(delete_button);
+
         save_button->setText("Restaurée");
         disconnect(save_button, SIGNAL(clicked(bool)), this, SLOT(save()));
     }
@@ -289,6 +291,8 @@ MultimediaWindow::MultimediaWindow(Note& note, QWidget *parent) : QWidget(parent
         description->setEnabled(false);
         fichier->setEnabled(false);
         fichier_type->setEnabled(false);
+        button_hbox->removeWidget(delete_button);
+
 
         save_button->setText("Restaurée");
         disconnect(save_button, SIGNAL(clicked(bool)), this, SLOT(save()));
@@ -448,6 +452,8 @@ TacheWindow::TacheWindow(Note &note, QWidget *parent) : QWidget(parent)
         echeance->setEnabled(false);
         priorite->setEnabled(false);
         statut->setEnabled(false);
+
+        button_hbox->removeWidget(delete_button);
 
         save_button->setText("Restaurée");
         disconnect(save_button, SIGNAL(clicked(bool)), this, SLOT(save()));

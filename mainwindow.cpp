@@ -29,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
     explo_rela_window = 0;
     couple_window = 0;
     rela_viz_window = 0;
+    arbo = 0;
 
     pref_arbo = false;
     pref_corbeille = false;
@@ -143,6 +144,7 @@ void MainWindow::ouvrir_explorateur() {
     explo_window =  new ExplorateurWindow(this);
     //connect(explo_window->getButtonOpen(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note()));
     connect(explo_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvre_note()));
+    connect(explo_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvrir_arbo()));
     explo_window->show();
 }
 
@@ -152,6 +154,7 @@ void MainWindow::ouvrir_agenda_taches() {
     explo_window =  new ExplorateurWindow(0, this);
     //connect(explo_window->getButtonOpen(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note()));
     connect(explo_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvre_note()));
+    connect(explo_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvrir_arbo()));
     explo_window->show();
 }
 
@@ -161,6 +164,7 @@ void MainWindow::ouvrir_archives() {
     explo_window =  new ExplorateurWindow(1, this);
     //connect(explo_window->getButtonOpen(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note()));
     connect(explo_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvre_note()));
+    connect(explo_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvrir_arbo()));
     explo_window->getTitreWidget()->setText("archives");
     explo_window->show();
 }
@@ -314,7 +318,16 @@ void MainWindow::visualiser_rela(){
 
 
 
+void MainWindow::ouvrir_arbo(){
+    if(arbo) arbo->close();
 
+    NotesManager& NM = NotesManager::donneInstance();
+
+    Note& note = NM.getNote( explo_window->getIdIndice(explo_window->getListe()->currentRow()) );
+
+    arbo = new Arborescence(note, this);
+    arbo->show();
+}
 
 
 

@@ -11,6 +11,7 @@
 #include "notewindow.h"
 #include "explorateurwindow.h"
 #include "RelationWindow.h"
+#include "arborescence.h"
 
 #include <QMainWindow>
 #include <QPushButton>
@@ -61,6 +62,8 @@ private:
     CoupleWindow * couple_window;
     RelationVizingWindow * rela_viz_window;
 
+    Arborescence * arbo;
+
 
     void fermer_slot_1();
     void fermer_slot_2();
@@ -92,6 +95,8 @@ public slots:
     void ouvrir_rela();
     void ouvre_couplage();
     void visualiser_rela();
+
+    void ouvrir_arbo();
 };
 
 

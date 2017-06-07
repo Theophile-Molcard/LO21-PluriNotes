@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     debug.cpp \
     relations.cpp\
     explorateurWindow.cpp \
-    RelationWindow.cpp
+    RelationWindow.cpp \
+    arborescence.cpp
 
 HEADERS  += mainwindow.h \
     tache.h \

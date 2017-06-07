@@ -1,56 +1,53 @@
 #ifndef ARBORESCENCE_H
 #define ARBORESCENCE_H
 
-ArborescenceWindow::CoupleWindow(Relation* rela, QWidget *parent): QWidget(parent)
-{
+#include"Notes.h"
 
-    setFixedSize(200, 400);
-    move(400, 40);
+#include<QWidget>
+#include<QTreeWidget>
+#include<QTreeView>
+#include<QLabel>
+#include<QLayout>
+#include<QList>
 
-    fenetre_vbox = new QVBoxLayout;
+class Arborescence : public QWidget{
 
-    titre_rela = new QLabel(rela->getTitre());
+    Q_OBJECT
 
-    couple_hbox = new QHBoxLayout;
-    couple_label = new QLabel("label");
-    couple = new QLineEdit;
+public:
+    Arborescence(Note& note, QWidget *parent = 0);
 
-    couple_hbox->addWidget(couple_label);
-    couple_hbox->addWidget(couple);
+    QTreeWidget* getDescendants() {return descendants; }
+    QTreeWidget* getAscendants() {return ascendants; }
 
-    liste_x = new QListWidget;
+private:
 
-    NotesManager& NM = NotesManager::donneInstance();
+    QVBoxLayout *fenetre_vbox;
 
-    for( NotesManager::Iterator it1 = NM.getIterator() ; !it1.isdone() ; it1++){
-        liste_x->addItem((*it1)->getTitre());
-        tab_id_x.append((*it1)->getId());
-    }
+    QHBoxLayout *label_hbox;
+    QLabel *id_label;
+    QLabel *titre_label;
 
-    liste_y = new QListWidget;
+    QTreeWidget *descendants;
+    QTreeWidget *ascendants;
 
-    for( NotesManager::Iterator it2 = NM.getIterator() ; !it2.isdone() ; it2++){
-        liste_y->addItem((*it2)->getTitre());
-        tab_id_y.append((*it2)->getId());
-    }
+    QList<QString> id_asc;
+    QList<QString> id_dsc;
 
+    void setAscendantsRacine(Note& note);
+    void setAscendants(QString id, QTreeWidgetItem* tree);
 
-    button_create = new QPushButton("créer");
-    button_close = new QPushButton("fermer");
-    connect(button_close, SIGNAL(clicked(bool)), this, SLOT(close()));
-    connect(button_create, SIGNAL(clicked(bool)), this, SLOT(save()));
+    void setDescendantsRacine(Note& note);
+    void setDescendants(QString id, QTreeWidgetItem* tree);
 
-    button_layout = new QHBoxLayout;
-    button_layout->addWidget(button_create);
-    button_layout->addWidget(button_close);
-
-    fenetre_vbox->addWidget(titre_rela);
-    fenetre_vbox->addLayout(couple_hbox);
-    fenetre_vbox->addWidget(liste_x);
-    fenetre_vbox->addWidget(liste_y);
-    fenetre_vbox->addLayout(button_layout);
+    QTreeWidgetItem* addRoot(QTreeWidget * parent, QString nom);
+    QTreeWidgetItem* addChild(QTreeWidgetItem * parent, QString nom);
 
 
-    this->setLayout(fenetre_vbox);
+public slots:
+
+};
+
+
 
 #endif // ARBORESCENCE_H

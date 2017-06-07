@@ -478,16 +478,39 @@ void ArticleWindow::save(){
     {
         NotesManager& NM = NotesManager::donneInstance();
         if(NM.existeNote(this->id->text())){
-            Article& article = dynamic_cast<Article&>(NM.getNote(id->text()));
-            article.setTexte(text->toPlainText());
-            article.setTitre(title->text());
+            RelationManager& RM = RelationManager::donneInstance();
+            bool test = RM.updateReference(id->text(), text->toPlainText()+title->text());
+            if(test)
+            {
+                Article& article = dynamic_cast<Article&>(NM.getNote(id->text()));
+                article.setTexte(text->toPlainText());
+                article.setTitre(title->text());
+                QMessageBox::information(this, "Bravo", "Sauvegarde Reussie !");
+            }
+            else
+            {
+                QErrorMessage* em = new QErrorMessage;
+                em->showMessage("On ne peut pas faire de référence vers une note qui n'existe pas.");
+            }
+
         }
         else
         {
             Article* article = new Article(id->text(),title->text(), text->toPlainText());
             NM.addNote(article);
+            RelationManager& RM = RelationManager::donneInstance();
+            bool test = RM.updateReference(id->text(), text->toPlainText()+title->text());
+            if(test)
+            {
+                QMessageBox::information(this, "Bravo", "Sauvegarde Réussie !");
+            }
+            else
+            {
+                QErrorMessage* em = new QErrorMessage;
+                em->showMessage("Sauvegarde réussie mais aucune référence n'a été prise en compte, on ne peut pas faire de référence vers une note qui n'existe pas.");
+            }
         }
-        QMessageBox::information(this, "Bravo", "Sauvegarde Reussie !");
+
     }
     else
     {
@@ -505,24 +528,47 @@ void TacheWindow::save(){
     {
         NotesManager& NM = NotesManager::donneInstance();
         if(NM.existeNote(this->id->text())){
-            Tache& tache = dynamic_cast<Tache&>(NM.getNote(id->text()));
-            tache.setAction(action->toPlainText());
-            tache.setTitre(title->text());
-            tache.setDateEcheance(echeance->dateTime());
-            tache.setPriority(priorite->text().toUInt());
-            if(statut->currentText() == "termine")
-                tache.setStatut(termine);
-            else if(statut->currentText() == "cours")
-                tache.setStatut(cours);
+            RelationManager& RM = RelationManager::donneInstance();
+            bool test = RM.updateReference(id->text(), action->toPlainText()+title->text());
+            if(test)
+            {
+                Tache& tache = dynamic_cast<Tache&>(NM.getNote(id->text()));
+                tache.setAction(action->toPlainText());
+                tache.setTitre(title->text());
+                tache.setDateEcheance(echeance->dateTime());
+                tache.setPriority(priorite->text().toUInt());
+                if(statut->currentText() == "termine")
+                    tache.setStatut(termine);
+                else if(statut->currentText() == "cours")
+                    tache.setStatut(cours);
+                else
+                    tache.setStatut(attente);
+                QMessageBox::information(this, "Bravo", "Sauvegarde Reussie !");
+            }
             else
-                tache.setStatut(attente);
+            {
+                QErrorMessage* em = new QErrorMessage;
+                em->showMessage("On ne peut pas faire de référence vers une note qui n'existe pas.");
+            }
+
         }
         else
         {
             Tache* tache = new Tache(id->text(),title->text(), action->toPlainText(),echeance->dateTime(),priorite->text().toUInt());
             NM.addNote(tache);
+            RelationManager& RM = RelationManager::donneInstance();
+            bool test = RM.updateReference(id->text(), action->toPlainText()+title->text());
+            if(test)
+            {
+                QMessageBox::information(this, "Bravo", "Sauvegarde Réussie !");
+            }
+            else
+            {
+                QErrorMessage* em = new QErrorMessage;
+                em->showMessage("Sauvegarde réussie mais aucune référence n'a été prise en compte, on ne peut pas faire de référence vers une note qui n'existe pas.");
+            }
         }
-        QMessageBox::information(this, "Bravo", "Sauvegarde Reussie !");
+
     }
     else
     {
@@ -540,16 +586,28 @@ void MultimediaWindow::save(){
     {
         NotesManager& NM = NotesManager::donneInstance();
         if(NM.existeNote(this->id->text())){
-            Multimedia& multi = dynamic_cast<Multimedia&>(NM.getNote(id->text()));
-            multi.setDescription(description->toPlainText());
-            multi.setFichier(path);
-            multi.setTitre(title->text());
-            if(fichier_type->currentText() == "video")
-                multi.setType(video);
-            else if(fichier_type->currentText() == "audio")
-                multi.setType(audio);
+            RelationManager& RM = RelationManager::donneInstance();
+            bool test = RM.updateReference(id->text(), description->toPlainText()+title->text());
+            if(test)
+            {
+                Multimedia& multi = dynamic_cast<Multimedia&>(NM.getNote(id->text()));
+                multi.setDescription(description->toPlainText());
+                multi.setFichier(path);
+                multi.setTitre(title->text());
+                if(fichier_type->currentText() == "video")
+                    multi.setType(video);
+                else if(fichier_type->currentText() == "audio")
+                    multi.setType(audio);
+                else
+                    multi.setType(image);
+                QMessageBox::information(this, "Bravo", "Sauvegarde Réussie !");
+            }
             else
-                multi.setType(image);
+            {
+                QErrorMessage* em = new QErrorMessage;
+                em->showMessage("On ne peut pas faire de référence vers une note qui n'existe pas.");
+            }
+
         }
         else
         {
@@ -560,11 +618,22 @@ void MultimediaWindow::save(){
                 type = audio;
             else
                 type = image;
-
             Multimedia* multi = new Multimedia(id->text(),title->text(),description->toPlainText(),path,type);
             NM.addNote(multi);
+            RelationManager& RM = RelationManager::donneInstance();
+            bool test = RM.updateReference(id->text(), description->toPlainText()+title->text());
+            if(test)
+            {
+                QMessageBox::information(this, "Bravo", "Sauvegarde Réussie !");
+            }
+            else
+            {
+                QErrorMessage* em = new QErrorMessage;
+                em->showMessage("Sauvegarde réussie mais aucune référence n'a été prise en compte, on ne peut pas faire de référence vers une note qui n'existe pas.");
+            }
+
         }
-        QMessageBox::information(this, "Bravo", "Sauvegarde Réussie !");
+
     }
     else
     {

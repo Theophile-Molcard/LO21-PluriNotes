@@ -83,6 +83,60 @@ void RelationManager::createReference(){
     tabRelations[nbRelations++] = rel;
 }
 
+bool RelationManager::updateReference(const QString &idNote, const QString &texte){
+    NotesManager& NM = NotesManager::donneInstance();
+    if(NM.existeNote(idNote))
+    {
+        bool suite = true;
+        QRegExp regex("\\\\ref[{]([\\w]+)[}]");
+        QStringList list;
+        int pos = 0;
+        while( (pos = regex.indexIn(texte, pos)) != -1){
+            if(NM.existeNote(regex.cap(1)) && regex.cap(1) != idNote)
+            {
+                qDebug() << "lololo";
+                qDebug() << regex.cap(1);
+                list << regex.cap(1);
+            }
+            else
+            {
+                suite = false;
+            }
+            pos += regex.matchedLength();
+        }
+        if(suite)
+        {
+            Relation& reference = getRelation("Reference");
+            Relation::Iterator it2 = reference.getIterator();
+            while (!it2.isdone()) {
+                qDebug() << "oo";
+                qDebug() << (*it2)->getx();
+                if((*it2)->getx() == idNote)
+                {
+                    reference.deleteCouple((*it2)->getx(), (*it2)->gety());
+                }
+                it2++;
+            }
+
+            QStringList::iterator it = list.begin();
+            while (it != list.end()) {
+                qDebug() << (*it);
+                reference.addCouple(idNote, (*it));
+                ++it;
+            }
+            return true;
+        }
+        else
+        {
+           return false;
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
 Relation::~Relation(){
     for(unsigned int i=0; i<nbCouples; i++) delete tabCouples[i];
     delete[] tabCouples;

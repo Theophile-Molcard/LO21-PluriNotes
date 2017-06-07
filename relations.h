@@ -85,6 +85,7 @@ public:
     void deleteRelation(QString _titre);
     Relation& getRelation(QString _titre);
     void createReference();
+    bool updateReference(const QString& idNote, const QString& texte); // renvoie true si tout va bien, false si Note(s) dans la ref n'existe pas.
     bool existeRelation(QString _titre);
 
     static RelationManager& donneInstance(){

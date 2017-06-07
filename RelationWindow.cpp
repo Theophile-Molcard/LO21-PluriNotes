@@ -311,10 +311,12 @@ RelationVizingWindow::RelationVizingWindow(QWidget *parent): QWidget(parent)
     liste_couples = new QListWidget;
 
     Relation& r = RM.getRelation(relation->currentText());
+    NotesManager& NM = NotesManager::donneInstance();
 
     for( Relation::Iterator it = r.getIterator() ; !it.isdone() ; it++){
-
-        liste_couples->addItem((*it)->getx()+" -> "+(*it)->gety());
+        if(NM.getNote((*it)->getx()).etatToString() == "active" && (NM.getNote((*it)->gety()).etatToString() == "active" || r.getTitre() == "Reference" ) ){
+            liste_couples->addItem((*it)->getx()+" -> "+(*it)->gety());
+        }
 
     }
 
@@ -350,11 +352,12 @@ void RelationVizingWindow::afficherCouples(){
     liste_couples->clear();
 
     Relation& r = RM.getRelation(relation->currentText());
+    NotesManager& NM = NotesManager::donneInstance();
 
     for( Relation::Iterator it = r.getIterator() ; !it.isdone() ; it++){
-        //qDebug() << "\n\ntest théo" + (*it)->getx()+" -> "+(*it)->gety();
-        liste_couples->addItem((*it)->getx()+" -> "+(*it)->gety());
-
+        if((NM.getNote((*it)->getx()).etatToString() == "active") && (NM.getNote((*it)->gety()).etatToString() == "active" || r.getTitre() == "Reference" ) ){
+            liste_couples->addItem((*it)->getx()+" -> "+(*it)->gety());
+        }
     }
 
 }

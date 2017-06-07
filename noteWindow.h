@@ -89,6 +89,7 @@ private:
 public slots:
     void save();
     void deleteArticle();
+    void restaureArchive();
 
 };
 
@@ -139,6 +140,7 @@ public slots:
     void save();
     void trouveFichier();
     void deleteMulti();
+    void restaureArchive();
 
 };
 
@@ -196,6 +198,7 @@ private:
 public slots:
     void save();
     void deleteTache();
+    void restaureArchive();
 
 };
 

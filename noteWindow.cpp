@@ -148,8 +148,9 @@ ArticleWindow::ArticleWindow(Note &note, QWidget *parent) : QWidget(parent)
         text->setEnabled(false);
         button_hbox->removeWidget(delete_button);
 
-        save_button->setText("Restaurée");
+        save_button->setText("Restaurer");
         disconnect(save_button, SIGNAL(clicked(bool)), this, SLOT(save()));
+        connect(save_button, SIGNAL(clicked(bool)), this, SLOT(restaureArchive()));
     }
 
 
@@ -294,8 +295,9 @@ MultimediaWindow::MultimediaWindow(Note& note, QWidget *parent) : QWidget(parent
         button_hbox->removeWidget(delete_button);
 
 
-        save_button->setText("Restaurée");
+        save_button->setText("Restaurer");
         disconnect(save_button, SIGNAL(clicked(bool)), this, SLOT(save()));
+        connect(save_button, SIGNAL(clicked(bool)), this, SLOT(restaureArchive()));
     }
 
 
@@ -455,8 +457,9 @@ TacheWindow::TacheWindow(Note &note, QWidget *parent) : QWidget(parent)
 
         button_hbox->removeWidget(delete_button);
 
-        save_button->setText("Restaurée");
+        save_button->setText("Restaurer");
         disconnect(save_button, SIGNAL(clicked(bool)), this, SLOT(save()));
+        connect(save_button, SIGNAL(clicked(bool)), this, SLOT(restaureArchive()));
     }
 
 
@@ -578,16 +581,43 @@ void ArticleWindow::deleteArticle(){
     QMessageBox::information(this, "Bravo", "Suppression Réussie !");
 }
 
+void ArticleWindow::restaureArchive(){
+    NotesManager& NM = NotesManager::donneInstance();
+    if(NM.getNote(id->text()).etatToString() == "archive")
+    {
+        NM.restaurerArchiveNote(id->text());
+        QMessageBox::information(this, "Bravo", "Restauration Réussie !");
+    }
+}
+
 void TacheWindow::deleteTache(){
     NotesManager& NM = NotesManager::donneInstance();
     NM.deleteNote(this->id->text());
     QMessageBox::information(this, "Bravo", "Suppression Réussie !");
 }
 
+void TacheWindow::restaureArchive(){
+    NotesManager& NM = NotesManager::donneInstance();
+    if(NM.getNote(id->text()).etatToString() == "archive")
+    {
+        NM.restaurerArchiveNote(id->text());
+        QMessageBox::information(this, "Bravo", "Restauration Réussie !");
+    }
+}
+
 void MultimediaWindow::deleteMulti(){
     NotesManager& NM = NotesManager::donneInstance();
     NM.deleteNote(this->id->text());
     QMessageBox::information(this, "Bravo", "Suppression Réussie !");
+}
+
+void MultimediaWindow::restaureArchive(){
+    NotesManager& NM = NotesManager::donneInstance();
+    if(NM.getNote(id->text()).etatToString() == "archive")
+    {
+        NM.restaurerArchiveNote(id->text());
+        QMessageBox::information(this, "Bravo", "Restauration Réussie !");
+    }
 }
 
 

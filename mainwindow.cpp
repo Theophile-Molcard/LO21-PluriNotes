@@ -171,12 +171,12 @@ void MainWindow::ouvre_note() {
 
 void MainWindow::ouvre_tache(Note &note){
     tache_window = new TacheWindow(note, this);
-    if(explo_window->getTitre() == "toutes les notes")
+    if(explo_window->getTitre() == "toutes les notes" || explo_window->getTitre() == "archives")
         connect(tache_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur()));
     else
         connect(tache_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_agenda_taches()));
 
-    if(explo_window->getTitre() == "toutes les notes")
+    if(explo_window->getTitre() == "toutes les notes" || explo_window->getTitre() == "archives")
         connect(tache_window->getDeleteButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur()));
     else
         connect(tache_window->getDeleteButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_agenda_taches()));

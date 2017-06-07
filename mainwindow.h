@@ -4,6 +4,7 @@
 #include <typeinfo>
 
 #include<QDebug>
+#include<QAction>
 
 #include "Notes.h"
 #include "relations.h"
@@ -40,9 +41,13 @@ public:
     void ouvre_multi(Note& note);
     void ouvre_article(Note& note);
 
+    bool bool_arbo() {return pref_arbo;}
 
 private:
     Ui::MainWindow *ui;
+
+    bool pref_arbo;
+    bool pref_corbeille;
 
     NoteWindow * note_window;
     ArticleWindow * article_window;
@@ -63,6 +68,16 @@ private:
 
 
 public slots:
+    void elargir(){
+        if(!pref_arbo){
+            setFixedSize(800, 440);
+            pref_arbo = true;
+        }
+        else{
+            setFixedSize(600, 440);
+            pref_arbo = false;
+        }
+    }
 
     void cree_note();
     void create();

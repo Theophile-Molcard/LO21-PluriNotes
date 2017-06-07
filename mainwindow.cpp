@@ -30,9 +30,12 @@ MainWindow::MainWindow(QWidget *parent) :
     couple_window = 0;
     rela_viz_window = 0;
 
+    pref_arbo = false;
+    pref_corbeille = false;
+
     /// Les menus
-    QMenu *menuNotes, *menuRef, *menuExplo;
-    QAction *nouvelle_note, *explo_notes, *explo_archives, *agenda_taches, *creer_ref, *enrichir_ref, *affiche_couples;
+    QMenu *menuNotes, *menuRef, *menuExplo, *menuPref;
+    QAction *nouvelle_note, *explo_notes, *explo_archives, *agenda_taches, *creer_ref, *enrichir_ref, *affiche_couples, *pref_arbo, *pref_corbeille;
 
     /// exploration
 
@@ -71,6 +74,16 @@ MainWindow::MainWindow(QWidget *parent) :
     affiche_couples = menuRef->addAction("couples");
 
     QObject::connect(affiche_couples, SIGNAL(triggered(bool)), this, SLOT(visualiser_rela()) );
+
+    /// Preferences
+    menuPref = menuBar()->addMenu(tr("Préférences"));
+    pref_arbo = menuPref->addAction("arboressence");
+    pref_arbo->setCheckable(true);
+
+    QObject::connect(pref_arbo, SIGNAL(toggled(bool)), this, SLOT(elargir()) );
+
+    pref_corbeille = menuPref->addAction("corbeille auto");
+    pref_corbeille->setCheckable(true);
 
 
 

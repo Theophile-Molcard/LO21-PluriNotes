@@ -587,6 +587,7 @@ void ArticleWindow::restaureArchive(){
     {
         NM.restaurerArchiveNote(id->text());
         QMessageBox::information(this, "Bravo", "Restauration Réussie !");
+        close();
     }
 }
 
@@ -602,6 +603,7 @@ void TacheWindow::restaureArchive(){
     {
         NM.restaurerArchiveNote(id->text());
         QMessageBox::information(this, "Bravo", "Restauration Réussie !");
+        close();
     }
 }
 
@@ -617,6 +619,7 @@ void MultimediaWindow::restaureArchive(){
     {
         NM.restaurerArchiveNote(id->text());
         QMessageBox::information(this, "Bravo", "Restauration Réussie !");
+        close();
     }
 }
 

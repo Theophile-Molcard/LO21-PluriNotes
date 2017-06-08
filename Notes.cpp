@@ -581,10 +581,12 @@ void Article::saveXML(QXmlStreamWriter* stream){
     Gardien* MementoS = this->getGardien();
     if(!MementoS->empty())
     {
-        for(unsigned int i = 0; i<=MementoS->sizeMemento(); i++)
+        Gardien::Iterator it = MementoS->getIterator();
+
+        while(!it.isdone())
         {
-//            Memento* memento = MementoS->popMemento();
-//            memento->saveXML(stream);
+            (*it)->saveXML(stream);
+            it++;
         }
     }
     (*stream).writeEndElement();
@@ -606,10 +608,12 @@ void Tache::saveXML(QXmlStreamWriter *stream){
     Gardien* MementoS = this->getGardien();
     if(!MementoS->empty())
     {
-        for(unsigned int i = 0; i<=MementoS->sizeMemento(); i++)
+        Gardien::Iterator it = MementoS->getIterator();
+
+        while(!it.isdone())
         {
-//            Memento* memento = MementoS->popMemento();
-//            memento->saveXML(stream);
+            (*it)->saveXML(stream);
+            it++;
         }
     }
     (*stream).writeEndElement();
@@ -631,10 +635,12 @@ void Multimedia::saveXML(QXmlStreamWriter *stream){
     Gardien* MementoS = this->getGardien();
     if(!MementoS->empty())
     {
-        for(unsigned int i = 0; i<=MementoS->sizeMemento(); i++)
+        Gardien::Iterator it = MementoS->getIterator();
+
+        while(!it.isdone())
         {
-//            Memento* memento = MementoS->popMemento();
-//            memento->saveXML(stream);
+            (*it)->saveXML(stream);
+            it++;
         }
     }
     (*stream).writeEndElement();

@@ -144,7 +144,7 @@ void DebugTest::DebugRelation(){
     Rels.addRelation(rela);
     Rels.addRelation(relaNonOriente);
     qDebug() << Rels.getRelation("Copain").getTitre();
-
+qDebug() << "kazddk";
     notes.SaveEverythingXML();
    /* RelationManager& Rels = RelationManager::donneInstance();
     RelationManager::Iterator it5 = Rels.getIterator();
@@ -158,7 +158,7 @@ void DebugTest::DebugRelation(){
         }
         it5++;
     }*/
-
+    qDebug() << "kdkdk";
 
 }
 

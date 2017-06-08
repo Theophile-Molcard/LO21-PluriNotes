@@ -520,6 +520,7 @@ void ArticleWindow::save(){
             if(test)
             {
                 Article& article = dynamic_cast<Article&>(NM.getNote(id->text()));
+                NM.saveVersion(&article);
                 article.setTexte(text->toPlainText());
                 article.setTitre(title->text());
                 QMessageBox::information(this, "Bravo", "Sauvegarde Reussie !");
@@ -570,6 +571,7 @@ void TacheWindow::save(){
             if(test)
             {
                 Tache& tache = dynamic_cast<Tache&>(NM.getNote(id->text()));
+                NM.saveVersion(&tache);
                 tache.setAction(action->toPlainText());
                 tache.setTitre(title->text());
                 tache.setDateEcheance(echeance->dateTime());
@@ -628,6 +630,7 @@ void MultimediaWindow::save(){
             if(test)
             {
                 Multimedia& multi = dynamic_cast<Multimedia&>(NM.getNote(id->text()));
+                NM.saveVersion(&multi);
                 multi.setDescription(description->toPlainText());
                 multi.setFichier(path);
                 multi.setTitre(title->text());

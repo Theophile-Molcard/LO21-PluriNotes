@@ -147,13 +147,13 @@ public:
     class Iterator {
     public:
         Memento* operator *(){return tab[indice];}
-        Memento* operator ++(){
+      /*  Memento* operator ++(){
             if(isdone())
                 throw "il faut faire une classe d'exceptions";
             return tab[++indice];
-        }
+        }*/
         Memento* operator ++(int){
-            if(isdone())
+            if(!isdone())
             return tab[indice++];
         }
         bool isdone(){return indice == tab.size();}

@@ -34,6 +34,9 @@ private:
     QList<QString> id_asc;
     QList<QString> id_dsc;
 
+    QList<QString> id_asc_root;
+    QList<QString> id_dsc_root;
+
     void setAscendantsRacine(Note& note);
     void setAscendants(QString id, QTreeWidgetItem* tree);
 

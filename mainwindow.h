@@ -89,6 +89,9 @@ public slots:
     void ouvrir_agenda_taches();
     void ouvre_note();
     void ouvrir_archives();
+    void ouvrir_corbeille();
+    void restaure_corbeille();
+    void ouvrir_memento();
 
     void ouvrir_crea_rela();
     void parcourir_rela();
@@ -97,6 +100,7 @@ public slots:
     void visualiser_rela();
 
     void ouvrir_arbo();
+    void fermer_arbo();
 };
 
 

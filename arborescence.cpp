@@ -34,6 +34,7 @@ Arborescence::Arborescence(Note& note, QWidget *parent): QWidget(parent)
 
 
 void Arborescence::setAscendantsRacine(Note& note){
+    NotesManager& NM = NotesManager::donneInstance();
     RelationManager& RM = RelationManager::donneInstance();
     Relation* rel;
     Couple* cpl;
@@ -45,9 +46,11 @@ void Arborescence::setAscendantsRacine(Note& note){
         for( Relation::Iterator c_it = rel->getIterator() ; !c_it.isdone() ; c_it++)
         {
             cpl = *c_it;
-            if(cpl->gety()==note.getId()){
-                id_asc.append(cpl->getx());
-                setAscendants( cpl->getx(), addRoot(ascendants, cpl->getx()) );
+            if(cpl->gety()==note.getId() && !id_asc_root.contains(cpl->getx())){
+                if((NM.getNote(cpl->getx()).etatToString() == "active" || (NM.getNote(cpl->getx()).etatToString() == "archive" && rel->getTitre() == "Reference" ))){
+                    id_asc_root.append(cpl->getx());
+                    setAscendants( cpl->getx(), addRoot(ascendants, cpl->getx()) );
+                }
             }
         }
 
@@ -57,6 +60,8 @@ void Arborescence::setAscendantsRacine(Note& note){
 }
 
 void Arborescence::setAscendants(QString id, QTreeWidgetItem* tree){
+    id_asc.append(id);
+    NotesManager& NM = NotesManager::donneInstance();
     RelationManager& RM = RelationManager::donneInstance();
     Relation* rel;
     Couple* cpl;
@@ -69,8 +74,9 @@ void Arborescence::setAscendants(QString id, QTreeWidgetItem* tree){
         {
             cpl = *c_it;
             if(cpl->gety()==id && !id_asc.contains(cpl->getx())){
-                id_asc.append(cpl->getx());
-                setAscendants(cpl->getx(), addChild(tree, cpl->getx()));
+                if((NM.getNote(cpl->getx()).etatToString() == "active" || (NM.getNote(cpl->getx()).etatToString() == "archive" && rel->getTitre() == "Reference" )) ){
+                    setAscendants(cpl->getx(), addChild(tree, cpl->getx()));
+                }
             }
         }
 
@@ -80,6 +86,7 @@ void Arborescence::setAscendants(QString id, QTreeWidgetItem* tree){
 }
 
 void Arborescence::setDescendantsRacine(Note& note){
+    NotesManager& NM = NotesManager::donneInstance();
     RelationManager& RM = RelationManager::donneInstance();
     Relation* rel;
     Couple* cpl;
@@ -91,9 +98,11 @@ void Arborescence::setDescendantsRacine(Note& note){
         for( Relation::Iterator c_it = rel->getIterator() ; !c_it.isdone() ; c_it++)
         {
             cpl = *c_it;
-            if(cpl->getx()==note.getId()){
-                id_dsc.append(cpl->gety());
-                setAscendants( cpl->gety(), addRoot(descendants, cpl->gety()) );
+            if(cpl->getx()==note.getId() && !id_dsc_root.contains(cpl->gety())){
+                if( (NM.getNote(cpl->gety()).etatToString() == "active" || (NM.getNote(cpl->gety()).etatToString() == "archive" && rel->getTitre() == "Reference" )) ){
+                    id_dsc_root.append(cpl->gety());
+                    setDescendants( cpl->gety(), addRoot(descendants, cpl->gety()) );
+                }
             }
         }
 
@@ -103,6 +112,8 @@ void Arborescence::setDescendantsRacine(Note& note){
 }
 
 void Arborescence::setDescendants(QString id, QTreeWidgetItem* tree){
+    id_dsc.append(id);
+    NotesManager& NM = NotesManager::donneInstance();
     RelationManager& RM = RelationManager::donneInstance();
     Relation* rel;
     Couple* cpl;
@@ -115,8 +126,9 @@ void Arborescence::setDescendants(QString id, QTreeWidgetItem* tree){
         {
             cpl = *c_it;
             if(cpl->getx()==id && !id_dsc.contains(cpl->gety())){
-                id_dsc.append(cpl->gety());
-                setAscendants(cpl->gety(), addChild(tree, cpl->gety()));
+                if( (NM.getNote(cpl->gety()).etatToString() == "active" || (NM.getNote(cpl->gety()).etatToString() == "archive" && rel->getTitre() == "Reference" )) ){
+                    setDescendants(cpl->gety(), addChild(tree, cpl->gety()));
+                }
             }
         }
 
@@ -142,6 +154,8 @@ QTreeWidgetItem* Arborescence::addChild(QTreeWidgetItem *parent, QString nom){
     return itm;
 
 }
+
+
 
 
 

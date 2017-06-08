@@ -152,6 +152,16 @@ ArticleWindow::ArticleWindow(Note &note, QWidget *parent) : QWidget(parent)
         disconnect(save_button, SIGNAL(clicked(bool)), this, SLOT(save()));
         connect(save_button, SIGNAL(clicked(bool)), this, SLOT(restaureArchive()));
     }
+    else if(article_note.etatToString() == "corbeille"){
+        title->setEnabled(false);
+        text->setEnabled(false);
+
+        button_hbox->removeWidget(delete_button);
+        button_hbox->removeWidget(save_button);
+
+        disconnect(save_button, SIGNAL(clicked(bool)), this, SLOT(save()));
+        connect(save_button, SIGNAL(clicked(bool)), this, SLOT(restaureArchive()));
+    }
 
 
     this->setLayout(fenetre_vbox);
@@ -296,6 +306,19 @@ MultimediaWindow::MultimediaWindow(Note& note, QWidget *parent) : QWidget(parent
 
 
         save_button->setText("Restaurer");
+        disconnect(save_button, SIGNAL(clicked(bool)), this, SLOT(save()));
+        connect(save_button, SIGNAL(clicked(bool)), this, SLOT(restaureArchive()));
+    }
+
+    if(multi_note.etatToString() == "corbeille"){
+        title->setEnabled(false);
+        description->setEnabled(false);
+        fichier->setEnabled(false);
+        fichier_type->setEnabled(false);
+
+        button_hbox->removeWidget(delete_button);
+        button_hbox->removeWidget(save_button);
+
         disconnect(save_button, SIGNAL(clicked(bool)), this, SLOT(save()));
         connect(save_button, SIGNAL(clicked(bool)), this, SLOT(restaureArchive()));
     }
@@ -458,6 +481,20 @@ TacheWindow::TacheWindow(Note &note, QWidget *parent) : QWidget(parent)
         button_hbox->removeWidget(delete_button);
 
         save_button->setText("Restaurer");
+        disconnect(save_button, SIGNAL(clicked(bool)), this, SLOT(save()));
+        connect(save_button, SIGNAL(clicked(bool)), this, SLOT(restaureArchive()));
+    }
+
+    if(tache_note.etatToString() == "corbeille"){
+        title->setEnabled(false);
+        action->setEnabled(false);
+        echeance->setEnabled(false);
+        priorite->setEnabled(false);
+        statut->setEnabled(false);
+
+        button_hbox->removeWidget(delete_button);
+        button_hbox->removeWidget(save_button);
+
         disconnect(save_button, SIGNAL(clicked(bool)), this, SLOT(save()));
         connect(save_button, SIGNAL(clicked(bool)), this, SLOT(restaureArchive()));
     }

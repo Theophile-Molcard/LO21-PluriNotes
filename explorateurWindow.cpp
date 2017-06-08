@@ -77,11 +77,22 @@ ExplorateurWindow::ExplorateurWindow(int i, QWidget *parent): QWidget(parent)
         for(int i = 0; i < tab_id.size() ; i++)
             liste->addItem(NM.getNote(tab_id[i]).getTitre());
     }
-    else
+    else if(i == 1)
     {
 
         for( NotesManager::Iterator it = NM.getIterator() ; !it.isdone() ; it++){
             if((*it)->etatToString()=="archive"){
+                liste->addItem((*it)->getTitre());
+                tab_id.append((*it)->getId());
+            }
+        }
+
+    }
+    else if(i == 2)
+    {
+
+        for( NotesManager::Iterator it = NM.getIterator() ; !it.isdone() ; it++){
+            if((*it)->etatToString()=="corbeille"){
                 liste->addItem((*it)->getTitre());
                 tab_id.append((*it)->getId());
             }

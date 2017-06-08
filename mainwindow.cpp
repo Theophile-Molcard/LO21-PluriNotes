@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     /// Les menus
     QMenu *menuNotes, *menuRef, *menuExplo, *menuPref;
-    QAction *nouvelle_note, *explo_notes, *explo_archives, *agenda_taches, *creer_ref, *enrichir_ref, *affiche_couples, *pref_arbo, *pref_corbeille;
+    QAction *nouvelle_note, *explo_notes, *explo_archives, *explo_corbeille, *agenda_taches, *creer_ref, *enrichir_ref, *affiche_couples, *pref_arbo, *pref_corbeille;
 
     /// exploration
 
@@ -52,6 +52,10 @@ MainWindow::MainWindow(QWidget *parent) :
     explo_archives = menuExplo->addAction("Archives");
 
     QObject::connect(explo_archives, SIGNAL(triggered(bool)), this, SLOT(ouvrir_archives()) );
+
+    explo_corbeille = menuExplo->addAction("Corbeille");
+
+    QObject::connect(explo_corbeille, SIGNAL(triggered(bool)), this, SLOT(ouvrir_corbeille()) );
 
 
     /// Nouvelles notes
@@ -140,6 +144,7 @@ void MainWindow::cree_note() {
 
 void MainWindow::ouvrir_explorateur() {
     fermer_slot_2();
+    if(pref_arbo) setFixedWidth(800);
 
     explo_window =  new ExplorateurWindow(this);
     //connect(explo_window->getButtonOpen(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note()));
@@ -150,6 +155,7 @@ void MainWindow::ouvrir_explorateur() {
 
 void MainWindow::ouvrir_agenda_taches() {
     fermer_slot_2();
+    if(pref_arbo) setFixedWidth(800);
 
     explo_window =  new ExplorateurWindow(0, this);
     //connect(explo_window->getButtonOpen(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note()));
@@ -160,12 +166,29 @@ void MainWindow::ouvrir_agenda_taches() {
 
 void MainWindow::ouvrir_archives() {
     fermer_slot_2();
+    fermer_arbo();
 
     explo_window =  new ExplorateurWindow(1, this);
     //connect(explo_window->getButtonOpen(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note()));
     connect(explo_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvre_note()));
-    connect(explo_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvrir_arbo()));
+    //connect(explo_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvrir_arbo()));
     explo_window->getTitreWidget()->setText("archives");
+    explo_window->show();
+}
+
+void MainWindow::ouvrir_corbeille() {
+    fermer_slot_2();
+    fermer_arbo();
+
+    explo_window =  new ExplorateurWindow(2, this);
+    //connect(explo_window->getButtonOpen(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note()));
+    connect(explo_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvre_note()));
+    //connect(explo_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvrir_arbo()));
+    explo_window->getTitreWidget()->setText("Corbeille");
+    explo_window->getButtonOpen()->setText("restaurer");
+
+    connect(explo_window->getButtonOpen(), SIGNAL(clicked(bool)), this, SLOT(restaure_corbeille()));
+
     explo_window->show();
 }
 
@@ -320,6 +343,7 @@ void MainWindow::visualiser_rela(){
 
 void MainWindow::ouvrir_arbo(){
     if(arbo) arbo->close();
+    if(pref_arbo) setFixedSize(800, 440);
 
     NotesManager& NM = NotesManager::donneInstance();
 
@@ -329,9 +353,26 @@ void MainWindow::ouvrir_arbo(){
     arbo->show();
 }
 
+void MainWindow::fermer_arbo(){
+    if(arbo) arbo->close();
+    setFixedSize(600, 440);
+}
 
 
 
+void MainWindow::restaure_corbeille(){
 
+}
+
+void MainWindow::ouvrir_memento(){
+
+    fermer_slot_1();
+
+    NotesManager& NM = NotesManager::donneInstance();
+
+    Note& note = NM.getNote( explo_window->getIdIndice(explo_window->getListe()->currentRow()) );
+
+    ouvre_note();
+}
 
 

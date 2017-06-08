@@ -27,6 +27,7 @@ class Memento{
 public:
     QString getTitre() const { return titre; }
 
+
     const QDateTime& getDateModif() const { return date_modif; }
     Memento(QString _titre) // il faut voir pour la version
         : titre(_titre)

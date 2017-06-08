@@ -66,7 +66,10 @@ void RelationManager::saveEveryRelationsXML(QXmlStreamWriter *stream){
 }
 
 void RelationManager::createReference(){
+    qDebug() << "aaaaaaaaaaaaaaaaaaaa";
     for(unsigned int i=0; i <nbRelations; i++){
+        qDebug() << getRelation("Reference").getTitre();
+        qDebug() << tabRelations[i]->getTitre();
         if(tabRelations[i]->getTitre() == "Reference")
             throw NotesException("erreur, Reference existe déjà");
     }
@@ -284,6 +287,7 @@ void RelationManager::LoadRelationXML(QXmlStreamReader *stream){
                 if(titre =="Reference")
                 {
                     this->createReference();
+                    qDebug() << "llll";
                 }
                 else{
                     Relation* rel = new Relation(titre,description, orientee);

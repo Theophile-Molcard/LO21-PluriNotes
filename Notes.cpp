@@ -7,12 +7,18 @@
 
 NotesManager* NotesManager::instance = nullptr;
 
-NotesManager::NotesManager(): tabNotes(nullptr), nbNotes(0), nbMaxNotes(0){}
+NotesManager::NotesManager(): tabNotes(nullptr), nbNotes(0), nbMaxNotes(0){
+    qDebug() << "llllllllllllllllllllllllllll";
+    //LoadFileXML();
+}
 
 NotesManager::~NotesManager(){
     //à rajouter la sauvegarde des notes (automatique ?)
+    SaveEverythingXML();
+    qDebug() << "zzzzzzzzzzzzzzzzzzzzzzzz";
     for(unsigned int i=0; i<nbNotes; i++) delete tabNotes[i];
         delete[] tabNotes;
+
 }
 
 void NotesManager::addNote(Note* n){

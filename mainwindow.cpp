@@ -4,6 +4,7 @@
 
 #include <QWidget>
 #include <QMenuBar>
+#include <QMessageBox>
 
 #include<QErrorMessage>
 
@@ -16,6 +17,15 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    NotesManager& NM = NotesManager::donneInstance();
+    NM.LoadFileXML();
+
+    RelationManager& RM = RelationManager::donneInstance();
+    if(!RM.existeRelation("Reference"))
+    {
+        RM.createReference();
+    }
+
     ui->setupUi(this);
 
     setFixedSize(600, 440);
@@ -96,6 +106,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    NotesManager::supprimeInstance();
+    RelationManager::supprimeInstance();
     delete ui;
 }
 
@@ -185,7 +197,7 @@ void MainWindow::ouvrir_corbeille() {
     connect(explo_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvre_note()));
     //connect(explo_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvrir_arbo()));
     explo_window->getTitreWidget()->setText("Corbeille");
-    explo_window->getButtonOpen()->setText("restaurer");
+    explo_window->getButtonOpen()->setText("restaurer corbeille");
 
     connect(explo_window->getButtonOpen(), SIGNAL(clicked(bool)), this, SLOT(restaure_corbeille()));
 
@@ -361,7 +373,9 @@ void MainWindow::fermer_arbo(){
 
 
 void MainWindow::restaure_corbeille(){
-
+    NotesManager& NM = NotesManager::donneInstance();
+    NM.restaurerCorbeille();
+    QMessageBox::information(this, "Bravo", "Restauration de la corbeille Réussie !");
 }
 
 void MainWindow::ouvrir_memento(){

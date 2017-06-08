@@ -7,10 +7,12 @@
 
 int main(int argc, char *argv[])
 {
+   // NotesManager& NM = NotesManager::donneInstance();
+    //NM.LoadFileXML();
     QApplication a(argc, argv);
-    DebugTest::Debug();
+    //DebugTest::Debug();
    // DebugTest::Debug_theophile();
-    DebugTest::DebugRelation();
+    //DebugTest::DebugRelation();
     MainWindow w;
     w.setWindowTitle("PluriNote");
     w.show();

@@ -126,7 +126,7 @@ ExplorateurWindow::ExplorateurWindow(Note& note, QWidget *parent): QWidget(paren
 
     fenetre_vbox = new QVBoxLayout;
 
-    titre = new QLabel("Memento de "+note.getId()+" : \""+note.getTitre()+"\"");
+    titre = new QLabel("Memento de "+note.getId()+" : \""+note.getTitre()+"\"\nCréation : "+note.getDateCrea().toString());
 
     liste = new QListWidget;
 

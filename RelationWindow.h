@@ -51,13 +51,18 @@ private:
     QCheckBox *non_oriente;
 
     QHBoxLayout *button_layout;
+    QHBoxLayout *button_layout_1;
+    QHBoxLayout *button_layout_2;
     QPushButton *button_create;
     QPushButton *button_close;
     QPushButton *button_save;
+    QPushButton *button_delete;
 
 public slots:
     void create();
     void save();
+    void delete_rela();
+
 
 };
 

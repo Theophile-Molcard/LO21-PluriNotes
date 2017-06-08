@@ -88,15 +88,21 @@ CreationRelationWindow::CreationRelationWindow(Relation *rela, QWidget *parent):
     button_save = new QPushButton("save");
     connect(button_save, SIGNAL(clicked(bool)), this, SLOT(save()));
 
-    button_layout = new QHBoxLayout;
-    button_layout->addWidget(button_create);
-    button_layout->addWidget(button_save);
-    button_layout->addWidget(button_close);
+    button_delete = new QPushButton("delete");
+    connect(button_delete, SIGNAL(clicked(bool)), this, SLOT(delete_rela()));
+
+    button_layout_1 = new QHBoxLayout;
+    button_layout_2 = new QHBoxLayout;
+    button_layout_1->addWidget(button_create);
+    button_layout_1->addWidget(button_save);
+    button_layout_2->addWidget(button_close);
+    button_layout_2->addWidget(button_delete);
 
     fenetre_vbox->addLayout(titre_hbox);
     fenetre_vbox->addLayout(description_hbox);
     fenetre_vbox->addWidget(non_oriente);
-    fenetre_vbox->addLayout(button_layout);
+    fenetre_vbox->addLayout(button_layout_1);
+    fenetre_vbox->addLayout(button_layout_2);
 
 
     this->setLayout(fenetre_vbox);
@@ -251,6 +257,12 @@ void CreationRelationWindow::save(){
     }
 }
 
+void CreationRelationWindow::delete_rela(){
+
+    /// Working place for el Maxime
+
+}
+
 void CoupleWindow::save(){
     if(this->liste_x->currentRow() !=-1 && this->liste_y->currentRow() != -1 ){
         RelationManager& RM = RelationManager::donneInstance();
@@ -359,6 +371,7 @@ void RelationVizingWindow::afficherCouples(){
             liste_couples->addItem((*it)->getx()+" -> "+(*it)->gety());
         }
     }
+
 
 }
 

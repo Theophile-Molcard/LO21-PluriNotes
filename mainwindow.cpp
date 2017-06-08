@@ -265,6 +265,8 @@ void MainWindow::ouvre_article(Note &note){
 void MainWindow::editeur_article(){
 
     article_window = new ArticleWindow( note_window->getId(), note_window->getTitle(), this);
+    connect(article_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur()));
+    connect(article_window->getSaveButton(), SIGNAL(clicked(bool)), article_window, SLOT(close()));
     article_window->show();
 
 }
@@ -272,6 +274,8 @@ void MainWindow::editeur_article(){
 void MainWindow::editeur_multimedia(){
 
     multimedia_window = new MultimediaWindow( note_window->getId(), note_window->getTitle(), this);
+    connect(multimedia_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur()));
+    connect(multimedia_window->getSaveButton(), SIGNAL(clicked(bool)), multimedia_window, SLOT(close()));
     multimedia_window->show();
 
 }
@@ -279,6 +283,8 @@ void MainWindow::editeur_multimedia(){
 void MainWindow::editeur_tache(){
 
     tache_window = new TacheWindow( note_window->getId(), note_window->getTitle(), this);
+    connect(tache_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur()));
+    connect(tache_window->getSaveButton(), SIGNAL(clicked(bool)), tache_window, SLOT(close()));
     tache_window->show();
 
 }
@@ -313,31 +319,35 @@ void MainWindow::parcourir_rela(){
 }
 
 void MainWindow::ouvrir_rela(){
+    if(explo_rela_window->getListe()->currentRow() != -1){
+        QString titre_rela = explo_rela_window->getListe()->currentItem()->text();
+        fermer_slot_3();
 
-    QString titre_rela = explo_rela_window->getListe()->currentItem()->text();
-    fermer_slot_3();
+        RelationManager& RM = RelationManager::donneInstance();
 
-    RelationManager& RM = RelationManager::donneInstance();
+        crea_rela_window = new CreationRelationWindow(&RM.getRelation(titre_rela), this);
 
-    crea_rela_window = new CreationRelationWindow(&RM.getRelation(titre_rela), this);
+        connect(crea_rela_window->getButtonCreate(), SIGNAL(clicked(bool)), this, SLOT(ouvre_couplage()));
 
-    connect(crea_rela_window->getButtonCreate(), SIGNAL(clicked(bool)), this, SLOT(ouvre_couplage()));
+        connect(crea_rela_window->getButtonClose(), SIGNAL(clicked(bool)), this, SLOT(parcourir_rela()));
 
-    connect(crea_rela_window->getButtonClose(), SIGNAL(clicked(bool)), this, SLOT(parcourir_rela()));
-
-    crea_rela_window->show();
+        crea_rela_window->show();
+    }
 }
 
 void MainWindow::ouvre_couplage(){
+    if(explo_rela_window->getListe()->currentRow() != -1){
 
-    RelationManager& RM = RelationManager::donneInstance();
+        RelationManager& RM = RelationManager::donneInstance();
 
-    Relation* rela = &RM.getRelation( crea_rela_window->getTitre()->text() );
+        Relation* rela = &RM.getRelation( crea_rela_window->getTitre()->text() );
 
-    fermer_slot_3();
+        fermer_slot_3();
 
-    couple_window = new CoupleWindow(rela, this);
-    couple_window->show();
+        couple_window = new CoupleWindow(rela, this);
+        connect(couple_window->getButtonCreate(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_arbo()));
+        couple_window->show();
+    }
 
 
 }
@@ -347,6 +357,7 @@ void MainWindow::visualiser_rela(){
     fermer_slot_3();
 
     rela_viz_window = new RelationVizingWindow(this);
+    connect(rela_viz_window->getButtonSuprime(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_arbo()));
 
     rela_viz_window->show();
 
@@ -358,13 +369,18 @@ void MainWindow::visualiser_rela(){
 void MainWindow::ouvrir_arbo(){
     if(arbo) arbo->close();
     if(pref_arbo) setFixedSize(800, 440);
+    if(explo_window){
+        if(explo_window->isVisible()){
+            if(explo_window->getListe()->currentRow() != -1){
+                NotesManager& NM = NotesManager::donneInstance();
 
-    NotesManager& NM = NotesManager::donneInstance();
+                Note& note = NM.getNote( explo_window->getIdIndice(explo_window->getListe()->currentRow()) );
 
-    Note& note = NM.getNote( explo_window->getIdIndice(explo_window->getListe()->currentRow()) );
-
-    arbo = new Arborescence(note, this);
-    arbo->show();
+                arbo = new Arborescence(note, this);
+                arbo->show();
+            }
+        }
+    }
 }
 
 void MainWindow::fermer_arbo(){
@@ -378,6 +394,9 @@ void MainWindow::restaure_corbeille(){
     NotesManager& NM = NotesManager::donneInstance();
     NM.restaurerCorbeille();
     QMessageBox::information(this, "Bravo", "Restauration de la corbeille Réussie !");
+    fermer_slot_2();
+    fermer_slot_1();
+    ouvrir_explorateur();
 }
 
 void MainWindow::ouvrir_memento(){

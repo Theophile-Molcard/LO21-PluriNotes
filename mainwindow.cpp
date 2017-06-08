@@ -41,6 +41,8 @@ MainWindow::MainWindow(QWidget *parent) :
     rela_viz_window = 0;
     arbo = 0;
 
+    fermer_arbo();
+
     pref_arbo = false;
     pref_corbeille = false;
 
@@ -159,7 +161,7 @@ void MainWindow::ouvrir_explorateur() {
     if(pref_arbo) setFixedWidth(800);
 
     explo_window =  new ExplorateurWindow(this);
-    //connect(explo_window->getButtonOpen(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note()));
+    connect(explo_window->getButtonOpen(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur_memento()));
     connect(explo_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvre_note()));
     connect(explo_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvrir_arbo()));
     explo_window->show();
@@ -170,7 +172,7 @@ void MainWindow::ouvrir_agenda_taches() {
     if(pref_arbo) setFixedWidth(800);
 
     explo_window =  new ExplorateurWindow(0, this);
-    //connect(explo_window->getButtonOpen(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note()));
+    connect(explo_window->getButtonOpen(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur_memento()));
     connect(explo_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvre_note()));
     connect(explo_window->getListe(), SIGNAL(doubleClicked(QModelIndex)), this, SLOT(ouvrir_arbo()));
     explo_window->show();
@@ -389,4 +391,18 @@ void MainWindow::ouvrir_memento(){
     ouvre_note();
 }
 
+void MainWindow::ouvrir_explorateur_memento() {
+
+    if(explo_window->getListe()->currentRow() != -1){
+        NotesManager& NM = NotesManager::donneInstance();
+
+        Note& note = NM.getNote( explo_window->getIdIndice(explo_window->getListe()->currentRow()) );
+
+        fermer_slot_2();
+
+        explo_window = new ExplorateurWindow(note, this);
+        explo_window->show();
+    }
+
+}
 

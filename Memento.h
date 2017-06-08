@@ -1,7 +1,8 @@
 #ifndef MEMENTO_H
 #define MEMENTO_H
 
-#include<QStack>
+#include<QList>
+#include<iterator>
 #include<QDateTime>
 #include <QXmlStreamWriter>
 
@@ -128,40 +129,47 @@ public:
     }
 
     Gardien(Memento* mem){
-        pileMemento.push(mem);
+        tab_memento.append(mem);
     }
 
     void addMemento(Memento* mem){
-        pileMemento.push(mem);
-    }
-
-    Memento* getMemento(int version){ // voir comment gérer les versions...
-        if(version > pileMemento.size()){
-            throw NotesException(QString("erreur : depassement de pile"));
-        }
-        else{
-            for(int i = 0 ; i < version ; i++)
-                pileMemento.pop();
-        }
-
-        return pileMemento.top();
-
-    }
-
-    Memento* popMemento(){
-        return pileMemento.pop();
+        tab_memento.append(mem);
     }
 
     unsigned int sizeMemento(){
-        return pileMemento.size();
+        return tab_memento.size();
     }
 
     bool empty(){
-        return pileMemento.empty();
+        return tab_memento.empty();
+    }
+
+    class Iterator {
+    public:
+        Memento* operator *(){return tab[indice];}
+        Memento* operator ++(){
+            if(isdone())
+                throw "il faut faire une classe d'exceptions";
+            return tab[++indice];
+        }
+        Memento* operator ++(int){
+            if(isdone())
+            return tab[indice++];
+        }
+        bool isdone(){return indice == tab.size();}
+    private:
+        QList<Memento*> tab;
+        unsigned int indice;
+        friend class Gardien;
+        Iterator(QList<Memento*> _tab): tab(_tab), indice(0) {}
+    };
+
+    Iterator getIterator() {
+        return Iterator(tab_memento);
     }
 
 private:
-    QStack<Memento*> pileMemento;
+    QList<Memento*> tab_memento;
 
 };
 

@@ -25,7 +25,7 @@ ExplorateurWindow::ExplorateurWindow(QWidget *parent): QWidget(parent)
     }
 
 
-    button_open = new QPushButton("à définir...");
+    button_open = new QPushButton("versions");
     button_close = new QPushButton("fermer");
     connect(button_close, SIGNAL(clicked(bool)), this, SLOT(close()));
 
@@ -79,7 +79,6 @@ ExplorateurWindow::ExplorateurWindow(int i, QWidget *parent): QWidget(parent)
     }
     else if(i == 1)
     {
-
         for( NotesManager::Iterator it = NM.getIterator() ; !it.isdone() ; it++){
             if((*it)->etatToString()=="archive"){
                 liste->addItem((*it)->getTitre());
@@ -101,7 +100,42 @@ ExplorateurWindow::ExplorateurWindow(int i, QWidget *parent): QWidget(parent)
     }
 
 
-    button_open = new QPushButton("à définir...");
+    button_open = new QPushButton("versions");
+    button_close = new QPushButton("fermer");
+    connect(button_close, SIGNAL(clicked(bool)), this, SLOT(close()));
+
+    button_layout = new QHBoxLayout;
+    if(i != 1)
+        button_layout->addWidget(button_open);
+
+    button_layout->addWidget(button_close);
+
+    fenetre_vbox->addWidget(titre);
+    fenetre_vbox->addWidget(liste);
+    fenetre_vbox->addLayout(button_layout);
+
+
+    this->setLayout(fenetre_vbox);
+}
+
+ExplorateurWindow::ExplorateurWindow(Note& note, QWidget *parent): QWidget(parent)
+{
+
+    setFixedSize(200, 400);
+    move(0, 40);
+
+    fenetre_vbox = new QVBoxLayout;
+
+    titre = new QLabel("Memento de "+note.getId()+" : \""+note.getTitre()+"\"");
+
+    liste = new QListWidget;
+
+
+    for( Gardien::Iterator i = note.getGardien()->getIterator(); !i.isdone() ; i++)
+        liste->addItem((*i)->getDateModif().toString());
+
+
+    button_open = new QPushButton("restaurer");
     button_close = new QPushButton("fermer");
     connect(button_close, SIGNAL(clicked(bool)), this, SLOT(close()));
 

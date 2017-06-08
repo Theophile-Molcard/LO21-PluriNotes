@@ -101,6 +101,8 @@ public slots:
 
     void ouvrir_arbo();
     void fermer_arbo();
+
+    void ouvrir_explorateur_memento();
 };
 
 

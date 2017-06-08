@@ -1,6 +1,8 @@
 #ifndef EXPLORATEURWINDOW_H
 #define EXPLORATEURWINDOW_H
 
+#include "Notes.h"
+
 #include <QWidget>
 #include <QList>
 
@@ -21,6 +23,7 @@ class ExplorateurWindow : public QWidget{
 public:
     ExplorateurWindow(QWidget *parent = 0);
     ExplorateurWindow(int i, QWidget *parent = 0);
+    ExplorateurWindow(Note& note, QWidget *parent);
     QString getTitre() {return titre->text(); }
     QLabel *getTitreWidget() {return titre; }
     QListWidget* getListe() {return liste;}

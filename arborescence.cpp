@@ -20,9 +20,11 @@ Arborescence::Arborescence(Note& note, QWidget *parent): QWidget(parent)
 
     ascendants = new QTreeWidget;
     setAscendantsRacine(note);
+    ascendants->setHeaderLabel("ascendants");
 
     descendants = new QTreeWidget;
     setDescendantsRacine(note);
+    descendants->setHeaderLabel("descendants");
 
     fenetre_vbox->addWidget(ascendants);
     fenetre_vbox->addLayout(label_hbox);

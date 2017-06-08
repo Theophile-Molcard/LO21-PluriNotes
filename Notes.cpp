@@ -583,8 +583,8 @@ void Article::saveXML(QXmlStreamWriter* stream){
     {
         for(unsigned int i = 0; i<=MementoS->sizeMemento(); i++)
         {
-            Memento* memento = MementoS->popMemento();
-            memento->saveXML(stream);
+//            Memento* memento = MementoS->popMemento();
+//            memento->saveXML(stream);
         }
     }
     (*stream).writeEndElement();
@@ -608,8 +608,8 @@ void Tache::saveXML(QXmlStreamWriter *stream){
     {
         for(unsigned int i = 0; i<=MementoS->sizeMemento(); i++)
         {
-            Memento* memento = MementoS->popMemento();
-            memento->saveXML(stream);
+//            Memento* memento = MementoS->popMemento();
+//            memento->saveXML(stream);
         }
     }
     (*stream).writeEndElement();
@@ -633,8 +633,8 @@ void Multimedia::saveXML(QXmlStreamWriter *stream){
     {
         for(unsigned int i = 0; i<=MementoS->sizeMemento(); i++)
         {
-            Memento* memento = MementoS->popMemento();
-            memento->saveXML(stream);
+//            Memento* memento = MementoS->popMemento();
+//            memento->saveXML(stream);
         }
     }
     (*stream).writeEndElement();
@@ -744,8 +744,8 @@ void NotesManager::saveVersion(Note* _note) const{
 }
 
 void NotesManager::restateVersion(Note* _note, unsigned int version){
-    Memento* version_note;
-    version_note = _note->gardien_note->getMemento(version);
-    _note->restateMemento(version_note);
+//    Memento* version_note;
+//    version_note = _note->gardien_note->getMemento(version);
+//    _note->restateMemento(version_note);
 }
 

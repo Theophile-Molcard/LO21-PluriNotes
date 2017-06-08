@@ -258,9 +258,9 @@ void CreationRelationWindow::save(){
 }
 
 void CreationRelationWindow::delete_rela(){
-
-    /// Working place for el Maxime
-
+    RelationManager& RM = RelationManager::donneInstance();
+    RM.deleteRelation(titre_ancien);
+    QMessageBox::information(this, "Bravo", "Suppression Reussie !");
 }
 
 void CoupleWindow::save(){

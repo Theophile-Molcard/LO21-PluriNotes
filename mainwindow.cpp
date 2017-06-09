@@ -9,6 +9,7 @@
 #include<QErrorMessage>
 
 #include <QPushButton>
+#include <QDebug>
 
 
 /// Constructeur / Destructeur MainWindow
@@ -238,6 +239,8 @@ void MainWindow::ouvre_note_asc() {
             ouvre_multi(note);
         else
             ouvre_article(note);
+
+        ouvrir_arbo();
     }
 
 }
@@ -257,6 +260,8 @@ void MainWindow::ouvre_note_desc() {
             ouvre_multi(note);
         else
             ouvre_article(note);
+
+        ouvrir_arbo();
     }
 
 }
@@ -307,7 +312,6 @@ void MainWindow::editeur_article(){
     article_window = new ArticleWindow( note_window->getId(), note_window->getTitle(), this);
     connect(article_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(fermer_arbo()));
     connect(article_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur()));
-    connect(article_window->getSaveButton(), SIGNAL(clicked(bool)), article_window, SLOT(close()));
     article_window->show();
 
 }
@@ -317,7 +321,6 @@ void MainWindow::editeur_multimedia(){
     multimedia_window = new MultimediaWindow( note_window->getId(), note_window->getTitle(), this);
     connect(multimedia_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(fermer_arbo()));
     connect(multimedia_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur()));
-    connect(multimedia_window->getSaveButton(), SIGNAL(clicked(bool)), multimedia_window, SLOT(close()));
     multimedia_window->show();
 
 }
@@ -327,7 +330,6 @@ void MainWindow::editeur_tache(){
     tache_window = new TacheWindow( note_window->getId(), note_window->getTitle(), this);
     connect(tache_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(fermer_arbo()));
     connect(tache_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur()));
-    connect(tache_window->getSaveButton(), SIGNAL(clicked(bool)), tache_window, SLOT(close()));
     tache_window->show();
 
 }
@@ -412,21 +414,46 @@ void MainWindow::visualiser_rela(){
 
 
 void MainWindow::ouvrir_arbo(){
-    if(arbo) arbo->close();
-    if(pref_arbo) setFixedSize(800, 440);
-    if(explo_window){
-        if(explo_window->isVisible()){
-            if(explo_window->getListe()->currentRow() != -1){
-                NotesManager& NM = NotesManager::donneInstance();
+    if(arbo && arbo->getButtonAsc()->hasFocus() && arbo->getAscendants()->currentColumn() != -1 ){
+        NotesManager& NM = NotesManager::donneInstance();
 
-                Note& note = NM.getNote( explo_window->getIdIndice(explo_window->getListe()->currentRow()) );
+        Note& note = NM.getNote( arbo->getAscendants()->currentItem()->text(0) );
+        arbo->close();
+        arbo = new Arborescence(note, this);
+        connect(arbo->getButtonAsc(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note_asc()));
+        connect(arbo->getButtonDesc(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note_desc()));
+        arbo->show();
 
-                arbo = new Arborescence(note, this);
-                connect(arbo->getButtonAsc(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note_asc()));
-                connect(arbo->getButtonDesc(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note_desc()));
-                arbo->show();
+    }
+    else if (arbo && arbo->getButtonDesc()->hasFocus() && arbo->getDescendants()->currentColumn() != -1 ){
+        NotesManager& NM = NotesManager::donneInstance();
+
+        Note& note = NM.getNote( arbo->getDescendants()->currentItem()->text(0) );
+        arbo->close();
+        arbo = new Arborescence(note, this);
+        connect(arbo->getButtonAsc(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note_asc()));
+        connect(arbo->getButtonDesc(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note_desc()));
+        arbo->show();
+
+
+    }
+    else{
+        if(arbo) arbo->close();
+        if(pref_arbo) setFixedSize(800, 440);
+        if(explo_window){
+            if(explo_window->isVisible()){
+                if(explo_window->getListe()->currentRow() != -1){
+                    NotesManager& NM = NotesManager::donneInstance();
+
+                    Note& note = NM.getNote( explo_window->getIdIndice(explo_window->getListe()->currentRow()) );
+                    arbo = new Arborescence(note, this);
+                    connect(arbo->getButtonAsc(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note_asc()));
+                    connect(arbo->getButtonDesc(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note_desc()));
+                    arbo->show();
+                }
             }
         }
+
     }
 }
 

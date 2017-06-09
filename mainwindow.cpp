@@ -51,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     /// Les menus
     QMenu *menuNotes, *menuRef, *menuExplo, *menuPref;
-    QAction *nouvelle_note, *explo_notes, *explo_archives, *explo_corbeille, *agenda_taches, *creer_ref, *enrichir_ref, *affiche_couples, *pref_arbo, *preference_corbeille;
+    QAction *nouvelle_note, *explo_notes, *explo_archives, *explo_corbeille, *agenda_taches, *creer_ref, *enrichir_ref, *affiche_couples, *preference_arbo, *preference_corbeille;
 
     /// exploration
 
@@ -96,15 +96,26 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(affiche_couples, SIGNAL(triggered(bool)), this, SLOT(visualiser_rela()) );
 
     /// Preferences
+    QSettings settings("config.ini",QSettings::IniFormat);
     menuPref = menuBar()->addMenu(tr("Préférences"));
-    pref_arbo = menuPref->addAction("arborescence");
-    pref_arbo->setCheckable(true);
+    preference_arbo = menuPref->addAction("arborescence");
+    preference_arbo->setCheckable(true);
 
-    QObject::connect(pref_arbo, SIGNAL(toggled(bool)), this, SLOT(elargir()) );
+    pref_arbo = settings.value("AffArbo", false).toBool();
+    preference_arbo->setChecked(pref_arbo);
+
+    if(pref_arbo){
+        setFixedSize(800, 440);
+    }
+    else{
+        setFixedSize(600, 440);
+    }
+
+    QObject::connect(preference_arbo, SIGNAL(toggled(bool)), this, SLOT(elargir()) );
 
     preference_corbeille = menuPref->addAction("corbeille auto");
     preference_corbeille->setCheckable(true);
-    QSettings settings("config.ini",QSettings::IniFormat);
+
     pref_corbeille = settings.value("VidageAuto", false).toBool();
     preference_corbeille->setChecked(pref_corbeille);
 

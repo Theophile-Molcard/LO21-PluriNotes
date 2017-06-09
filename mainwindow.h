@@ -16,6 +16,7 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QWidget>
+#include <QSettings>
 
 
 
@@ -73,6 +74,8 @@ private:
 
 public slots:
     void elargir(){
+        QSettings settings("config.ini",QSettings::IniFormat);
+        settings.setValue("AffArbo",!pref_arbo);
         if(!pref_arbo){
             setFixedSize(800, 440);
             pref_arbo = true;

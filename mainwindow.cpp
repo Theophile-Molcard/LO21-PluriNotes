@@ -133,7 +133,9 @@ void MainWindow::closeEvent (QCloseEvent *event)
         QMessageBox msg;
         msg.setText("Avant de quitter");
         msg.setInformativeText("Voulez-vous vider la corbeille?");
-        msg.setStandardButtons(QMessageBox::Yes| QMessageBox::No);
+        QAbstractButton *OuiBouton = msg.addButton(QString("Vider"), QMessageBox::YesRole);
+        QAbstractButton *NonBouton = msg.addButton(QString("Restaurer"), QMessageBox::YesRole);
+        /*msg.setStandardButtons(QMessageBox::Yes| QMessageBox::No);
         msg.setDefaultButton(QMessageBox::No);
         int ret = msg.exec();
         switch (ret) {
@@ -146,6 +148,16 @@ void MainWindow::closeEvent (QCloseEvent *event)
           default:
 
               break;
+        }*/
+
+        msg.exec();
+        if(msg.clickedButton() == OuiBouton)
+        {
+            NM.viderCorbeille();
+        }
+        else if(msg.clickedButton() == NonBouton)
+        {
+            NM.restaurerCorbeille();
         }
         event->accept();
     }

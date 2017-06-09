@@ -4,6 +4,7 @@
 #include <QErrorMessage>
 #include <QMessageBox>
 #include <mainwindow.h>
+#include <typeinfo>
 
 /// Créateur de Notes - MainWindow::ouvrir_fenetre()
 
@@ -515,20 +516,28 @@ void ArticleWindow::save(){
     {
         NotesManager& NM = NotesManager::donneInstance();
         if(NM.existeNote(this->id->text())){
-            RelationManager& RM = RelationManager::donneInstance();
-            bool test = RM.updateReference(id->text(), text->toPlainText()+title->text());
-            if(test)
+            if(typeid(NM.getNote(this->id->text())) == typeid(Article))
             {
-                Article& article = dynamic_cast<Article&>(NM.getNote(id->text()));
-                NM.saveVersion(&article);
-                article.setTexte(text->toPlainText());
-                article.setTitre(title->text());
-                QMessageBox::information(this, "Bravo", "Sauvegarde Reussie !");
+                RelationManager& RM = RelationManager::donneInstance();
+                bool test = RM.updateReference(id->text(), text->toPlainText()+title->text());
+                if(test)
+                {
+                    Article& article = dynamic_cast<Article&>(NM.getNote(id->text()));
+                    NM.saveVersion(&article);
+                    article.setTexte(text->toPlainText());
+                    article.setTitre(title->text());
+                    QMessageBox::information(this, "Bravo", "Sauvegarde Reussie !");
+                }
+                else
+                {
+                    QErrorMessage* em = new QErrorMessage;
+                    em->showMessage("On ne peut pas faire de référence vers une note qui n'existe pas.");
+                }
             }
             else
             {
                 QErrorMessage* em = new QErrorMessage;
-                em->showMessage("On ne peut pas faire de référence vers une note qui n'existe pas.");
+                em->showMessage("Attention une note de type tache ou multimedia porte déjà cet ID.");
             }
 
         }
@@ -566,28 +575,36 @@ void TacheWindow::save(){
     {
         NotesManager& NM = NotesManager::donneInstance();
         if(NM.existeNote(this->id->text())){
-            RelationManager& RM = RelationManager::donneInstance();
-            bool test = RM.updateReference(id->text(), action->toPlainText()+title->text());
-            if(test)
+            if(typeid(NM.getNote(this->id->text())) == typeid(Tache))
             {
-                Tache& tache = dynamic_cast<Tache&>(NM.getNote(id->text()));
-                NM.saveVersion(&tache);
-                tache.setAction(action->toPlainText());
-                tache.setTitre(title->text());
-                tache.setDateEcheance(echeance->dateTime());
-                tache.setPriority(priorite->text().toUInt());
-                if(statut->currentText() == "termine")
-                    tache.setStatut(termine);
-                else if(statut->currentText() == "cours")
-                    tache.setStatut(cours);
+                RelationManager& RM = RelationManager::donneInstance();
+                bool test = RM.updateReference(id->text(), action->toPlainText()+title->text());
+                if(test)
+                {
+                    Tache& tache = dynamic_cast<Tache&>(NM.getNote(id->text()));
+                    NM.saveVersion(&tache);
+                    tache.setAction(action->toPlainText());
+                    tache.setTitre(title->text());
+                    tache.setDateEcheance(echeance->dateTime());
+                    tache.setPriority(priorite->text().toUInt());
+                    if(statut->currentText() == "termine")
+                        tache.setStatut(termine);
+                    else if(statut->currentText() == "cours")
+                        tache.setStatut(cours);
+                    else
+                        tache.setStatut(attente);
+                    QMessageBox::information(this, "Bravo", "Sauvegarde Reussie !");
+                }
                 else
-                    tache.setStatut(attente);
-                QMessageBox::information(this, "Bravo", "Sauvegarde Reussie !");
+                {
+                    QErrorMessage* em = new QErrorMessage;
+                    em->showMessage("On ne peut pas faire de référence vers une note qui n'existe pas.");
+                }
             }
             else
             {
                 QErrorMessage* em = new QErrorMessage;
-                em->showMessage("On ne peut pas faire de référence vers une note qui n'existe pas.");
+                em->showMessage("Attention une note de type article ou multimedia porte déjà cet ID.");
             }
 
         }
@@ -625,27 +642,35 @@ void MultimediaWindow::save(){
     {
         NotesManager& NM = NotesManager::donneInstance();
         if(NM.existeNote(this->id->text())){
-            RelationManager& RM = RelationManager::donneInstance();
-            bool test = RM.updateReference(id->text(), description->toPlainText()+title->text());
-            if(test)
+            if(typeid(NM.getNote(this->id->text())) == typeid(Multimedia))
             {
-                Multimedia& multi = dynamic_cast<Multimedia&>(NM.getNote(id->text()));
-                NM.saveVersion(&multi);
-                multi.setDescription(description->toPlainText());
-                multi.setFichier(path);
-                multi.setTitre(title->text());
-                if(fichier_type->currentText() == "video")
-                    multi.setType(video);
-                else if(fichier_type->currentText() == "audio")
-                    multi.setType(audio);
+                RelationManager& RM = RelationManager::donneInstance();
+                bool test = RM.updateReference(id->text(), description->toPlainText()+title->text());
+                if(test)
+                {
+                    Multimedia& multi = dynamic_cast<Multimedia&>(NM.getNote(id->text()));
+                    NM.saveVersion(&multi);
+                    multi.setDescription(description->toPlainText());
+                    multi.setFichier(path);
+                    multi.setTitre(title->text());
+                    if(fichier_type->currentText() == "video")
+                        multi.setType(video);
+                    else if(fichier_type->currentText() == "audio")
+                        multi.setType(audio);
+                    else
+                        multi.setType(image);
+                    QMessageBox::information(this, "Bravo", "Sauvegarde Réussie !");
+                }
                 else
-                    multi.setType(image);
-                QMessageBox::information(this, "Bravo", "Sauvegarde Réussie !");
+                {
+                    QErrorMessage* em = new QErrorMessage;
+                    em->showMessage("On ne peut pas faire de référence vers une note qui n'existe pas.");
+                }
             }
             else
             {
                 QErrorMessage* em = new QErrorMessage;
-                em->showMessage("On ne peut pas faire de référence vers une note qui n'existe pas.");
+                em->showMessage("Attention une note de type article ou tache porte déjà cet ID.");
             }
 
         }

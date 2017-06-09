@@ -223,8 +223,47 @@ void MainWindow::ouvre_note() {
 
 }
 
+void MainWindow::ouvre_note_asc() {
+    if(arbo->getAscendants()->currentColumn() != -1){
+        fermer_slot_1();
+
+        NotesManager& NM = NotesManager::donneInstance();
+
+        Note& note = NM.getNote( arbo->getAscendants()->currentItem()->text(0) );
+
+
+        if(typeid(note)==typeid(Tache))
+            ouvre_tache(note);
+        else if(typeid(note)==typeid(Multimedia))
+            ouvre_multi(note);
+        else
+            ouvre_article(note);
+    }
+
+}
+
+void MainWindow::ouvre_note_desc() {
+    if(arbo->getDescendants()->currentColumn() != -1){
+        fermer_slot_1();
+
+        NotesManager& NM = NotesManager::donneInstance();
+
+        Note& note = NM.getNote( arbo->getDescendants()->currentItem()->text(0) );
+
+
+        if(typeid(note)==typeid(Tache))
+            ouvre_tache(note);
+        else if(typeid(note)==typeid(Multimedia))
+            ouvre_multi(note);
+        else
+            ouvre_article(note);
+    }
+
+}
+
 void MainWindow::ouvre_tache(Note &note){
     tache_window = new TacheWindow(note, this);
+    connect(multimedia_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(fermer_arbo()));
     if(explo_window->getTitre() == "toutes les notes" || explo_window->getTitre() == "archives")
         connect(tache_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur()));
     else
@@ -243,6 +282,7 @@ void MainWindow::ouvre_tache(Note &note){
 void MainWindow::ouvre_multi(Note &note){
     multimedia_window = new MultimediaWindow(note, this);
     connect(multimedia_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur()));
+    connect(multimedia_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(fermer_arbo()));
     connect(multimedia_window->getDeleteButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur()));
     connect(multimedia_window->getDeleteButton(), SIGNAL(clicked(bool)), multimedia_window, SLOT(close()));
     multimedia_window->show();
@@ -252,6 +292,7 @@ void MainWindow::ouvre_multi(Note &note){
 void MainWindow::ouvre_article(Note &note){
     article_window = new ArticleWindow(note, this);
     connect(article_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur()));
+    connect(article_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(fermer_arbo()));
     connect(article_window->getDeleteButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur()));
     connect(article_window->getDeleteButton(), SIGNAL(clicked(bool)), article_window, SLOT(close()));
     article_window->show();
@@ -265,6 +306,7 @@ void MainWindow::ouvre_article(Note &note){
 void MainWindow::editeur_article(){
 
     article_window = new ArticleWindow( note_window->getId(), note_window->getTitle(), this);
+    connect(article_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(fermer_arbo()));
     connect(article_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur()));
     connect(article_window->getSaveButton(), SIGNAL(clicked(bool)), article_window, SLOT(close()));
     article_window->show();
@@ -274,6 +316,7 @@ void MainWindow::editeur_article(){
 void MainWindow::editeur_multimedia(){
 
     multimedia_window = new MultimediaWindow( note_window->getId(), note_window->getTitle(), this);
+    connect(multimedia_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(fermer_arbo()));
     connect(multimedia_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur()));
     connect(multimedia_window->getSaveButton(), SIGNAL(clicked(bool)), multimedia_window, SLOT(close()));
     multimedia_window->show();
@@ -283,6 +326,7 @@ void MainWindow::editeur_multimedia(){
 void MainWindow::editeur_tache(){
 
     tache_window = new TacheWindow( note_window->getId(), note_window->getTitle(), this);
+    connect(tache_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(fermer_arbo()));
     connect(tache_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur()));
     connect(tache_window->getSaveButton(), SIGNAL(clicked(bool)), tache_window, SLOT(close()));
     tache_window->show();
@@ -331,6 +375,8 @@ void MainWindow::ouvrir_rela(){
 
         connect(crea_rela_window->getButtonClose(), SIGNAL(clicked(bool)), this, SLOT(parcourir_rela()));
 
+        connect(crea_rela_window->getButtonDelete(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_arbo()));
+
         crea_rela_window->show();
     }
 }
@@ -377,6 +423,8 @@ void MainWindow::ouvrir_arbo(){
                 Note& note = NM.getNote( explo_window->getIdIndice(explo_window->getListe()->currentRow()) );
 
                 arbo = new Arborescence(note, this);
+                connect(arbo->getButtonAsc(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note_asc()));
+                connect(arbo->getButtonDesc(), SIGNAL(clicked(bool)), this, SLOT(ouvre_note_desc()));
                 arbo->show();
             }
         }

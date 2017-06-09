@@ -9,6 +9,7 @@
 #include<QLabel>
 #include<QLayout>
 #include<QList>
+#include<QPushButton>
 
 class Arborescence : public QWidget{
 
@@ -20,6 +21,9 @@ public:
     QTreeWidget* getDescendants() {return descendants; }
     QTreeWidget* getAscendants() {return ascendants; }
 
+    QPushButton* getButtonAsc() {return button_asc; }
+    QPushButton* getButtonDesc() {return button_desc; }
+
 private:
 
     QVBoxLayout *fenetre_vbox;
@@ -27,6 +31,10 @@ private:
     QHBoxLayout *label_hbox;
     QLabel *id_label;
     QLabel *titre_label;
+
+    QHBoxLayout *button_layout;
+    QPushButton *button_asc;
+    QPushButton *button_desc;
 
     QTreeWidget *descendants;
     QTreeWidget *ascendants;

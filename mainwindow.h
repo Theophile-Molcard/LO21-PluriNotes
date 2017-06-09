@@ -88,6 +88,8 @@ public slots:
     void ouvrir_explorateur();
     void ouvrir_agenda_taches();
     void ouvre_note();
+    void ouvre_note_asc();
+    void ouvre_note_desc();
     void ouvrir_archives();
     void ouvrir_corbeille();
     void restaure_corbeille();

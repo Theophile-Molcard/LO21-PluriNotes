@@ -26,9 +26,17 @@ Arborescence::Arborescence(Note& note, QWidget *parent): QWidget(parent)
     setDescendantsRacine(note);
     descendants->setHeaderLabel("descendants");
 
+    button_layout = new QHBoxLayout;
+    button_asc = new QPushButton("Ascendant");
+    button_desc = new QPushButton("Descendant");
+
+    button_layout->addWidget(button_asc);
+    button_layout->addWidget(button_desc);
+
     fenetre_vbox->addWidget(ascendants);
     fenetre_vbox->addLayout(label_hbox);
     fenetre_vbox->addWidget(descendants);
+    fenetre_vbox->addLayout(button_layout);
 
 
     this->setLayout(fenetre_vbox);

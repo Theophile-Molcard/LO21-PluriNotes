@@ -30,6 +30,7 @@ public:
 
     QPushButton* getButtonCreate() {return button_create;}
     QPushButton* getButtonClose() {return button_close;}
+    QPushButton* getButtonDelete() {return button_delete;}
     QLineEdit* getTitre() {return titre; }
 
 private:

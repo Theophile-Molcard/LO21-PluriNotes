@@ -112,7 +112,7 @@ private:
      *
      * Méthode virtuelle pure, redéfinie par les classes filles pour sauvegarder correctement la note en XML
      *
-     * \param stream passage par parametre de QXmlStreamWriter pour tester si on peut ecrire sur un fichier avec plusieurs fonctions
+     * \param stream passage par parametre de QXmlStreamWriter
      */
     virtual void saveXML(QXmlStreamWriter* stream) = 0;// enregistre avec tous les paramètres
     //Pour l'instant en virtuel, pour pouvoir enregistrer les paramètres des fils selon le type de note
@@ -195,7 +195,7 @@ private:
     void restateMemento(Memento* mem);
     /*!
      * \brief sauvegarde d'Article en XML
-     * \param stream pour tester si on peut écrire sur un fichier avec plusieurs fonctions
+     * \param stream Passage par paramètre QXmlStreamWriter
      */
     void saveXML(QXmlStreamWriter* stream);
 
@@ -318,7 +318,7 @@ private:
     void restateMemento(Memento* mem);
     /*!
      * \brief Sauvegarde XML de la tache
-     * \param stream pour tester ...
+     * \param stream Passage par paramètre de QXmlStreamWriter
      */
     void saveXML(QXmlStreamWriter* stream);
 
@@ -422,7 +422,7 @@ private:
 
     /*!
      * \brief Sauvegarde XML de la tache
-     * \param stream pour tester ...
+     * \param stream pointeur sur QXmlStreamWriter
      */
     void saveXML(QXmlStreamWriter* stream);
 
@@ -459,7 +459,7 @@ public:
      */
     void viderCorbeille();
     /*!
-     * \brief restaurerCorbeille
+     * \brief Restaure la Corbeille
      */
     void restaurerCorbeille();
     /*!
@@ -615,11 +615,11 @@ private:
     static NotesManager* instance; /*!< pointeur sur l'instance de NotesManager*/
 
     /*!
-     * \brief Constructeur vide de NotesManager
+     * \brief Constructeur de NotesManager
      */
     NotesManager();
     /*!
-    * \brief Destructeur vide de NotesManager
+    * \brief Destructeur de NotesManager
     */
     ~NotesManager();
 

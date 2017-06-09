@@ -2,6 +2,7 @@
 #include "Notes.h"
 #include <typeinfo>
 #include <QDebug>
+#include <QMessageBox>
 
 ExplorateurWindow::ExplorateurWindow(QWidget *parent): QWidget(parent)
 {
@@ -126,18 +127,20 @@ ExplorateurWindow::ExplorateurWindow(Note& note, QWidget *parent): QWidget(paren
 
     fenetre_vbox = new QVBoxLayout;
 
-    titre = new QLabel("Memento de "+note.getId()+" : \""+note.getTitre()+"\"\nCréation : "+note.getDateCrea().toString());
+    NoteId = note.getId();
+    titre = new QLabel("Memento de "+note.getId()+" : \""+note.getTitre()+"\"\nCréation : "+note.getDateCrea().toString("dd/MM/yyyy hh:mm:ss"));
 
     liste = new QListWidget;
 
 
     for( Gardien::Iterator i = note.getGardien()->getIterator(); !i.isdone() ; i++)
-        liste->addItem((*i)->getDateModif().toString());
+        liste->addItem((*i)->getDateModif().toString("dd/MM/yyyy hh:mm:ss"));
 
 
     button_open = new QPushButton("restaurer");
     button_close = new QPushButton("fermer");
     connect(button_close, SIGNAL(clicked(bool)), this, SLOT(close()));
+    connect(button_open, SIGNAL(clicked(bool)), this, SLOT(restaurerVersion()));
 
     button_layout = new QHBoxLayout;
     button_layout->addWidget(button_open);
@@ -185,7 +188,16 @@ void sortByPrioDate(QList<QString>& id, QList<QDateTime> date, QList<int> prio){
 
 
 
+void ExplorateurWindow::restaurerVersion(){
+    NotesManager& NM = NotesManager::donneInstance();
+    Note& note = NM.getNote(NoteId);
+    NM.saveVersion(&note);
+    qDebug() << "llala";
+    NM.restateVersion(&note, QDateTime::fromString(liste->currentItem()->text(),"dd/MM/yyyy hh:mm:ss"));
+    qDebug() << "llola";
+    QMessageBox::information(this, "Bravo", "Restauration Réussie !");
 
+}
 
 
 

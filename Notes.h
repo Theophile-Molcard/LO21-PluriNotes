@@ -601,7 +601,7 @@ public:
      * \param _note pointeur sur la note
      * \param version version à restaurer
      */
-    void restateVersion(Note* _note, unsigned int version);
+    void restateVersion(Note* _note, QDateTime version);
 
 private:
     Note** tabNotes; /*!< tableau de pointeur de notes */

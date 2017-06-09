@@ -43,10 +43,15 @@ private:
 
     QLabel *titre;
     QListWidget *liste;
+    QString NoteId;
 
     QHBoxLayout *button_layout;
     QPushButton *button_open;
     QPushButton *button_close;
+
+public slots:
+    void restaurerVersion();
+
 
 };
 

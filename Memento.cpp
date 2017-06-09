@@ -1,4 +1,22 @@
 #include "Memento.h"
+#include <QDebug>
+
+Gardien::~Gardien(){
+    qDeleteAll(tab_memento);
+    tab_memento.clear();
+}
+
+Memento& Gardien::getMemento(QDateTime dateModif){
+    QList<Memento*>::iterator it = tab_memento.begin();
+    while(it != tab_memento.end())
+    {
+        if((*it)->dateToString((*it)->getDateModif()) == (*it)->dateToString(dateModif)){
+            return *(*it);
+        }
+        it++;
+    }
+    throw NotesException("erreur, Memento n'existe pas");
+}
 
 
 void MementoArticle::saveXML(QXmlStreamWriter *stream){

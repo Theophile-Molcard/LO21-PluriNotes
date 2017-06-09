@@ -208,7 +208,7 @@ void MainWindow::ouvrir_corbeille() {
 
 void MainWindow::ouvre_note() {
     fermer_slot_1();
-
+    qDebug() << "coucou";
     NotesManager& NM = NotesManager::donneInstance();
 
     Note& note = NM.getNote( explo_window->getIdIndice(explo_window->getListe()->currentRow()) );
@@ -263,7 +263,7 @@ void MainWindow::ouvre_note_desc() {
 
 void MainWindow::ouvre_tache(Note &note){
     tache_window = new TacheWindow(note, this);
-    connect(multimedia_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(fermer_arbo()));
+    connect(tache_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(fermer_arbo()));
     if(explo_window->getTitre() == "toutes les notes" || explo_window->getTitre() == "archives")
         connect(tache_window->getSaveButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur()));
     else
@@ -274,7 +274,6 @@ void MainWindow::ouvre_tache(Note &note){
     else
         connect(tache_window->getDeleteButton(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_agenda_taches()));
     connect(tache_window->getDeleteButton(), SIGNAL(clicked(bool)), tache_window, SLOT(close()));
-
     tache_window->show();
 }
 

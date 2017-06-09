@@ -137,8 +137,8 @@ bool NotesManager::existeNote(const QString &id){
 void NotesManager::LoadFileXML(){
     QFile fichier("test_notes.xml");
     if (!fichier.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            throw NotesException("Erreur ouverture fichier notes");
-    }
+           // throw NotesException("Erreur ouverture fichier notes");
+    }else{
     QXmlStreamReader stream(&fichier);
     int i = -1;
     while(!stream.atEnd() && !stream.hasError()) {
@@ -541,6 +541,7 @@ void NotesManager::LoadFileXML(){
     // Removes any device() or data from the reader * and resets its internal state to the initial state.
     stream.clear();
     qDebug()<<"fin load\n";
+    }
 }
 
 void NotesManager::SaveEverythingXML(){
@@ -728,7 +729,7 @@ void Multimedia::restateMemento(Memento *mem){
     MementoMultimedia* mem_mult = dynamic_cast<MementoMultimedia*>(mem);
     setTitre( mem_mult->getTitre() );
     description = mem_mult->getDescription();
-    //type = mem_mult->getType(); getType renvoie un indice
+    type = mem_mult->getType();
     fichier = mem_mult->getFichier();
 
 }
@@ -739,7 +740,7 @@ void Tache::restateMemento(Memento *mem){
     action = mem_tache->getAction();
     date_echeance = mem_tache->getEcheance();
     priorite = mem_tache->getPriorite();
-    //statut = mem_tache->getStatut();
+    statut = mem_tache->getStatut();
 }
 
 
@@ -749,9 +750,9 @@ void NotesManager::saveVersion(Note* _note) const{
     _note->gardien_note->addMemento(_note->createMemento());
 }
 
-void NotesManager::restateVersion(Note* _note, unsigned int version){
-//    Memento* version_note;
-//    version_note = _note->gardien_note->getMemento(version);
-//    _note->restateMemento(version_note);
+void NotesManager::restateVersion(Note* _note, QDateTime version){
+    Memento& version_note = _note->gardien_note->getMemento(version);
+    qDebug() << version_note.getTitre();
+    _note->restateMemento(&version_note);
 }
 

@@ -85,7 +85,7 @@ public:
     QString getAction() const {return action;}
     unsigned int getPriorite() const {return priorite;}
     QDateTime getEcheance() const {return date_echeance;}
-    unsigned int getStatut() const {return statut;}
+    TypeStatut getStatut() const {return statut;}
     QString statutToString();
 
     virtual void saveXML(QXmlStreamWriter* stream);
@@ -132,9 +132,13 @@ public:
         tab_memento.append(mem);
     }
 
+    ~Gardien();
+
     void addMemento(Memento* mem){
         tab_memento.append(mem);
     }
+
+    Memento& getMemento(QDateTime dateModif);
 
     unsigned int sizeMemento(){
         return tab_memento.size();

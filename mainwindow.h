@@ -68,6 +68,7 @@ private:
     void fermer_slot_1();
     void fermer_slot_2();
     void fermer_slot_3();
+    void MainWindow::closeEvent (QCloseEvent *event);
 
 
 public slots:
@@ -81,6 +82,8 @@ public slots:
             pref_arbo = false;
         }
     }
+
+    void corbeilleAuto();
 
     void cree_note();
     void create();

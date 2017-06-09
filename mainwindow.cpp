@@ -5,6 +5,8 @@
 #include <QWidget>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QSettings>
+#include <QCloseEvent>
 
 #include<QErrorMessage>
 
@@ -48,7 +50,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     /// Les menus
     QMenu *menuNotes, *menuRef, *menuExplo, *menuPref;
-    QAction *nouvelle_note, *explo_notes, *explo_archives, *explo_corbeille, *agenda_taches, *creer_ref, *enrichir_ref, *affiche_couples, *pref_arbo, *pref_corbeille;
+    QAction *nouvelle_note, *explo_notes, *explo_archives, *explo_corbeille, *agenda_taches, *creer_ref, *enrichir_ref, *affiche_couples, *pref_arbo, *preference_corbeille;
 
     /// exploration
 
@@ -94,20 +96,54 @@ MainWindow::MainWindow(QWidget *parent) :
 
     /// Preferences
     menuPref = menuBar()->addMenu(tr("Préférences"));
-    pref_arbo = menuPref->addAction("arboressence");
+    pref_arbo = menuPref->addAction("arborescence");
     pref_arbo->setCheckable(true);
 
     QObject::connect(pref_arbo, SIGNAL(toggled(bool)), this, SLOT(elargir()) );
 
-    pref_corbeille = menuPref->addAction("corbeille auto");
-    pref_corbeille->setCheckable(true);
+    preference_corbeille = menuPref->addAction("corbeille auto");
+    preference_corbeille->setCheckable(true);
+    QSettings settings("config.ini",QSettings::IniFormat);
+    pref_corbeille = settings.value("VidageAuto", false).toBool();
+    preference_corbeille->setChecked(pref_corbeille);
 
-
+    QObject::connect(preference_corbeille, SIGNAL(toggled(bool)), this, SLOT(corbeilleAuto()));
 
 }
 
+void MainWindow::closeEvent (QCloseEvent *event)
+{
+    QSettings settings("config.ini",QSettings::IniFormat);
+    bool VidageAuto = settings.value("VidageAuto", false ).toBool();
+    if(!VidageAuto)
+    {
+        NotesManager& NM = NotesManager::donneInstance();
+        QMessageBox msg;
+        msg.setText("Avant de quitter");
+        msg.setInformativeText("Voulez-vous vider la corbeille?");
+        msg.setStandardButtons(QMessageBox::Yes| QMessageBox::No);
+        msg.setDefaultButton(QMessageBox::No);
+        int ret = msg.exec();
+        switch (ret) {
+          case QMessageBox::Yes:
+              NM.viderCorbeille();
+              break;
+          case QMessageBox::No:
+                 NM.restaurerCorbeille();
+              break;
+          default:
+
+              break;
+        }
+        event->accept();
+    }
+
+}
+
+
 MainWindow::~MainWindow()
 {
+
     NotesManager::supprimeInstance();
     RelationManager::supprimeInstance();
     delete ui;
@@ -469,6 +505,14 @@ void MainWindow::ouvrir_explorateur_memento() {
         explo_window = new ExplorateurWindow(note, this);
         explo_window->show();
     }
+
+}
+
+void MainWindow::corbeilleAuto(){
+
+    QSettings settings("config.ini",QSettings::IniFormat);
+    settings.setValue("VidageAuto",!pref_corbeille);
+
 
 }
 

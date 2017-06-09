@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <mainwindow.h>
 #include <typeinfo>
+#include <QValidator>
 
 /// Créateur de Notes - MainWindow::ouvrir_fenetre()
 
@@ -19,6 +20,7 @@ NoteWindow::NoteWindow(QWidget *parent) : QWidget(parent)
     id_hbox = new QHBoxLayout;
     id_label = new QLabel("Identifiant");
     id = new QLineEdit;
+    id->setValidator( new QRegExpValidator( QRegExp("[A-Za-z0-9\_]{0,15}"), this ));
 
     title_hbox = new QHBoxLayout;
     title_label = new QLabel("Titre");

@@ -451,6 +451,10 @@ public:
      */
     void deleteNote(const QString& id);
     /*!
+     * \brief test et supprime les notes archivées qui n'ont plus de références
+     */
+    void deleteArchive();
+    /*!
      * \brief Vide la Corbeille
      */
     void viderCorbeille();

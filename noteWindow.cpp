@@ -522,6 +522,7 @@ void ArticleWindow::save(){
                 bool test = RM.updateReference(id->text(), text->toPlainText()+title->text());
                 if(test)
                 {
+                    NM.deleteArchive();
                     Article& article = dynamic_cast<Article&>(NM.getNote(id->text()));
                     NM.saveVersion(&article);
                     article.setTexte(text->toPlainText());
@@ -581,6 +582,7 @@ void TacheWindow::save(){
                 bool test = RM.updateReference(id->text(), action->toPlainText()+title->text());
                 if(test)
                 {
+                    NM.deleteArchive();
                     Tache& tache = dynamic_cast<Tache&>(NM.getNote(id->text()));
                     NM.saveVersion(&tache);
                     tache.setAction(action->toPlainText());
@@ -648,6 +650,7 @@ void MultimediaWindow::save(){
                 bool test = RM.updateReference(id->text(), description->toPlainText()+title->text());
                 if(test)
                 {
+                    NM.deleteArchive();
                     Multimedia& multi = dynamic_cast<Multimedia&>(NM.getNote(id->text()));
                     NM.saveVersion(&multi);
                     multi.setDescription(description->toPlainText());

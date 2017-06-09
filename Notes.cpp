@@ -66,6 +66,16 @@ void NotesManager::deleteNote(const QString &id){
     }
 }
 
+void NotesManager::deleteArchive(){
+    for(unsigned int i = 0; i < nbNotes; i++)
+    {
+        if(tabNotes[i]->etat == archive)
+        {
+            deleteNote(tabNotes[i]->getId());
+        }
+    }
+}
+
 void NotesManager::viderCorbeille(){
     for(unsigned int i = 0; i<nbNotes; i++)
     {

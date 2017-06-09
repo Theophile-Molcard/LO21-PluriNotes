@@ -463,6 +463,10 @@ public:
      */
     void restaurerCorbeille();
     /*!
+     * \brief Renvoie True si il existe au moins un element dans la corbeille.
+     */
+    bool testCorbeille();
+    /*!
      * \brief restaure une note archivée
      * \param id id identificateur de la note à restaurer
      */

@@ -125,11 +125,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::closeEvent (QCloseEvent *event)
 {
+    NotesManager& NM = NotesManager::donneInstance();
     QSettings settings("config.ini",QSettings::IniFormat);
     bool VidageAuto = settings.value("VidageAuto", false ).toBool();
-    if(!VidageAuto)
+    if(!VidageAuto && NM.testCorbeille() )
     {
-        NotesManager& NM = NotesManager::donneInstance();
         QMessageBox msg;
         msg.setText("Avant de quitter");
         msg.setInformativeText("Voulez-vous vider la corbeille?");

@@ -119,6 +119,17 @@ void NotesManager::restaurerCorbeille(){
     }
 }
 
+bool NotesManager::testCorbeille(){
+    for(unsigned int i = 0; i < nbNotes; i++)
+    {
+        if(tabNotes[i]->etat == corbeille)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 void NotesManager::restaurerArchiveNote(const QString &id){
     unsigned int i;
     for(i = 0; i < nbNotes && tabNotes[i]->getId() != id ; i++){}

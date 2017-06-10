@@ -655,6 +655,7 @@ void DeleteCoupleCommand::undo(){
         if ( widget->windowTitle() == "PluriNote")
         {
            qobject_cast<MainWindow*>(widget)->visualiser_rela_specifique(relation);
+           qobject_cast<MainWindow*>(widget)->ouvrir_arbo();
         }
     }
 }
@@ -667,6 +668,7 @@ void DeleteCoupleCommand::redo(){
         if ( widget->windowTitle() == "PluriNote")
         {
            qobject_cast<MainWindow*>(widget)->visualiser_rela_specifique(relation);
+           qobject_cast<MainWindow*>(widget)->ouvrir_arbo();
         }
     }
 }

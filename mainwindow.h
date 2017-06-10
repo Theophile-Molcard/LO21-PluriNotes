@@ -5,6 +5,7 @@
 
 #include<QDebug>
 #include<QAction>
+#include<QUndoCommand>
 
 #include "Notes.h"
 #include "relations.h"
@@ -43,10 +44,20 @@ public:
     void ouvre_multi(Note& note);
     void ouvre_article(Note& note);
 
+    void visualiser_rela_specifique(QString rela);
+
     bool bool_arbo() {return pref_arbo;}
+
+    //Undo-Redo
+    void deleteRelation(Relation* rel);
+    void deleteCouple(QString rel, QString _x, QString _y, QString _label = "default");
 
 private:
     Ui::MainWindow *ui;
+
+    QUndoStack *undoStack;
+    QAction *undoAction;
+    QAction *redoAction;
 
     bool pref_arbo;
     bool pref_corbeille;
@@ -113,6 +124,24 @@ public slots:
     void ouvrir_explorateur_memento();
 };
 
+class DeleteRelationCommand : public QUndoCommand{
+public:
+    explicit DeleteRelationCommand(Relation *rel, QUndoCommand *parent = 0);
+    void undo() override;
+    void redo() override;
+private:
+    Relation* relation;
+};
 
-
+class DeleteCoupleCommand : public QUndoCommand{
+public:
+    explicit DeleteCoupleCommand(QString rel, QString _x, QString _y, QString _label = "default",  QUndoCommand *parent = 0);
+    void undo() override;
+    void redo() override;
+private:
+    QString relation;
+    QString x;
+    QString y;
+    QString label;
+};
 #endif // MAINWINDOW_H

@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    undoStack = new QUndoStack(this);
+
     NotesManager& NM = NotesManager::donneInstance();
     NM.LoadFileXML();
 
@@ -50,7 +52,7 @@ MainWindow::MainWindow(QWidget *parent) :
     pref_corbeille = false;
 
     /// Les menus
-    QMenu *menuNotes, *menuRef, *menuExplo, *menuPref;
+    QMenu *menuNotes, *menuRef, *menuExplo, *menuPref, *editMenu;
     QAction *nouvelle_note, *explo_notes, *explo_archives, *explo_corbeille, *agenda_taches, *creer_ref, *enrichir_ref, *affiche_couples, *preference_arbo, *preference_corbeille;
 
     /// exploration
@@ -120,6 +122,18 @@ MainWindow::MainWindow(QWidget *parent) :
     preference_corbeille->setChecked(pref_corbeille);
 
     QObject::connect(preference_corbeille, SIGNAL(toggled(bool)), this, SLOT(corbeilleAuto()));
+
+    ///Undo Redo
+    undoAction = undoStack->createUndoAction(this, tr("&Annuler"));
+    undoAction->setShortcuts(QKeySequence::Undo);
+
+    redoAction = undoStack->createRedoAction(this, tr("&Rétablir"));
+    redoAction->setShortcuts(QKeySequence::Redo);
+
+    editMenu = menuBar()->addMenu(tr("&Edit"));
+    editMenu->addAction(undoAction);
+    editMenu->addAction(redoAction);
+
 
 }
 
@@ -435,7 +449,7 @@ void MainWindow::ouvrir_rela(){
 
         connect(crea_rela_window->getButtonClose(), SIGNAL(clicked(bool)), this, SLOT(parcourir_rela()));
 
-        connect(crea_rela_window->getButtonDelete(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_arbo()));
+        //connect(crea_rela_window->getButtonDelete(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_arbo()));
 
         crea_rela_window->show();
     }
@@ -467,6 +481,16 @@ void MainWindow::visualiser_rela(){
 
     rela_viz_window->show();
 
+}
+
+void MainWindow::visualiser_rela_specifique(QString rela){
+    fermer_slot_3();
+
+    rela_viz_window = new RelationVizingWindow(this);
+    rela_viz_window->afficherCouplesRelation(rela);
+    connect(rela_viz_window->getButtonSuprime(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_arbo()));
+
+    rela_viz_window->show();
 }
 
 
@@ -566,3 +590,83 @@ void MainWindow::corbeilleAuto(){
 
 }
 
+void MainWindow::deleteRelation(Relation *rel){
+    QUndoCommand *deleteRelCommand = new DeleteRelationCommand(rel);
+    undoStack->push(deleteRelCommand);
+}
+
+void MainWindow::deleteCouple(QString rel, QString _x, QString _y, QString _label){
+    QUndoCommand *deleteCoupleCommand = new DeleteCoupleCommand(rel,_x,_y, _label);
+    undoStack->push(deleteCoupleCommand);
+}
+
+
+DeleteRelationCommand::DeleteRelationCommand(Relation *rel, QUndoCommand *parent): QUndoCommand(parent){
+    Relation* NewRel = new Relation(rel->getTitre(),rel->getDescription(),rel->getOrientee());
+    Relation::Iterator it = rel->getIterator();
+    while(!it.isdone())
+    {
+        NewRel->addCouple((*it)->getx(),(*it)->gety(),(*it)->getLabel());
+        it++;
+    }
+    relation = NewRel;
+}
+
+void DeleteRelationCommand::undo(){
+    Relation* NewRel = new Relation(relation->getTitre(),relation->getDescription(),relation->getOrientee());
+    Relation::Iterator it = relation->getIterator();
+    while(!it.isdone())
+    {
+        NewRel->addCouple((*it)->getx(),(*it)->gety(),(*it)->getLabel());
+        it++;
+    }
+    RelationManager& RM = RelationManager::donneInstance();
+    RM.addRelation(NewRel);
+
+    foreach (QWidget *widget, QApplication::topLevelWidgets()) {
+        if ( widget->windowTitle() == "PluriNote")
+        {
+           qobject_cast<MainWindow*>(widget)->parcourir_rela();
+           qobject_cast<MainWindow*>(widget)->ouvrir_arbo();
+        }
+    }
+}
+
+void DeleteRelationCommand::redo(){
+    RelationManager& RM = RelationManager::donneInstance();
+    RM.deleteRelation(relation->getTitre());
+
+    foreach (QWidget *widget, QApplication::topLevelWidgets()) {
+        if ( widget->windowTitle() == "PluriNote")
+        {
+           qobject_cast<MainWindow*>(widget)->parcourir_rela();
+           qobject_cast<MainWindow*>(widget)->ouvrir_arbo();
+        }
+    }
+}
+
+DeleteCoupleCommand::DeleteCoupleCommand(QString rel, QString _x, QString _y, QString _label, QUndoCommand *parent): relation(rel), x(_x), y(_y), label(_label), QUndoCommand(parent){}
+
+void DeleteCoupleCommand::undo(){
+    RelationManager& RM = RelationManager::donneInstance();
+    RM.getRelation(relation).addCouple(x,y,label);
+
+    foreach (QWidget *widget, QApplication::topLevelWidgets()) {
+        if ( widget->windowTitle() == "PluriNote")
+        {
+           qobject_cast<MainWindow*>(widget)->visualiser_rela_specifique(relation);
+        }
+    }
+}
+
+void DeleteCoupleCommand::redo(){
+    RelationManager& RM = RelationManager::donneInstance();
+    RM.getRelation(relation).deleteCouple(x,y);
+
+    foreach (QWidget *widget, QApplication::topLevelWidgets()) {
+        if ( widget->windowTitle() == "PluriNote")
+        {
+           qobject_cast<MainWindow*>(widget)->visualiser_rela_specifique(relation);
+        }
+    }
+}

@@ -5,6 +5,8 @@
 #include <QDebug>
 #include <QErrorMessage>
 #include <QMessageBox>
+#include "mainwindow.h"
+#include <QApplication>
 
 CreationRelationWindow::CreationRelationWindow(QWidget *parent): QWidget(parent)
 {
@@ -259,7 +261,12 @@ void CreationRelationWindow::save(){
 
 void CreationRelationWindow::delete_rela(){
     RelationManager& RM = RelationManager::donneInstance();
-    RM.deleteRelation(titre_ancien);
+    foreach (QWidget *widget, QApplication::topLevelWidgets()) {
+        if ( widget->windowTitle() == "PluriNote")
+        {
+           qobject_cast<MainWindow*>(widget)->deleteRelation(&(RM.getRelation(titre_ancien)));
+        }
+    }
     QMessageBox::information(this, "Bravo", "Suppression Reussie !");
 }
 
@@ -337,7 +344,7 @@ RelationVizingWindow::RelationVizingWindow(QWidget *parent): QWidget(parent)
     connect(liste_couples, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(editer_couple()));
 
 
-    connect(relation, SIGNAL(currentIndexChanged(int)), this, SLOT(afficherCouples()) );
+    connect(relation, SIGNAL(activated(int)), this, SLOT(afficherCouples()) );
 
 
     button_supprimer = new QPushButton("supprimer");
@@ -373,6 +380,26 @@ void RelationVizingWindow::afficherCouples(){
     }
 
 
+}
+
+void RelationVizingWindow::afficherCouplesRelation(QString rel){
+    RelationManager& RM = RelationManager::donneInstance();
+    qDebug() << "adazd";
+    liste_couples->clear();
+
+    Relation& r = RM.getRelation(rel);
+    NotesManager& NM = NotesManager::donneInstance();
+    int index = relation->findText(rel);
+    if ( index != -1 ) {
+        qDebug() << index;
+       relation->setCurrentIndex(index);
+    }
+
+    for( Relation::Iterator it = r.getIterator() ; !it.isdone() ; it++){
+        if((NM.getNote((*it)->getx()).etatToString() == "active") && (NM.getNote((*it)->gety()).etatToString() == "active" || r.getTitre() == "Reference" ) ){
+            liste_couples->addItem((*it)->getx()+" -> "+(*it)->gety());
+        }
+    }
 }
 
 void RelationVizingWindow::editer_couple(){
@@ -451,8 +478,14 @@ void RelationVizingWindow::deleteCouple(){
         qDebug() << liste[0];
         qDebug() << liste[1];
         r.deleteCouple(liste[0],liste[1]);
+        foreach (QWidget *widget, QApplication::topLevelWidgets()) {
+            if ( widget->windowTitle() == "PluriNote")
+            {
+               qobject_cast<MainWindow*>(widget)->deleteCouple(relation->currentText(),liste[0],liste[1] );
+            }
+        }
         QMessageBox::information(this, "Bravo", "Supression Reussie !");
-        afficherCouples();
+        //afficherCouples();
         if(label){
             fenetre_vbox->removeWidget(label_label);
             label_hbox->removeWidget(label);

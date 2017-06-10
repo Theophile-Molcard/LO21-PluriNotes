@@ -139,6 +139,8 @@ public:
     QPushButton* getButtonSuprime() {return button_supprimer;}
     QListWidget* getListeCouple() {return liste_couples; }
 
+    void afficherCouplesRelation(QString rel);
+
 private:
 
     QVBoxLayout *fenetre_vbox;

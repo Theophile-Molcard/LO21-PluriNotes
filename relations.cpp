@@ -334,9 +334,9 @@ void RelationManager::LoadRelationXML(QXmlStreamReader *stream){
 }
 
 void Relation::inverseOrientation(){
-    if(orientee)
+    if(!orientee)
     {
-        orientee = false;
+        orientee = true;
     }
     else
     {
@@ -346,6 +346,7 @@ void Relation::inverseOrientation(){
                 addCouple(tabCouples[i]->gety(),tabCouples[i]->getx(), tabCouples[i]->getLabel());
             }
         }
+        orientee = false;
     }
 
 }

@@ -30,6 +30,8 @@ public:
     bool existeCouple(QString _x, QString _y);
     Couple& getCouple(QString _x, QString _y);
 
+    void inverseOrientation();
+
     QString getTitre(){return titre;}
     QString getDescription(){return description;}
     bool getOrientee(){return orientee;}

@@ -333,6 +333,23 @@ void RelationManager::LoadRelationXML(QXmlStreamReader *stream){
     }
 }
 
+void Relation::inverseOrientation(){
+    if(orientee)
+    {
+        orientee = false;
+    }
+    else
+    {
+        for(unsigned int i=0; i < nbCouples; i++ ){
+            if(!existeCouple(tabCouples[i]->gety(),tabCouples[i]->getx()))
+            {
+                addCouple(tabCouples[i]->gety(),tabCouples[i]->getx(), tabCouples[i]->getLabel());
+            }
+        }
+    }
+
+}
+
 
 
 

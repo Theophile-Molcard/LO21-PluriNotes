@@ -264,7 +264,9 @@ void CreationRelationWindow::delete_rela(){
     foreach (QWidget *widget, QApplication::topLevelWidgets()) {
         if ( widget->windowTitle() == "PluriNote")
         {
+            qDebug() << titre_ancien;
            qobject_cast<MainWindow*>(widget)->deleteRelation(&(RM.getRelation(titre_ancien)));
+           qDebug() << "lolol";
         }
     }
     QMessageBox::information(this, "Bravo", "Suppression Reussie !");

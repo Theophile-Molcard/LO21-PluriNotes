@@ -592,6 +592,7 @@ void MainWindow::corbeilleAuto(){
 
 void MainWindow::deleteRelation(Relation *rel){
     QUndoCommand *deleteRelCommand = new DeleteRelationCommand(rel);
+    qDebug() << "ccc";
     undoStack->push(deleteRelCommand);
 }
 
@@ -602,23 +603,31 @@ void MainWindow::deleteCouple(QString rel, QString _x, QString _y, QString _labe
 
 
 DeleteRelationCommand::DeleteRelationCommand(Relation *rel, QUndoCommand *parent): QUndoCommand(parent){
-    Relation* NewRel = new Relation(rel->getTitre(),rel->getDescription(),rel->getOrientee());
+    Relation* NewRel = new Relation(rel->getTitre(),rel->getDescription(),true);
     Relation::Iterator it = rel->getIterator();
     while(!it.isdone())
     {
         NewRel->addCouple((*it)->getx(),(*it)->gety(),(*it)->getLabel());
         it++;
     }
+    if(!rel->getOrientee())
+    {
+        NewRel->inverseOrientation();
+    }
     relation = NewRel;
 }
 
 void DeleteRelationCommand::undo(){
-    Relation* NewRel = new Relation(relation->getTitre(),relation->getDescription(),relation->getOrientee());
+    Relation* NewRel = new Relation(relation->getTitre(),relation->getDescription(),true);
     Relation::Iterator it = relation->getIterator();
     while(!it.isdone())
     {
         NewRel->addCouple((*it)->getx(),(*it)->gety(),(*it)->getLabel());
         it++;
+    }
+    if(!relation->getOrientee())
+    {
+        NewRel->inverseOrientation();
     }
     RelationManager& RM = RelationManager::donneInstance();
     RM.addRelation(NewRel);
@@ -634,7 +643,9 @@ void DeleteRelationCommand::undo(){
 
 void DeleteRelationCommand::redo(){
     RelationManager& RM = RelationManager::donneInstance();
+               qDebug() << "lalal";
     RM.deleteRelation(relation->getTitre());
+               qDebug() << "lrlrl";
 
     foreach (QWidget *widget, QApplication::topLevelWidgets()) {
         if ( widget->windowTitle() == "PluriNote")

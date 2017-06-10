@@ -189,13 +189,15 @@ void sortByPrioDate(QList<QString>& id, QList<QDateTime> date, QList<int> prio){
 
 
 void ExplorateurWindow::restaurerVersion(){
-    NotesManager& NM = NotesManager::donneInstance();
-    Note& note = NM.getNote(NoteId);
-    NM.saveVersion(&note);
-    qDebug() << "llala";
-    NM.restateVersion(&note, QDateTime::fromString(liste->currentItem()->text(),"dd/MM/yyyy hh:mm:ss"));
-    qDebug() << "llola";
-    QMessageBox::information(this, "Bravo", "Restauration Réussie !");
+    if(liste->currentRow() != -1){
+        NotesManager& NM = NotesManager::donneInstance();
+        Note& note = NM.getNote(NoteId);
+        NM.saveVersion(&note);
+        qDebug() << "llala";
+        NM.restateVersion(&note, QDateTime::fromString(liste->currentItem()->text(),"dd/MM/yyyy hh:mm:ss"));
+        qDebug() << "llola";
+        QMessageBox::information(this, "Bravo", "Restauration Réussie !");
+    }
 
 }
 

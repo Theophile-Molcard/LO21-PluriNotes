@@ -8,7 +8,7 @@
 
 /*!
 * \file Notes.h
-* \brief Définition des classes utiles au Notes
+* \brief Définition des classes utiles aux notes
 * \author Théophile Maxime Théo
 * \version 0.99
 */

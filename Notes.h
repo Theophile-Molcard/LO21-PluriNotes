@@ -432,7 +432,7 @@ private:
 
 
 
-/// ----- Notes Manager ----- ///
+// ----- Notes Manager ----- //
 
 /*! \class NotesManager
  *

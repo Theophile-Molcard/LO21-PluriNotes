@@ -33,7 +33,7 @@ enum TypeStatut{attente, cours, termine};
 enum TypeEtatNote{active,archive,corbeille};
 
 
-/// ------ Note Exception ------ ///
+// ------ Note Exception ------ //
 
 /*! \class NotesException
  * \brief Classe pour gérer les execptions propres aux notes
@@ -366,7 +366,7 @@ public:
             return tab[++indice];
         }*/
         /*!
-         * \brief Surcharge de l'operateur ++
+         * \brief Surcharge de l'operateur ++ (postfixé)
          *
          * permet d'augmenter l'indice du tableau de 1 et renvoyer le memento correspondant
          *
@@ -375,8 +375,8 @@ public:
         Memento* operator ++(int){
             if(!isdone())
                 return tab[indice++];
-            //else
-              //  return nullptr;
+            else
+                throw NotesException(QString("Erreur, arrive au bout."));
         }
         /*!
          * \brief test si on est au bout du tableau

@@ -20,8 +20,9 @@ NoteWindow::NoteWindow(QWidget *parent) : QWidget(parent)
     id_hbox = new QHBoxLayout;
     id_label = new QLabel("Identifiant");
     id = new QLineEdit;
-    id->setValidator( new QRegExpValidator( QRegExp("[A-Za-z0-9\_]{0,15}"), this ));
-
+    //id->setValidator( new QRegExpValidator( QRegExp("[A-Za-z0-9\_]{0,15}"), this ));
+    //proposition de resolution de warning :
+    id->setValidator( new QRegExpValidator( QRegExp("[A-Za-z0-9\\_]{0,15}"), this ));
     title_hbox = new QHBoxLayout;
     title_label = new QLabel("Titre");
     title = new QLineEdit;

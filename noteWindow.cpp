@@ -530,6 +530,7 @@ void ArticleWindow::save(){
                     NM.saveVersion(&article);
                     article.setTexte(text->toPlainText());
                     article.setTitre(title->text());
+                    article.newDateModif();
                     QMessageBox::information(this, "Bravo", "Sauvegarde Reussie !");
                 }
                 else
@@ -598,6 +599,7 @@ void TacheWindow::save(){
                         tache.setStatut(cours);
                     else
                         tache.setStatut(attente);
+                    tache.newDateModif();
                     QMessageBox::information(this, "Bravo", "Sauvegarde Reussie !");
                 }
                 else
@@ -665,6 +667,7 @@ void MultimediaWindow::save(){
                         multi.setType(audio);
                     else
                         multi.setType(image);
+                    multi.newDateModif();
                     QMessageBox::information(this, "Bravo", "Sauvegarde Réussie !");
                 }
                 else

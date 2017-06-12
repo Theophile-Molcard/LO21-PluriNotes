@@ -54,6 +54,13 @@ public:
     */
     void setTitre(QString _titre){titre = _titre;}
     /*!
+    *  \brief Setter pour la date de modification de la note. La date de modification devient celle du PC.
+    */
+    void newDateModif()
+    {
+        date_modif = QDateTime::currentDateTime();
+    }
+    /*!
     *  \brief Destructeur virtuel de Note
     */
     virtual ~Note(){}

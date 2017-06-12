@@ -162,9 +162,10 @@ void NotesManager::LoadFileXML(){
     }else{
     QXmlStreamReader stream(&fichier);
     int i = -1;
+    QXmlStreamReader::TokenType token;
     while(!stream.atEnd() && !stream.hasError()) {
         qDebug()<<"Debut\n";
-        QXmlStreamReader::TokenType token = stream.readNext();
+        if(stream.name() != "article" && stream.name() != "tache" && stream.name() != "multimedia"  && stream.name() != "relation") token = stream.readNext();
         if(token == QXmlStreamReader::StartDocument) continue; //continue permet d'aller directement à la fin de la boucle
         if(token == QXmlStreamReader::StartElement) {
             if(stream.name() == "PluriNotes") continue;
@@ -182,8 +183,9 @@ void NotesManager::LoadFileXML(){
                 stream.readNext();
                 //We're going to loop over the things because the order might change.
                 //We'll continue the loop until we hit an EndElement named article.
-                while(!(stream.tokenType() == QXmlStreamReader::EndElement && (stream.name() == "article" || stream.name() == "tache" || stream.name() == "multimedia" || stream.name() == "Notes"))){
-                    //qDebug()<<stream.name();
+                while(stream.name() != "article" && stream.name() != "tache" && stream.name() != "multimedia" && stream.name() != "Notes"){
+                    qDebug()<<stream.name();
+                    if(stream.name() == "tache") qDebug() << "TOTOTOTOT";
                     if(stream.tokenType() == QXmlStreamReader::StartElement) {
                         if(stream.name() == "Current")
                         {
@@ -288,7 +290,7 @@ void NotesManager::LoadFileXML(){
                 stream.readNext();
                 //We're going to loop over the things because the order might change.
                 //We'll continue the loop until we hit an EndElement named article.
-                while(!(stream.tokenType() == QXmlStreamReader::EndElement && (stream.name() == "article" || stream.name() == "tache" || stream.name() == "multimedia" || stream.name() == "Notes"))){
+                while(!(stream.name() == "article" || stream.name() == "tache" || stream.name() == "multimedia" || stream.name() == "Notes")){
                     //qDebug()<<stream.name();
                     if(stream.tokenType() == QXmlStreamReader::StartElement) {
                         if(stream.name() == "Current")
@@ -432,7 +434,7 @@ void NotesManager::LoadFileXML(){
                 stream.readNext();
                 //We're going to loop over the things because the order might change.
                 //We'll continue the loop until we hit an EndElement named article.
-                while(!(stream.tokenType() == QXmlStreamReader::EndElement && (stream.name() == "article" || stream.name() == "tache" || stream.name() == "multimedia" || stream.name() == "Notes"))){
+                while(!(stream.name() == "article" || stream.name() == "tache" || stream.name() == "multimedia" || stream.name() == "Notes")){
                     qDebug("coucou");
                     qDebug()<<stream.name();
                     if(stream.tokenType() == QXmlStreamReader::StartElement) {
@@ -548,6 +550,7 @@ void NotesManager::LoadFileXML(){
                     stream.readNext();
                 }
                 qDebug()<<"ajout multimedia "<<id<<"\n";
+                qDebug() << stream.name();
             }
             if(stream.name() == "relation"){
                 RelationManager& Rels = RelationManager::donneInstance();
@@ -728,15 +731,15 @@ QString Multimedia::typeToString(){
 
 // create
 Memento* Article::createMemento() const{
-    return new MementoArticle( Note::getTitre(), texte );
+    return new MementoArticle(getTitre(),texte,getDateModif());
 }
 
 Memento* Multimedia::createMemento() const{
-    return new MementoMultimedia( Note::getTitre(), description, fichier, type); // remplacer 124578 par indice du type
+    return new MementoMultimedia(getTitre(),description,fichier,type,getDateModif());
 }
 
 Memento* Tache::createMemento() const{
-    return new MementoTache( Note::getTitre(), action, date_echeance, priorite, statut); // remplacer 124578 par indice du type
+    return new MementoTache(getTitre(),action,getDateModif(),date_echeance,statut,priorite);
 }
 
 // restate

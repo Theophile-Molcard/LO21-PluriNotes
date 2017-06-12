@@ -36,7 +36,6 @@ SOURCES += main.cpp\
     arborescence.cpp
 
 HEADERS  += mainwindow.h \
-    tache.h \
     Notes.h \
     Memento.h \
     noteWindow.h \

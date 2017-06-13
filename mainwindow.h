@@ -268,7 +268,7 @@ public slots:
     void ouvrir_explorateur_memento();
 };
 
-/*! \class The DeleteRelationCommand
+/*! \class DeleteRelationCommand
  * \brief Classe pour la commande de suppression de relation
  *
  * Permet d'utiliser le undo/redo

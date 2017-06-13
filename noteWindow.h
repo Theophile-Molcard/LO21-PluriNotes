@@ -259,7 +259,7 @@ public slots:
 };
 
 
-/*! \class TacheWindows
+/*! \class TacheWindow
  * \brief Classe fille de QWidget, permet de gérer les fenetres des taches
  */
 class TacheWindow : public QWidget{

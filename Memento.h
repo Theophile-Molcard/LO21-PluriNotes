@@ -116,7 +116,7 @@ private:
     QDateTime date_modif;/*!< date de modification du mement */
 
 };
-/*! \class Memento Article
+/*! \class MementoArticle
  * \brief Classe fille de memento pour les articles
  */
 class MementoArticle : public Memento{

@@ -672,11 +672,11 @@ void Multimedia::saveXML(QXmlStreamWriter *stream){
 }
 
 
-QString Note::dateTimeToString(QDateTime date){
+QString Note::dateTimeToString(QDateTime date) const{
     return date.toString("dd-MM-yyyy hh:mm:ss");
 }
 
-QString Note::etatToString(){
+QString Note::etatToString() const{
     switch(etat){
         case 0:
             return "active";

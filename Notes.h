@@ -72,7 +72,7 @@ public:
      * \param id id de la note à créer de type QString
      * \param _titre titre de la note à créer de type QString
      */
-    Note(QString id, QString _titre) : identificateur(id), titre(_titre), etat(active){
+    Note(QString _id, QString _titre) : identificateur(_id), titre(_titre), etat(active){
         date_creation = QDateTime::currentDateTime();
         date_modif = QDateTime::currentDateTime();
         gardien_note = new Gardien;
@@ -96,12 +96,12 @@ public:
      * \param date date à convertir en QString
      * \return date sous forme de QString
      */
-    QString dateTimeToString(QDateTime date); //pourrait être static ?
+    QString dateTimeToString(QDateTime date) const; //pourrait être static ?
     /*!
      * \brief renvoie un QString correspondant à l'état
      * \return etat sous forme de QString
      */
-    QString etatToString();
+    QString etatToString() const;
 
 private:
     QString identificateur; /*!< id de la note */
@@ -378,17 +378,17 @@ public:
      * \brief Getter de la Description
      * \return description de type QString
      */
-    QString getDescription(){return description;}
+    QString getDescription() const {return description;}
     /*!
      * \brief Getter de l'emplacement du fichier
      * \return emplacement du fichier, sous forme de QString
      */
-    QString getFicher(){return fichier;}
+    QString getFicher() const {return fichier;}
     /*!
      * \brief Getter du Type de fichier
      * \return le type de fichier
      */
-    TypeMultimedia getType(){return type;}
+    TypeMultimedia getType() const {return type;}
 
     /*!
      * \brief Setter de la Description

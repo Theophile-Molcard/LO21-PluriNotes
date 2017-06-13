@@ -90,6 +90,12 @@ public:
     void visualiser_rela_specifique(QString rela);
 
     /*!
+     * \brief ouvre l'éditeur d'une note
+     * \param idNote note à ouvrir
+     */
+    void visualiser_note_specifique(QString idNote);
+
+    /*!
      * \brief booléen pour afficher l'arborescence des relations
      * \return true si on affiche, false sinon
      */

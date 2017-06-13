@@ -3,6 +3,8 @@
 #include <typeinfo>
 #include <QDebug>
 #include <QMessageBox>
+#include <QApplication>
+#include "mainwindow.h"
 
 ExplorateurWindow::ExplorateurWindow(QWidget *parent): QWidget(parent)
 {
@@ -197,6 +199,12 @@ void ExplorateurWindow::restaurerVersion(){
         NM.restateVersion(&note, QDateTime::fromString(liste->currentItem()->text(),"dd/MM/yyyy hh:mm:ss"));
         qDebug() << "llola";
         QMessageBox::information(this, "Bravo", "Restauration Réussie !");
+        foreach (QWidget *widget, QApplication::topLevelWidgets()) {
+            if ( widget->windowTitle() == "PluriNote")
+            {
+               qobject_cast<MainWindow*>(widget)->visualiser_note_specifique(NoteId);
+            }
+        }
     }
 
 }

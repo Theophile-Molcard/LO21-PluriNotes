@@ -493,7 +493,22 @@ void MainWindow::visualiser_rela_specifique(QString rela){
     rela_viz_window->show();
 }
 
+void MainWindow::visualiser_note_specifique(QString idNote){
+    fermer_slot_1();
 
+    NotesManager& NM = NotesManager::donneInstance();
+
+    Note& note = NM.getNote(idNote);
+
+
+    if(typeid(note)==typeid(Tache))
+        ouvre_tache(note);
+    else if(typeid(note)==typeid(Multimedia))
+        ouvre_multi(note);
+    else
+        ouvre_article(note);
+
+}
 
 
 void MainWindow::ouvrir_arbo(){
@@ -578,6 +593,8 @@ void MainWindow::ouvrir_explorateur_memento() {
 
         explo_window = new ExplorateurWindow(note, this);
         explo_window->show();
+        connect(explo_window->getButtonOpen(), SIGNAL(clicked(bool)), this, SLOT(fermer_arbo()));
+        connect(explo_window->getButtonOpen(), SIGNAL(clicked(bool)), this, SLOT(ouvrir_explorateur()));
     }
 
 }

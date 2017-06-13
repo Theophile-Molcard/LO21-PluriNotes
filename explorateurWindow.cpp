@@ -194,6 +194,7 @@ void ExplorateurWindow::restaurerVersion(){
     if(liste->currentRow() != -1){
         NotesManager& NM = NotesManager::donneInstance();
         Note& note = NM.getNote(NoteId);
+        note.newDateModif();
         NM.saveVersion(&note);
         qDebug() << "llala";
         NM.restateVersion(&note, QDateTime::fromString(liste->currentItem()->text(),"dd/MM/yyyy hh:mm:ss"));

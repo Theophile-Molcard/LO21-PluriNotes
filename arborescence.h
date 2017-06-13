@@ -73,29 +73,31 @@ private:
     QList<QString> id_asc;/*!< liste des id des ascendants*/
     QList<QString> id_dsc;/*!< liste des id des descendants*/
 
-    QList<QString> id_asc_root;/*!< liste des id pour la racine des ascendants*/
-    QList<QString> id_dsc_root;/*!< liste des id pour la racine des descendants*/
+    QList<QString> id_asc_root;/*!< liste des id des ascendants pour la racine */
+    QList<QString> id_dsc_root;/*!< liste des id des descendants pour la racine*/
 
     /*!
-     * \brief setter pour la racine des Ascendants à partir d'une note
+     * \brief setter pour la racine des Ascendants d'une note²
      * \param note note
      */
     void setAscendantsRacine(Note& note);
     /*!
-     * \brief setter pour les Ascendants d'un id à partir d'un arbre
-     * \param id id
+     * \brief setter pour les Ascendants d'une note
+     * ajoute un ascendant à la liste des ascendant
+     * \param id id de la note
      * \param tree arbre
      */
     void setAscendants(QString id, QTreeWidgetItem* tree);
     /*!
-     * \brief setter pour la racine des Descendants à partir d'une note
+     * \brief setter pour la racine des descendants d'une note
      * \param note note
      */
     void setDescendantsRacine(Note& note);
     /*!
-     * \brief setter pour les Descendants d'un id à partir d'un arbre
-     * \param id id
-     * \param tree arbre
+     * \brief setter pour les Descendants d'une note
+     * ajoute un descendant dans la liste des descendants
+     * \param id id de la note
+     * \param tree un item de l'arbre
      */
     void setDescendants(QString id, QTreeWidgetItem* tree);
 
@@ -103,14 +105,14 @@ private:
      * \brief ajoute une racine à un arbre
      * \param parent arbre parent
      * \param nom nom de la racine
-     * \return
+     * \return un pointeur sur un item de l'arbre, la racine
      */
     QTreeWidgetItem* addRoot(QTreeWidget * parent, QString nom);
     /*!
      * \brief ajout d'un enfant à l'arbre
      * \param parent arbre parent
      * \param nom de l'enfant
-     * \return un pointeur sur un arbre
+     * \return un pointeur sur un item de l'arbre, l'enfant
      */
     QTreeWidgetItem* addChild(QTreeWidgetItem * parent, QString nom);
 

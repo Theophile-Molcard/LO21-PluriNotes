@@ -132,13 +132,11 @@ ExplorateurRelationWindow::ExplorateurRelationWindow(QWidget *parent): QWidget(p
         }
     }
 
-    button_supprimer = new QPushButton("ouvrir");
     button_close = new QPushButton("fermer");
     connect(button_close, SIGNAL(clicked(bool)), this, SLOT(close()));
 
 
     button_layout = new QHBoxLayout;
-    button_layout->addWidget(button_supprimer);
     button_layout->addWidget(button_close);
 
     fenetre_vbox->addWidget(titre);

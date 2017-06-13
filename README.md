@@ -2,5 +2,7 @@
 
 ## __Projet de LO21 Plurinotes__
 
-Rien à dire ou presque pour le moment à part que *Plurinotes* devra gérer des notes. 
+Projet de LO21 P17, fait par Théophile Molcart, Maxime Lotton et Théo Portmann.
 
+On peut gérer différents types de notes et leurs versions et différentes relations entre ces notes.
+ 

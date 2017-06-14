@@ -344,7 +344,7 @@ public:
      * \brief test si tableau vide
      * \return true si le tableau est vide, false sinon
      */
-    bool empty(){
+    bool empty() const{
         return tab_memento.empty();
     }
     /*! \class Iterator
@@ -399,7 +399,7 @@ public:
      * Instancie un nouvel iterator
      * \return un iterator
      */
-    Iterator getIterator() {
+    Iterator getIterator() const{
         return Iterator(tab_memento);
     }
 

@@ -1,0 +1,17 @@
+\select@language {french}
+\contentsline {chapter}{\numberline {1}Pr\IeC {\'e}sentation du projet ?}{2}
+\contentsline {chapter}{\numberline {2}UML}{3}
+\contentsline {chapter}{\numberline {3}Choix de conception}{5}
+\contentsline {section}{\numberline {3.1}Notes}{5}
+\contentsline {subsection}{\numberline {3.1.1}Notes}{5}
+\contentsline {subsection}{\numberline {3.1.2}NotesManager}{5}
+\contentsline {section}{\numberline {3.2}Versionnage}{5}
+\contentsline {section}{\numberline {3.3}Relations}{5}
+\contentsline {subsection}{\numberline {3.3.1}Couples}{5}
+\contentsline {subsection}{\numberline {3.3.2}Relations}{5}
+\contentsline {subsection}{\numberline {3.3.3}RelationsManager}{5}
+\contentsline {section}{\numberline {3.4}Sauvegarde et chargement des fichiers}{5}
+\contentsline {section}{\numberline {3.5}Interface}{5}
+\contentsline {section}{\numberline {3.6}Pr\IeC {\'e}f\IeC {\'e}rences}{5}
+\contentsline {section}{\numberline {3.7}\IeC {\'E}dition}{5}
+\contentsline {chapter}{\numberline {4}Conclusion}{6}

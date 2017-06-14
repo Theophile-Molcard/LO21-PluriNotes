@@ -257,7 +257,7 @@ void Couple::saveXML(QXmlStreamWriter *stream){
 }
 
 void RelationManager::LoadRelationXML(QXmlStreamReader *stream){
-    unsigned int j = 0;
+    unsigned int j = nbRelations;
     qDebug()<<"new relation\n";
     QString titre;
     QString description;

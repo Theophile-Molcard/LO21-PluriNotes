@@ -375,11 +375,6 @@ public:
     */
     ~Multimedia(){}
     /*!
-     * \brief Getter de la Description
-     * \return description de type QString
-     */
-    QString getDescription() const {return description;}
-    /*!
      * \brief Getter de l'emplacement du fichier
      * \return emplacement du fichier, sous forme de QString
      */

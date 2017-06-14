@@ -245,6 +245,7 @@ void Relation::saveXML(QXmlStreamWriter *stream){
     }
 
     stream->writeEndElement();
+    stream->writeEndElement();
 }
 
 void Couple::saveXML(QXmlStreamWriter *stream){

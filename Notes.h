@@ -575,21 +575,6 @@ public:
      */
     Note& getNote(const QString& id);
     /*!
-     * \brief Création d'une Note
-     *
-     * crée une note vide avec id / titre / date
-     *
-     * \param id id de la note à créer
-     * \param titre titre de la note à créer
-     */
-    void createNote(const string& id, const string& titre); // crée une note vide avec id / titre / date
-    /*!
-     * \brief Sauvegarde d'une Note
-     * \param id id de la note à sauvegarder
-     */
-    void saveNote(const string& id); // enregistre une note avec tout ce qu'il faut / ça fait un memento
-
-    /*!
      * \brief Sauvegarde des Notes dans un XML
      *
      * Ecris Tout dans un fichier xml

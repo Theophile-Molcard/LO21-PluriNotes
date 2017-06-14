@@ -747,6 +747,8 @@ void Article::restateMemento(Memento *mem){
     MementoArticle* mem_art = dynamic_cast<MementoArticle*>(mem);
     setTitre(mem_art->getTitre());
     texte = mem_art->getTexte();
+    RelationManager& RM = RelationManager::donneInstance();
+    RM.updateReference(getId(), getTitre()+getTexte());
 }
 
 void Multimedia::restateMemento(Memento *mem){
@@ -755,7 +757,8 @@ void Multimedia::restateMemento(Memento *mem){
     description = mem_mult->getDescription();
     type = mem_mult->getType();
     fichier = mem_mult->getFichier();
-
+    RelationManager& RM = RelationManager::donneInstance();
+    RM.updateReference(getId(), getTitre()+getDescription());
 }
 
 void Tache::restateMemento(Memento *mem){
@@ -765,6 +768,8 @@ void Tache::restateMemento(Memento *mem){
     date_echeance = mem_tache->getEcheance();
     priorite = mem_tache->getPriorite();
     statut = mem_tache->getStatut();
+    RelationManager& RM = RelationManager::donneInstance();
+    RM.updateReference(getId(), getAction()+getTitre());
 }
 
 

@@ -1,6 +1,5 @@
 #include "Notes.h"
 #include "mainwindow.h"
-#include "debug.h"
 
 #include <QApplication>
 

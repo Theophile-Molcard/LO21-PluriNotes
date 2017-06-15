@@ -7,15 +7,10 @@
 
 NotesManager* NotesManager::instance = nullptr;
 
-NotesManager::NotesManager(): tabNotes(nullptr), nbNotes(0), nbMaxNotes(0){
-    qDebug() << "llllllllllllllllllllllllllll";
-    //LoadFileXML();
-}
+NotesManager::NotesManager(): tabNotes(nullptr), nbNotes(0), nbMaxNotes(0){}
 
 NotesManager::~NotesManager(){
-    //à rajouter la sauvegarde des notes (automatique ?)
     SaveEverythingXML();
-    qDebug() << "zzzzzzzzzzzzzzzzzzzzzzzz";
     for(unsigned int i=0; i<nbNotes; i++) delete tabNotes[i];
         delete[] tabNotes;
 
@@ -88,10 +83,7 @@ void NotesManager::viderCorbeille(){
                 if((*it)->getTitre() != "Reference")
                 {
                     Relation::Iterator itr = (*it)->getIterator();
-                    //qDebug() << (*it)->getTitre();
                     while (!itr.isdone()) {
-                        //qDebug() << (*itr)->getx();
-                        //qDebug() << (*itr)->gety();
                         if((*itr)->getx() == tabNotes[i]->getId() || (*itr)->gety() == tabNotes[i]->getId())
                         {
                             (*it)->deleteCouple((*itr)->getx(),(*itr)->gety());
@@ -156,15 +148,13 @@ bool NotesManager::existeNote(const QString &id){
 }
 
 void NotesManager::LoadFileXML(){
-    QFile fichier("test_notes.xml");
+    QFile fichier("PluriNotes.xml");
     if (!fichier.open(QIODevice::ReadOnly | QIODevice::Text)) {
-           // throw NotesException("Erreur ouverture fichier notes");
     }else{
     QXmlStreamReader stream(&fichier);
     int i = -1;
     QXmlStreamReader::TokenType token;
     while(!stream.atEnd() && !stream.hasError()) {
-        qDebug()<<"Debut\n";
         if(stream.name() != "article" && stream.name() != "tache" && stream.name() != "multimedia"  && stream.name() != "relation") token = stream.readNext();
         if(token == QXmlStreamReader::StartDocument) continue; //continue permet d'aller directement à la fin de la boucle
         if(token == QXmlStreamReader::StartElement) {
@@ -172,7 +162,6 @@ void NotesManager::LoadFileXML(){
             if(stream.name() == "Notes") continue;
             if(stream.name() == "Relations") continue;
             if(stream.name() == "article") {
-                qDebug()<<"new article\n";
                 QString id;
                 QString titre;
                 QString texte;
@@ -184,42 +173,33 @@ void NotesManager::LoadFileXML(){
                 //We're going to loop over the things because the order might change.
                 //We'll continue the loop until we hit an EndElement named article.
                 while(stream.name() != "article" && stream.name() != "tache" && stream.name() != "multimedia" && stream.name() != "Notes"){
-                    qDebug()<<stream.name();
-                    if(stream.name() == "tache") qDebug() << "TOTOTOTOT";
                     if(stream.tokenType() == QXmlStreamReader::StartElement) {
                         if(stream.name() == "Current")
                         {
                             while((stream.name() != "Memento" && stream.name() != "article" && stream.name() != "tache" && stream.name() != "multimedia"))
                             {
-                                qDebug()<< "boucle current";
-                                qDebug() <<stream.name();
                                 if(stream.tokenType() == QXmlStreamReader::StartElement) {
                                     if(stream.name() == "id") {
                                         stream.readNext();
                                         id=stream.text().toString();
-                                        qDebug()<<"id="<<id<<"\n";
                                     }
                                     if(stream.name() == "titre") {
                                         stream.readNext();
                                         titre=stream.text().toString();
-                                        qDebug()<<"titre="<<titre<<"\n";
                                     }
                                     if(stream.name() == "texte") {
                                         stream.readNext();
                                         texte=stream.text().toString();
-                                        qDebug()<<"text="<<texte<<"\n";
                                     }
                                     if(stream.name() == "dateCrea")
                                     {
                                         stream.readNext();
                                         dateCrea = QDateTime::fromString(stream.text().toString(),"dd-MM-yyyy hh:mm:ss");
-                                        qDebug()<<"dateCrea="<<dateCrea<<"\n";
                                     }
                                     if(stream.name() == "dateModif")
                                     {
                                         stream.readNext();
                                         dateModif = QDateTime::fromString(stream.text().toString(),"dd-MM-yyyy hh:mm:ss");
-                                        qDebug()<<"dateModif="<<dateModif<<"\n";
                                     }
                                     if(stream.name() == "etat") {
                                         stream.readNext();
@@ -241,24 +221,19 @@ void NotesManager::LoadFileXML(){
                         if(stream.name() == "Memento")
                         {
                             while(stream.tokenType() != QXmlStreamReader::EndElement || (stream.name() != "Memento" && stream.name() != "article" && stream.name() != "tache" && stream.name() != "multimedia")){
-                                qDebug()<<"elem memento";
-                                qDebug() << stream.name();
                                 if(stream.tokenType() == QXmlStreamReader::StartElement) {
                                     if(stream.name() == "titre") {
                                         stream.readNext();
                                         titre=stream.text().toString();
-                                        qDebug()<<"titre="<<titre<<"\n";
                                     }
                                     if(stream.name() == "texte") {
                                         stream.readNext();
                                         texte=stream.text().toString();
-                                        qDebug()<<"text="<<texte<<"\n";
                                     }
                                     if(stream.name() == "dateModif")
                                     {
                                         stream.readNext();
                                         dateModif = QDateTime::fromString(stream.text().toString(),"dd-MM-yyyy hh:mm:ss");
-                                        qDebug()<<"dateModif="<<dateModif<<"\n";
                                     }
 
 
@@ -272,17 +247,14 @@ void NotesManager::LoadFileXML(){
                     }
                     stream.readNext();
                 }
-                qDebug()<<"ajout article "<<id<<"\n";
             }
             if(stream.name() == "tache") {
-                qDebug()<<"new tache\n";
                 QString id;
                 QString titre;
                 QDateTime dateCrea;
                 QDateTime dateModif;
                 QString action;
                 QDateTime dateEcheance;
-                qDebug() << dateEcheance;
                 TypeStatut statut;
                 unsigned int priorite;
                 TypeEtatNote etat;
@@ -291,47 +263,38 @@ void NotesManager::LoadFileXML(){
                 //We're going to loop over the things because the order might change.
                 //We'll continue the loop until we hit an EndElement named article.
                 while(!(stream.name() == "article" || stream.name() == "tache" || stream.name() == "multimedia" || stream.name() == "Notes")){
-                    //qDebug()<<stream.name();
                     if(stream.tokenType() == QXmlStreamReader::StartElement) {
                         if(stream.name() == "Current")
                         {
                             while((stream.name() != "Memento" && stream.name() != "article" && stream.name() != "tache" && stream.name() != "multimedia"))
                             {
-                                qDebug()<< "boucle current";
-                                qDebug() <<stream.name();
                                 if(stream.tokenType() == QXmlStreamReader::StartElement) {
                                     if(stream.name() == "id") {
                                         stream.readNext();
                                         id=stream.text().toString();
-                                        qDebug()<<"id="<<id<<"\n";
                                     }
                                     if(stream.name() == "titre") {
                                         stream.readNext();
                                         titre=stream.text().toString();
-                                        qDebug()<<"titre="<<titre<<"\n";
                                     }
                                     if(stream.name() == "action") {
                                         stream.readNext();
                                         action=stream.text().toString();
-                                        qDebug()<<"action="<<action<<"\n";
                                     }
                                     if(stream.name() == "dateCrea")
                                     {
                                         stream.readNext();
                                         dateCrea = QDateTime::fromString(stream.text().toString(),"dd-MM-yyyy hh:mm:ss");
-                                        qDebug()<<"dateCrea="<<dateCrea<<"\n";
                                     }
                                     if(stream.name() == "dateModif")
                                     {
                                         stream.readNext();
                                         dateModif = QDateTime::fromString(stream.text().toString(),"dd-MM-yyyy hh:mm:ss");
-                                        qDebug()<<"dateModif="<<dateModif<<"\n";
                                     }
                                     if(stream.name() == "dateEcheance")
                                     {
                                        stream.readNext();
                                        dateEcheance = QDateTime::fromString(stream.text().toString(),"dd-MM-yyyy hh:mm:ss");
-                                       qDebug()<<"dateEcheance="<<dateEcheance<<"\n";
                                     }
                                     if(stream.name() == "statut") {
                                         stream.readNext();
@@ -346,7 +309,6 @@ void NotesManager::LoadFileXML(){
                                     if(stream.name() == "priorite"){
                                         stream.readNext();
                                         priorite = stream.text().toInt();
-                                        qDebug()<<"priorite="<<priorite<<"\n";
                                     }
                                     if(stream.name() == "etat") {
                                         stream.readNext();
@@ -366,30 +328,24 @@ void NotesManager::LoadFileXML(){
                         if(stream.name() == "Memento")
                         {
                             while(stream.tokenType() != QXmlStreamReader::EndElement || (stream.name() != "Memento" && stream.name() != "article" && stream.name() != "tache" && stream.name() != "multimedia")){
-                                qDebug()<<"elem memento";
-                                qDebug() << stream.name();
                                 if(stream.tokenType() == QXmlStreamReader::StartElement) {
                                     if(stream.name() == "titre") {
                                         stream.readNext();
                                         titre=stream.text().toString();
-                                        qDebug()<<"titre="<<titre<<"\n";
                                     }
                                     if(stream.name() == "action") {
                                         stream.readNext();
                                         action=stream.text().toString();
-                                        qDebug()<<"action="<<action<<"\n";
                                     }
                                     if(stream.name() == "dateModif")
                                     {
                                         stream.readNext();
                                         dateModif = QDateTime::fromString(stream.text().toString(),"dd-MM-yyyy hh:mm:ss");
-                                        qDebug()<<"dateModif="<<dateModif<<"\n";
                                     }
                                     if(stream.name() == "dateEcheance")
                                     {
                                        stream.readNext();
                                        dateEcheance = QDateTime::fromString(stream.text().toString(),"dd-MM-yyyy hh:mm:ss");
-                                       qDebug()<<"dateEcheance="<<dateEcheance<<"\n";
                                     }
                                     if(stream.name() == "statut") {
                                         stream.readNext();
@@ -404,7 +360,6 @@ void NotesManager::LoadFileXML(){
                                     if(stream.name() == "priorite"){
                                         stream.readNext();
                                         priorite = stream.text().toInt();
-                                        qDebug()<<"priorite="<<priorite<<"\n";
                                     }
 
                                 }
@@ -417,10 +372,8 @@ void NotesManager::LoadFileXML(){
                     }
                     stream.readNext();
                 }
-                qDebug()<<"ajout tache "<<id<<"\n";
             }
             if(stream.name() == "multimedia") {
-                qDebug()<<"new multimedia\n";
                 QString id;
                 QString titre;
                 QDateTime dateCrea;
@@ -435,42 +388,33 @@ void NotesManager::LoadFileXML(){
                 //We're going to loop over the things because the order might change.
                 //We'll continue the loop until we hit an EndElement named article.
                 while(!(stream.name() == "article" || stream.name() == "tache" || stream.name() == "multimedia" || stream.name() == "Notes")){
-                    qDebug("coucou");
-                    qDebug()<<stream.name();
                     if(stream.tokenType() == QXmlStreamReader::StartElement) {
                         if(stream.name() == "Current")
                         {
                             while((stream.name() != "Memento" && stream.name() != "article" && stream.name() != "tache" && stream.name() != "multimedia"))
                             {
-                                qDebug()<< "boucle current";
-                                qDebug() <<stream.name();
                                 if(stream.tokenType() == QXmlStreamReader::StartElement) {
                                     if(stream.name() == "id") {
                                         stream.readNext();
                                         id=stream.text().toString();
-                                        qDebug()<<"id="<<id<<"\n";
                                     }
                                     if(stream.name() == "titre") {
                                         stream.readNext();
                                         titre=stream.text().toString();
-                                        qDebug()<<"titre="<<titre<<"\n";
                                     }
                                     if(stream.name() == "description") {
                                         stream.readNext();
                                         description=stream.text().toString();
-                                        qDebug()<<"description="<<description<<"\n";
                                     }
                                     if(stream.name() == "dateCrea")
                                     {
                                         stream.readNext();
                                         dateCrea = QDateTime::fromString(stream.text().toString(),"dd-MM-yyyy hh:mm:ss");
-                                        qDebug()<<"dateCrea="<<dateCrea<<"\n";
                                     }
                                     if(stream.name() == "dateModif")
                                     {
                                         stream.readNext();
                                         dateModif = QDateTime::fromString(stream.text().toString(),"dd-MM-yyyy hh:mm:ss");
-                                        qDebug()<<"dateModif="<<dateModif<<"\n";
                                     }
                                     if(stream.name() == "type") {
                                         stream.readNext();
@@ -485,7 +429,6 @@ void NotesManager::LoadFileXML(){
                                     if(stream.name() == "fichier"){
                                         stream.readNext();
                                         fichier = stream.text().toString();
-                                        qDebug()<<"fichier="<<fichier<<"\n";
                                     }
                                     if(stream.name() == "etat") {
                                         stream.readNext();
@@ -505,24 +448,19 @@ void NotesManager::LoadFileXML(){
                         if(stream.name() == "Memento")
                         {
                             while(stream.tokenType() != QXmlStreamReader::EndElement || (stream.name() != "Memento" && stream.name() != "article" && stream.name() != "tache" && stream.name() != "multimedia")){
-                                qDebug()<<"elem memento";
-                                qDebug() << stream.name();
                                 if(stream.tokenType() == QXmlStreamReader::StartElement) {
                                     if(stream.name() == "titre") {
                                         stream.readNext();
                                         titre=stream.text().toString();
-                                        qDebug()<<"titre="<<titre<<"\n";
                                     }
                                     if(stream.name() == "description") {
                                         stream.readNext();
                                         description=stream.text().toString();
-                                        qDebug()<<"description="<<description<<"\n";
                                     }
                                     if(stream.name() == "dateModif")
                                     {
                                         stream.readNext();
                                         dateModif = QDateTime::fromString(stream.text().toString(),"dd-MM-yyyy hh:mm:ss");
-                                        qDebug()<<"dateModif="<<dateModif<<"\n";
                                     }
                                     if(stream.name() == "type") {
                                         stream.readNext();
@@ -537,7 +475,6 @@ void NotesManager::LoadFileXML(){
                                     if(stream.name() == "fichier"){
                                         stream.readNext();
                                         fichier = stream.text().toString();
-                                        qDebug()<<"fichier="<<fichier<<"\n";
                                     }
                                 }
                                 stream.readNext();
@@ -549,8 +486,6 @@ void NotesManager::LoadFileXML(){
                     }
                     stream.readNext();
                 }
-                qDebug()<<"ajout multimedia "<<id<<"\n";
-                qDebug() << stream.name();
             }
             if(stream.name() == "relation"){
                 RelationManager& Rels = RelationManager::donneInstance();
@@ -564,12 +499,11 @@ void NotesManager::LoadFileXML(){
     }
     // Removes any device() or data from the reader * and resets its internal state to the initial state.
     stream.clear();
-    qDebug()<<"fin load\n";
     }
 }
 
 void NotesManager::SaveEverythingXML(){
-    QFile fichier("test_notes.xml");
+    QFile fichier("PluriNotes.xml");
     if (!fichier.open(QIODevice::WriteOnly | QIODevice::Text))
         throw NotesException(QString("erreur sauvegarde articles : ouverture fichier xml"));
     QXmlStreamWriter stream(&fichier);
@@ -781,7 +715,6 @@ void NotesManager::saveVersion(Note* _note) const{
 
 void NotesManager::restateVersion(Note* _note, QDateTime version){
     Memento& version_note = _note->gardien_note->getMemento(version);
-    qDebug() << version_note.getTitre();
     _note->restateMemento(&version_note);
 }
 

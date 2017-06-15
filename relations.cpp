@@ -66,10 +66,7 @@ void RelationManager::saveEveryRelationsXML(QXmlStreamWriter *stream){
 }
 
 void RelationManager::createReference(){
-    qDebug() << "aaaaaaaaaaaaaaaaaaaa";
     for(unsigned int i=0; i <nbRelations; i++){
-        qDebug() << getRelation("Reference").getTitre();
-        qDebug() << tabRelations[i]->getTitre();
         if(tabRelations[i]->getTitre() == "Reference")
             throw NotesException("erreur, Reference existe déjà");
     }
@@ -97,8 +94,6 @@ bool RelationManager::updateReference(const QString &idNote, const QString &text
         while( (pos = regex.indexIn(texte, pos)) != -1){
             if(NM.existeNote(regex.cap(1)) && regex.cap(1) != idNote)
             {
-                qDebug() << "lololo";
-                qDebug() << regex.cap(1);
                 list << regex.cap(1);
             }
             else
@@ -112,8 +107,6 @@ bool RelationManager::updateReference(const QString &idNote, const QString &text
             Relation& reference = getRelation("Reference");
             Relation::Iterator it2 = reference.getIterator();
             while (!it2.isdone()) {
-                qDebug() << "oo";
-                qDebug() << (*it2)->getx();
                 if((*it2)->getx() == idNote)
                 {
                     reference.deleteCouple((*it2)->getx(), (*it2)->gety());
@@ -123,7 +116,6 @@ bool RelationManager::updateReference(const QString &idNote, const QString &text
 
             QStringList::iterator it = list.begin();
             while (it != list.end()) {
-                qDebug() << (*it);
                 reference.addCouple(idNote, (*it));
                 ++it;
             }
@@ -178,8 +170,6 @@ void Relation::deleteCouple(QString _x, QString _y){
     for(i=0; i<nbCouples && ((tabCouples[i]->getx() != _x) || (tabCouples[i]->gety() != _y)); i++){}
     if(nbCouples != 0 && i < nbCouples)
     {
-        qDebug() <<tabCouples[i]->getx();
-        qDebug() << tabCouples[i]->gety();
         if(tabCouples[i]->getx() == _x && tabCouples[i]->gety() == _y)
         {
 
@@ -258,7 +248,6 @@ void Couple::saveXML(QXmlStreamWriter *stream){
 
 void RelationManager::LoadRelationXML(QXmlStreamReader *stream){
     unsigned int j = nbRelations;
-    qDebug()<<"new relation\n";
     QString titre;
     QString description;
     bool orientee;
@@ -269,26 +258,21 @@ void RelationManager::LoadRelationXML(QXmlStreamReader *stream){
     //QXmlStreamAttributes attributes = stream.attributes();
     stream->readNext();
     while(!(stream->tokenType() == QXmlStreamReader::EndElement && ( stream->name() == "relation" || stream->name() == "Relations" || stream->name() == "PluriNotes" &&  stream->name() != "Couples"))){
-        qDebug()<<stream->name();
         if(stream->tokenType() == QXmlStreamReader::StartElement) {
             if(stream->name() == "titre"){
                 stream->readNext();
                 titre=stream->text().toString();
-                qDebug()<<"titre="<<titre<<"\n";
             }
             if(stream->name() == "description"){
                 stream->readNext();
                 description=stream->text().toString();
-                qDebug()<<"desc="<<description<<"\n";
             }
             if(stream->name() == "orientee"){
                 stream->readNext();
                 orientee=stream->text().toInt();
-                qDebug()<<"orientee="<<QString::number(orientee)<<"\n";
                 if(titre =="Reference")
                 {
                     this->createReference();
-                    qDebug() << "llll";
                 }
                 else{
                     Relation* rel = new Relation(titre,description, orientee);
@@ -298,35 +282,26 @@ void RelationManager::LoadRelationXML(QXmlStreamReader *stream){
             }
             if(stream->name() == "couple"){
                  while(stream->tokenType() != QXmlStreamReader::EndElement || (stream->name() != "couple" && stream->name() != "relation" && stream->name() != "Relations" && stream->name() != "PluriNotes" && stream->name() != "Couples")){
-                     qDebug() <<"Couple";
-                     qDebug() << stream->name();
                      if(stream->tokenType() == QXmlStreamReader::StartElement) {
-                         qDebug() << "coucou";
                          if(stream->name() == "x" )
                          {
                              stream->readNext();
                              x=stream->text().toString();
-                             qDebug()<<"x="<<x<<"\n";
                          }
                          if(stream->name() == "y" )
                          {
                              stream->readNext();
                              y=stream->text().toString();
-                             qDebug()<<"y="<<y<<"\n";
                          }
                          if(stream->name() == "label" )
                          {
                              stream->readNext();
                              label=stream->text().toString();
-                             qDebug()<<"label="<<label<<"\n";
                          }
 
                      }
                         stream->readNext();
                  }
-                  qDebug() << x;
-                  qDebug() << y;
-                  qDebug() << label;
                 tabRelations[j-1]->addCouple(x,y,label);
             }
         }

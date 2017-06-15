@@ -262,9 +262,7 @@ void CreationRelationWindow::delete_rela(){
     foreach (QWidget *widget, QApplication::topLevelWidgets()) {
         if ( widget->windowTitle() == "PluriNote")
         {
-            qDebug() << titre_ancien;
            qobject_cast<MainWindow*>(widget)->deleteRelation(&(RM.getRelation(titre_ancien)));
-           qDebug() << "lolol";
         }
     }
     QMessageBox::information(this, "Bravo", "Suppression Reussie !");
@@ -287,11 +285,8 @@ void CoupleWindow::save(){
         else
         {
             QString label;
-            qDebug() << couple->text();
             if(couple->text() == "") label = "default";
             else label = couple->text();
-            qDebug()<<tab_id_x[ liste_x->currentRow() ];
-            qDebug() << tab_id_y[ liste_y->currentRow() ];
             rel.addCouple( tab_id_x[ liste_x->currentRow() ],  tab_id_y[ liste_y->currentRow() ],label);
             QMessageBox::information(this, "Bravo", "Sauvegarde Reussie !");
         }
@@ -384,14 +379,12 @@ void RelationVizingWindow::afficherCouples(){
 
 void RelationVizingWindow::afficherCouplesRelation(QString rel){
     RelationManager& RM = RelationManager::donneInstance();
-    qDebug() << "adazd";
     liste_couples->clear();
 
     Relation& r = RM.getRelation(rel);
     NotesManager& NM = NotesManager::donneInstance();
     int index = relation->findText(rel);
     if ( index != -1 ) {
-        qDebug() << index;
        relation->setCurrentIndex(index);
     }
 
@@ -437,10 +430,7 @@ void RelationVizingWindow::saveLabel(){
     if(this->label->text() != ""){
         RelationManager& RM = RelationManager::donneInstance();
         Relation& r = RM.getRelation(relation->currentText());
-        qDebug() << label->text();
         QStringList liste =  liste_couples->currentItem()->text().split(" -> ");
-        qDebug() << liste[0];
-        qDebug() << liste[1];
         Couple& c = r.getCouple(liste[0],liste[1]);
         if(!r.getOrientee())
         {
@@ -475,8 +465,6 @@ void RelationVizingWindow::deleteCouple(){
         RelationManager& RM = RelationManager::donneInstance();
         Relation& r = RM.getRelation(relation->currentText());
         QStringList liste =  liste_couples->currentItem()->text().split(" -> ");
-        qDebug() << liste[0];
-        qDebug() << liste[1];
         r.deleteCouple(liste[0],liste[1]);
         foreach (QWidget *widget, QApplication::topLevelWidgets()) {
             if ( widget->windowTitle() == "PluriNote")

@@ -233,10 +233,6 @@ public slots:
      * \brief slot pour la restauration de la corbeille
      */
     void restaure_corbeille();
-    /*!
-     * \brief slot pour l'ouverture du memento
-     */
-    void ouvrir_memento();
 
     /*!
      * \brief slot pour l'ouverture de la fenetre de création de relation

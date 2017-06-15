@@ -138,6 +138,9 @@ private:
      */
     virtual void restateMemento( Memento* mem ) = 0 ; // restaure un memento
 
+    void operator=(const Note&){}
+    Note(const Note&){}
+
 
 
 };

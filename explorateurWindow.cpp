@@ -196,9 +196,7 @@ void ExplorateurWindow::restaurerVersion(){
         Note& note = NM.getNote(NoteId);
         note.newDateModif();
         NM.saveVersion(&note);
-        qDebug() << "llala";
         NM.restateVersion(&note, QDateTime::fromString(liste->currentItem()->text(),"dd/MM/yyyy hh:mm:ss"));
-        qDebug() << "llola";
         QMessageBox::information(this, "Bravo", "Restauration Réussie !");
         foreach (QWidget *widget, QApplication::topLevelWidgets()) {
             if ( widget->windowTitle() == "PluriNote")

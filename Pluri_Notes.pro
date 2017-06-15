@@ -29,7 +29,6 @@ SOURCES += main.cpp\
     Notes.cpp \
     Memento.cpp \
     noteWindow.cpp \
-    debug.cpp \
     relations.cpp\
     explorateurWindow.cpp \
     RelationWindow.cpp \
@@ -39,7 +38,6 @@ HEADERS  += mainwindow.h \
     Notes.h \
     Memento.h \
     noteWindow.h \
-    debug.h \
     relations.h\
     explorateurWindow.h \
     RelationWindow.h \

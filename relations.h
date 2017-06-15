@@ -212,6 +212,9 @@ private:
     unsigned int nbMaxCouples; /*!< nombre maxium de couples dans le tableau*/
     bool orientee; /*!< booléen concernant l'orientation de la relation */
 
+    void operator=(const Relation&){}
+    Relation(const Relation&){}
+
 };
 
 /*! \class RelationManager

@@ -149,20 +149,6 @@ void MainWindow::closeEvent (QCloseEvent *event)
         msg.setInformativeText("Voulez-vous vider la corbeille?");
         QAbstractButton *OuiBouton = msg.addButton(QString("Vider"), QMessageBox::YesRole);
         QAbstractButton *NonBouton = msg.addButton(QString("Restaurer"), QMessageBox::YesRole);
-        /*msg.setStandardButtons(QMessageBox::Yes| QMessageBox::No);
-        msg.setDefaultButton(QMessageBox::No);
-        int ret = msg.exec();
-        switch (ret) {
-          case QMessageBox::Yes:
-              NM.viderCorbeille();
-              break;
-          case QMessageBox::No:
-                 NM.restaurerCorbeille();
-              break;
-          default:
-
-              break;
-        }*/
 
         msg.exec();
         if(msg.clickedButton() == OuiBouton)
@@ -282,7 +268,6 @@ void MainWindow::ouvrir_corbeille() {
 
 void MainWindow::ouvre_note() {
     fermer_slot_1();
-    qDebug() << "coucou";
     NotesManager& NM = NotesManager::donneInstance();
 
     Note& note = NM.getNote( explo_window->getIdIndice(explo_window->getListe()->currentRow()) );
@@ -571,16 +556,6 @@ void MainWindow::restaure_corbeille(){
     ouvrir_explorateur();
 }
 
-void MainWindow::ouvrir_memento(){
-
-    fermer_slot_1();
-
-    NotesManager& NM = NotesManager::donneInstance();
-
-    Note& note = NM.getNote( explo_window->getIdIndice(explo_window->getListe()->currentRow()) );
-
-    ouvre_note();
-}
 
 void MainWindow::ouvrir_explorateur_memento() {
 
@@ -609,7 +584,6 @@ void MainWindow::corbeilleAuto(){
 
 void MainWindow::deleteRelation(Relation *rel){
     QUndoCommand *deleteRelCommand = new DeleteRelationCommand(rel);
-    qDebug() << "ccc";
     undoStack->push(deleteRelCommand);
 }
 
@@ -660,9 +634,7 @@ void DeleteRelationCommand::undo(){
 
 void DeleteRelationCommand::redo(){
     RelationManager& RM = RelationManager::donneInstance();
-               qDebug() << "lalal";
     RM.deleteRelation(relation->getTitre());
-               qDebug() << "lrlrl";
 
     foreach (QWidget *widget, QApplication::topLevelWidgets()) {
         if ( widget->windowTitle() == "PluriNote")

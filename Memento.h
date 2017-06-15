@@ -406,6 +406,9 @@ public:
 private:
     QList<Memento*> tab_memento; /*!< tableau de pointeur de mementos, utilisant une QList*/
 
+    void operator=(const Gardien&){}
+    Gardien(const Gardien&){}
+
 };
 
 
